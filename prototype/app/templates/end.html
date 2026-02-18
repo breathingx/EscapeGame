@@ -1,0 +1,22 @@
+<!doctype html>
+<html>
+    <head>
+        <!-- TODO add title?-->
+    </head>
+    <body>
+        <p>
+            Gefeliciteerd, je hebt het einde van de quiz gehaald!
+            <br>
+            Je hebt er zolang over gedaan: MM:SS
+            <br>
+            Je hebt zoveel hints gebruikt: ???
+        </p>
+
+        <div class="ResetOptie">
+        <hr>
+        <form action="{{ url_for('resetTeam') }}" method="post">
+            <button type="submit">reset team</button>
+        </form>
+    </div>
+    </body>
+</html>

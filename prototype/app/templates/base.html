@@ -1,0 +1,132 @@
+<!doctype html>
+<html>
+    <head>
+    <!-- TODO add title?-->
+    </head>
+    <body>
+
+    <style>
+        .TimerHints {
+            display: flex;
+        }
+
+        .TimerHints .Timer {
+            width: 50%;
+        }
+
+        .TimerHints .Hints {
+            width: 50%;
+        }
+
+    </style>
+
+    <div class="TimerHints" id="TimerHints">
+<!--        TODO? timer en hint staan nu niet op dezelfde regel-->
+        <div class="Timer">
+            {% if session.started %}
+                <div id="Timer"></div>
+                <script>
+                    const startTime = {{ session.beginTijd }};
+                    let penalties = 0;
+                    const totalDuration = 1800;
+
+                    function updateTimer() {
+                        const now = Date.now() / 1000
+                        //fetchCurrentPenalty();
+                        console.log("updateTimer, waarde penalties: " + penalties);
+
+                        const timePassed = Math.floor(now - startTime);
+                        if (penalties != 0) {
+                            console.log("penalties: " + penalties);
+                        }
+                        const timeLeft = totalDuration - timePassed - penalties*60;
+
+                        const timerDiv = document.getElementById("Timer");
+
+                        if (timeLeft <= 0) {
+                            timerDiv.innerHTML = "00:00";
+                            return;
+                        }
+
+                        const minutes = Math.floor(timeLeft / 60);
+                        const seconds = timeLeft % 60;
+
+                        timerDiv.innerHTML =
+                            String(minutes).padStart(2, '0') + ":" +
+                            String(seconds).padStart(2, '0');
+                    }
+
+                    updateTimer();
+                    setInterval(updateTimer, 1000);
+                </script>
+            {% else %}
+                <div id="Timer">30:01</div>
+            {% endif %}
+        </div>
+
+
+
+        <div class="Hints" id="Hints">
+
+            <!-- TODO remove hardcode -->
+            <div id="hintsLeft">Aantal hints over: 3</div> 
+
+            <button type="button" id="askForHint" {% if not started %}disabled{% endif %}>Ask for a hint</button>
+            <div id="actualHint"></div>
+
+            <script>
+                let amountOfHintsLeft = 3; //TODO remove hardcode, gebruik waarde van backend, zet in div id hintsLeft
+                let lastHintTimestamp = 0
+
+                function updateHintCount() {
+                    amountOfHintsLeft--;
+                    penalties++;
+                    updateTimer();
+                    //addPenalty();
+                    if (amountOfHintsLeft <= 0) {
+                        document.getElementById("actualHint").innerHTML += "No hints remaining.<br>";
+                        document.getElementById("askForHint").disabled = true;
+                    }
+                    document.getElementById("hintsLeft").innerHTML = "Aantal hints over: " + amountOfHintsLeft;
+                    lastHintTimestamp = Date.now();
+                }
+
+                function askForHint() {
+                    const now = Date.now();
+
+                    if (lastHintTimestamp == 0 || now - lastHintTimestamp > 5000) {
+                        updateHintCount();
+                        document.getElementById("actualHint").innerHTML += "hint " + (3 - amountOfHintsLeft) + "<br>";
+                    } else {
+                        const timeLeft = 5000 - (now - lastHintTimestamp);
+                        document.getElementById("actualHint").innerHTML += "Please wait " + timeLeft + "ms.<br>";
+                    }
+                }
+
+                //document.getElementById("askForHint").addEventListener("click", askForHint);
+                document.getElementById("askForHint").addEventListener("click", function(event) {
+                    const confirmed = confirm("Are you sure you want a hint?");
+
+                    if (!confirmed) {
+                        event.preventDefault();
+                        return;
+                    }
+
+                    askForHint();
+                });
+            </script>
+        </div>
+    </div>
+
+    <!-- TODO remove deze div, is alleen voor testen van reset -->
+    <div class="ResetOptie">
+        <hr>
+        <form action="{{ url_for('resetTeam') }}" method="post">
+            <button type="submit">reset team</button>
+        </form>
+    </div>
+
+    <hr><hr>
+    {% block content %} {% endblock %}
+    </body>
+</html>

@@ -1,0 +1,25 @@
+<!doctype html>
+<html>
+    <body>
+        <h1>Welkom</h1>
+
+        <!-- Laat msg zien dat team reset is-->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul>
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+
+
+        <p>Klik op een van de onderstaande knoppen om een team te kiezen</p>
+        <form method="POST" action="{{ url_for('join_team') }}">
+            <button type="submit" name="team" value="1">Join team 1</button>
+            <button type="submit" name="team" value="2">Join team 2</button>
+            <button type="submit" name="team" value="3">Join team 3</button>
+        </form>
+    </body>
+</html>
