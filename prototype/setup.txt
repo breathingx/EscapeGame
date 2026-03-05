@@ -1,0 +1,10 @@
+#aanmaken en activeren venv
+python3 -m venv venv
+source venv/bin/activate
+
+#v1 launchen voor eerste keer
+pip install flask
+pip install python-dotenv
+flask run
+
+#in vervolg, activate venv, gebruik dan 'flask run'

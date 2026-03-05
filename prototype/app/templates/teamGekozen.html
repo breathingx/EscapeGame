@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <p>Je hebt gekozen voor team {{session.team}}!</p>
+    <p>De andere teams zijn: {{otherTeamsText}}</p>
+    <hr>
+    <p>
+        Linksboven op deze pagina is een timer te zien, deze begint te lopen vanaf het moment dat je aan de eerste puzzel begint.
+    </p>
+    <p>
+        Rechts boven is een hint knop. Zodra je bezig bent met het maken van de puzzels kun je hier op klikken om een hint te krijgen voor de huidige puzzel.
+        <br>
+        Let op, het gebruiken van een hint geeft je wel strafpunten, dus gebruik de hints niet te vaak.
+    </p>
+
+
+
+    <form id="startForm" action="{{ url_for('puzzelEen') }}" method="post">
+        <input type="hidden" name="beginTijd" id="beginTijd">
+        <button type="submit">Begin met eerste puzzel</button>
+    </form>
+
+    <script>
+        document.getElementById("startForm").addEventListener("submit", function() {
+            document.getElementById("beginTijd").value = (Date.now() / 1000).toFixed(0);
+        });
+    </script>
+
+{% endblock %}
