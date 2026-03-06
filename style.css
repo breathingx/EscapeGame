@@ -99,7 +99,7 @@ body.fade-out {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: "Right Grotesk Medium";
+    font-family: "Right Grotesk Compact";
     margin: 0;
 }
 
@@ -113,7 +113,7 @@ h1, h2, h3, h4, h5, h6 {
     position: fixed;
     top: var(--page-margin);
     left: var(--page-margin);
-    font-family: "Right Grotesk Medium";
+    font-family: "Montserrat";
     font-size: 24px;
     font-weight: 500;
 }
@@ -123,7 +123,7 @@ h1, h2, h3, h4, h5, h6 {
     position: fixed;
     top: var(--page-margin);
     right: var(--page-margin);
-    font-family: "Right Grotesk Medium";
+    font-family: "Montserrat";
     font-size: 24px;
     font-weight: 500;
 }
@@ -236,14 +236,17 @@ button:hover {
 
 .aandrijving {
     background-color: #ff6800;
+    color: black;
 }
 
 .programma {
     background-color: #8268ff;
+    color: black;
 }
 
 .klankbron {
     background-color: #00f280;
+    color: black;
 }
 
 /* Correct antwoord staat */
@@ -262,14 +265,16 @@ button.correct-state:hover {
 
 .start-title {
     font-family: "Right Grotesk Compact";
+    margin-bottom: var(--scale);
     font-size: clamp(28px, 6vw, 64px);
     text-align: center;
 }
 
 .start-subtitle {
-    font-size: clamp(16px, 3vw, 22px);
+    font-size: clamp(20px, 6vw, 40px);
     margin-bottom: var(--scale);
     text-align: center;
+    font-family: "Right Grotesk Light";
 }
 
 
@@ -541,10 +546,12 @@ button.correct-state:hover {
 #resultaatTitel {
     font-family: "Right Grotesk Compact";
     font-size: clamp(28px, 6vw, 60px);
+    margin-top: 18px;
+    margin-bottom: -18px;
 }
 
 #resultaatSubtitel {
-    font-family: "Right Grotesk Medium";
+    font-family: "Right Grotesk Light";
     font-size: clamp(18px, 4vw, 28px);
 }
 

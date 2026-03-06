@@ -178,7 +178,7 @@ function laadOpdracht() {
 
     document.getElementById("antwoordInput").disabled = false;
 
-    document.getElementById("teamTitel").textContent = "Team: " + team;
+    document.getElementById("teamTitel").textContent = "Team: " + team.charAt(0).toUpperCase() + team.slice(1);
     document.getElementById("opdrachtNummer").textContent =
         "Opdracht " + (huidigeOpdracht + 1) + " van 10";
 
