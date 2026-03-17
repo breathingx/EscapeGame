@@ -1,3 +1,31 @@
 /prototype/__pycache__
 /prototype/app/__pycache__
 /venv
+/tuner
+
+# Dependencies
+node_modules/
+
+# Build output (Nuxt)
+.nuxt/
+.dist/
+.output/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.*
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+
+# Optional: local storage / uploads
+blob/
+
+# Optional: lock file (ONLY if you really don’t want it tracked)
+package-lock.json
