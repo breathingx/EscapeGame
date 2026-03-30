@@ -566,5 +566,83 @@ button.correct-state:hover {
     margin: 10px 0 0 0;
 }
 
+/* ======================================== */
+/* ============ PROGRAMMEREN ============== */
+/* ======================================== */
+
+.game-container {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    width: 100%;
+    max-width: 1500px;
+    margin: 0 auto;
+    padding: 0 var(--page-margin); 
+    box-sizing: border-box;
+}
+#blocklyDiv, #gameArea {
+    flex: 1;
+    min-width: 0;
+    border: 6px solid black; 
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    background-color: white; 
+    touch-action: none;
+    box-sizing: border-box;
+}
+#blocklyDiv {
+    height: 450px; 
+}
+
+#gameArea { 
+    position: relative; 
+    overflow: hidden; 
+    background-color: white;
+    border: 6px solid black;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    box-sizing: border-box;
+    flex: 1;               
+    aspect-ratio: 1 / 1;
+    height: auto !important; 
+    align-self: flex-start;
+
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.05) 4px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.05) 4px, transparent 1px);
+    background-size: 10% 10%;
+}
+
+#player { 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute; 
+    left: 0; 
+    top: 0;
+    margin: 0;
+    padding: 0;
+    transition: transform 0.4s ease;
+}
 
 
+.action-button-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    width: 100%;
+}
+
+.run-btn {
+    width: auto !important;
+    font-size: clamp(18px, 3vw, 24px);
+    padding: 18px 40px;
+}
+
+@media (max-width: 800px) {
+    .game-container {
+        flex-direction: column; 
+    }
+    #blocklyDiv, #gameArea {
+        width: 100%;
+        flex: none;
+    }
+}
