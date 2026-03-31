@@ -79,7 +79,7 @@ javascript.javascriptGenerator.forBlock['repeat_n'] = function(block) {
 // =================================================
 // SPEL LOGIC
 // =================================================
-
+let moveTimer;
 let actionQueue = [];
 let isPlaying = false;
 let gridMax = 9;
@@ -146,10 +146,11 @@ function playNextMove() {
   }
   
   updatePlayerVisuals();
-  setTimeout(playNextMove, 500);
+  moveTimer = setTimeout(playNextMove, 500);
 }
 
 function runGame() {
+    clearTimeout(moveTimer)
     tileX = 0; 
     tileY = 0; 
     playerAngle = 0;
@@ -163,7 +164,7 @@ function runGame() {
     
     if (actionQueue.length > 0) {
         isPlaying = true;
-        setTimeout(playNextMove, 500);
+        moveTimer = setTimeout(playNextMove, 500);
     }
 }
 
