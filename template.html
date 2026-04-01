@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="game-page">
+
+<div id="timer"></div>
+<div id="scoreDisplay">Score: 0</div>
+<h2 id="teamTitel"></h2>
+
+<div class="main-content">
+
+    <h3 id="opdrachtNummer"></h3>
+
+    <div id="vraagContainer">
+
+    <!-- UITLEG BLOK -->
+    <div id="uitlegBlok">
+        <p id="uitlegTekst"></p>
+    </div>
+
+    <div id="extraContent"></div>
+
+    <!-- 6 INPUT BLOKJES -->
+    <div id="codeInputContainer">
+        <input type="text" maxlength="1" class="codeInput">
+        <input type="text" maxlength="1" class="codeInput">
+        <input type="text" maxlength="1" class="codeInput">
+        <input type="text" maxlength="1" class="codeInput">
+        <input type="text" maxlength="1" class="codeInput">
+        <input type="text" maxlength="1" class="codeInput">
+    </div>
+
+    <button id="actieBtn" onclick="verwerkActie()">Controleer</button>
+    <p id="feedback"></p>
+
+</div>
+
+</div>
+
+
+<div id="hintContainer">
+    <button id="hintBtn" onclick="geefHint()">Hint</button>
+
+    <div id="hintBlocks">
+        <span class="hintBlock"></span>
+        <span class="hintBlock"></span>
+        <span class="hintBlock"></span>
+    </div>
+
+    <p id="hintText"></p>
+</div>
+
+<div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+</div>
+
+<img src="logo.png" alt="Logo" class="logo">
+
+<!-- HINT OVERLAY -->
+<div id="hintOverlay">
+    <div id="hintModal">
+        <button id="closeHint">&times;</button>
+        <p id="hintTitle" style="display:none; font-weight: bold; margin-bottom: 10px;">
+            Hint:
+        </p>
+        <p id="hintModalText"></p>
+
+        <div id="hintActions" style="display:none; margin-top:20px;">
+            <button id="confirmHint">Ja, gebruik hint</button>
+            <button id="cancelHint">Annuleer</button>
+        </div>
+
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

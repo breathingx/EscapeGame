@@ -235,7 +235,7 @@ button:hover {
 }
 
 .aandrijving {
-    background-color: #ff6800;
+    background-color: #00f280;
     color: black;
 }
 
@@ -245,7 +245,7 @@ button:hover {
 }
 
 .klankbron {
-    background-color: #00f280;
+    background-color: #ff6800;
     color: black;
 }
 
@@ -327,7 +327,7 @@ button.correct-state:hover {
 /* ================================================= */
 
 .progress-bar.aandrijving {
-    background-color: #ff6800;
+    background-color: #00f280;
 }
 
 .progress-bar.programma {
@@ -335,7 +335,7 @@ button.correct-state:hover {
 }
 
 .progress-bar.klankbron {
-    background-color: #00f280;
+    background-color: #ff6800;
 }
 
 .progress-container {
@@ -358,8 +358,8 @@ button.correct-state:hover {
 .progress-bar.aandrijving {
     background: linear-gradient(
         to right,
-        #ff6800,
-        #ff9a3c
+        #00f280,
+        #5cffb0
     );
 }
 
@@ -376,8 +376,8 @@ button.correct-state:hover {
 .progress-bar.klankbron {
     background: linear-gradient(
         to right,
-        #00f280,
-        #5cffb0
+        #ff6800,
+        #ff9a3c
     );
 }
 
@@ -481,6 +481,32 @@ button.correct-state:hover {
 }
 
 
+#hintActions {
+    display: flex;
+    gap: 10px;
+}
+
+#confirmHint {
+    background-color: black;
+    color: white;
+}
+
+#cancelHint {
+    background-color: transparent;
+    color: black;
+    border: 2px solid black;
+}
+
+#hintModal ul {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+#hintModal li {
+    margin-bottom: 5px;
+}
+
+
 /* ================================================= */
 /* ================== CODES PAGINA ================= */
 /* ================================================= */
@@ -567,4 +593,37 @@ button.correct-state:hover {
 }
 
 
+
+/* ================================================= */
+/* ================== TEMPLATE ===================== */
+/* ================================================= */
+
+/* UITLEG BLOK */
+#uitlegBlok {
+    width: 90%;
+    border: 3px solid black;
+    padding: 15px;
+    margin-bottom: 50px;
+    font-family: "Montserrat";
+    font-size: clamp(16px, 3vw, 20px);
+}
+
+/* CODE INPUTS */
+#codeInputContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.codeInput {
+    width: 100%;
+    height: clamp(50px, 7vh, 70px);
+    text-align: center;
+    font-size: clamp(20px, 4vw, 28px);
+    font-family: "Right Grotesk Medium";
+    border: 3px solid black;
+    box-sizing: border-box;
+}
 
