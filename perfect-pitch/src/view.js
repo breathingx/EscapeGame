@@ -50,7 +50,7 @@ export class View {
       const gate = gates[currentGate];
       this.message.innerText = `🎵 ${gate.label}`;
     } else {
-      this.message.innerText = 'Congrats! 🎉🎉🎉';
+      this.message.innerText = 'Gefeliciteerd! De code is ABCDEF';
     }
   }
 
