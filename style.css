@@ -263,14 +263,14 @@ button.correct-state:hover {
 /* ================== START ======================== */
 /* ================================================= */
 
-.start-title {
+.index-title {
     font-family: "Right Grotesk Compact";
     margin-bottom: var(--scale);
     font-size: clamp(28px, 6vw, 64px);
     text-align: center;
 }
 
-.start-subtitle {
+.index-subtitle {
     font-size: clamp(20px, 6vw, 40px);
     margin-bottom: var(--scale);
     text-align: center;
