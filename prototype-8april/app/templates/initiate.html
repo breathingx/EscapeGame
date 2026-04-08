@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="nl">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Team {{ team }}!</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    </head>
+    <body>
+        <div class="main-content">
+            <div class="content-wrapper"></div>
+            <h1>Team {{ team }}</h1>
+            <p>Druk op de knop START om te beginnen!</p>
+            <div class="team-buttons">
+                <!-- Set only the required team and redirect to start -->
+                <button class="{{ team }}" onclick="localStorage.setItem('team', '{{ team }}'); window.location.href='/start';">START</button>
+            </div>
+        </div>
+        <img src="{{ url_for('static', filename='logo.png')}}" alt="Logo" class="logo">
+        <script src="{{ url_for('static', filename='scripts/script.js')}}"></script>
+    </body>
+</html>

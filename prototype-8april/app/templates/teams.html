@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+</head>
+<body>
+
+<div class="main-content">
+    <div class="content-wrapper">
+        <h1>Kies een team:</h1>
+        <div class="team-buttons">
+            <a href="{{ url_for('qr', team='aandrijving') }}"><button class="aandrijving" type="button">Aandrijving</button></a>
+            <a href="{{ url_for('qr', team='programma') }}"><button class="programma" type="button">Programma</button></a>
+            <a href="{{ url_for('qr', team='klankbron') }}"><button class="klankbron" type="button">Klankbron</button></a>
+        </div>
+        <div> 
+            <a href="{{ url_for('host') }}">
+                <button type="button">Terug naar hoofdpagina</button>
+            </a>
+        </div>
+    </div>
+</div>
+
+<img src="{{ url_for('static', filename='logo.png')}}" alt="Logo" class="logo">
+<script src="{{ url_for('static', filename='scripts/script.js')}}"></script>
+</body>
+</html>

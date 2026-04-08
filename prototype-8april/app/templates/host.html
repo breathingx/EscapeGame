@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="nl">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Welkom!</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    </head>
+        <body>
+        <div class="main-content">
+            <div class="qr-heading">
+                <h1 class="start-title">Beheerdersopties</h1>
+            </div>
+            <div> 
+                <a href="{{ url_for('teams') }}">
+                    <button type="button">Teams</button>
+                </a>
+            </div>
+            <div> 
+                <form action="{{ url_for('reset') }}" method="post">
+                    <button type="submit">Reset</button>
+                </form>
+            </div>
+        </div>
+        <img src="{{ url_for('static', filename='logo.png')}}" alt="Logo" class="logo">
+        <script src="{{ url_for('static', filename='scripts/script.js')}}"></script>
+    </body>
+</html>

@@ -1,0 +1,25 @@
+#Initializatie:
+In routes.py, navigeer naar
+
+@app.route('/qr/team/<team>.png', methods=['GET'])
+def qr_creation(team):
+
+en vervang JOUW_IP_ADRES_HIER met het ip-adress van de machine waarop je het flask-programma draait (de app is nog niet op het web gezet, waardoor dit nodig is).
+
+#aanmaken en activeren venv
+python3 -m venv venv
+source venv/bin/activate
+
+#v1 launchen voor eerste keer
+pip install flask
+pip install python-dotenv
+pip install qrcode
+pip install Pillow
+python3 script.py
+
+ctrl+klik op localhost:5000 (of op jouw_IP:5000) om de website te openen en scan vervolgens de QR-code met een mobiele telefoon.
+
+#in vervolg, activate venv, gebruik dan 'python3 script.py'
+
+#klaar:
+na een sessie kunnen de venv-folder en pycache folders veilig verwijderd worden (het is handig om dit voor het committen te doen).

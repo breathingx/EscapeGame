@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="nl">
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Welkom!</title>
+        <link rel="stylesheet" href="{{ url_for('static', filename='style.css')}}">
+    </head>
+        <body>
+        <div class="main-content">
+            <div class="qr-heading">
+                <h1 class="start-title">Scan de QR-code om te beginnen!</h1>
+                <img src="{{ url_for('qr_creation', team=team) }}" class="qr-code" alt="QR code voor team: {{ team }}">
+            </div>
+            <div> 
+            <a href="{{ url_for('teams') }}">
+                <button type="button">Terug naar de teams-pagina</button>
+            </a>
+        </div>
+        </div>
+        <img src="{{ url_for('static', filename='logo.png')}}" alt="Logo" class="logo">
+        <script src="{{ url_for('static', filename='scripts/script.js')}}"></script>
+    </body>
+</html>
