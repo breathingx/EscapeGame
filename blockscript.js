@@ -130,25 +130,35 @@ function playNextMove() {
   }
 
   let action = actionQueue.shift();
-  if (action === "forward") {
-    let facing = ((playerAngle % 360) + 360) % 360;
-    
-    if (facing === 0 && tileX < gridMax) tileX++;      // right
-    else if (facing === 90 && tileY < gridMax) tileY++; // down
-    else if (facing === 180 && tileX > 0) tileX--;      // left
-    else if (facing === 270 && tileY > 0) tileY--;      // up
-  } 
-  else if (action === "left") {
-    playerAngle -= 90;
-  } 
-  else if (action === "right") {
-    playerAngle += 90;
-  }
-  
+  const result = movementLogic(tileX, tileY, playerAngle, action)
+  tileX = result.x
+  tileY = result.y
+  playerAngle = result.a
   updatePlayerVisuals();
   moveTimer = setTimeout(playNextMove, 500);
 }
 
+
+export function movementLogic(curX, curY, curAngle, action) {
+  let newX = curX;
+  let newY = curY;
+  let newAngle = curAngle;
+
+  if (action === "left") {
+    newAngle -= 90;
+  } else if (action === "right") {
+    newAngle += 90;
+  } else if (action === "forward") {
+    let facing = ((newAngle % 360) + 360) % 360;
+
+    if (facing === 0 && newX < gridMax) newX++;      // Right
+    else if (facing === 90 && newY < gridMax) newY++; // Down
+    else if (facing === 180 && newX > 0) newX--;      // Left
+    else if (facing === 270 && newY > 0) newY--;      // Up
+  }
+
+  return {x: newX, y: newY, a: newAngle} ;
+}
 function runGame() {
     clearTimeout(moveTimer)
     tileX = 0; 
