@@ -15,9 +15,20 @@
   
   <div class="game-container">
   <div id="blocklyDiv"></div>
+
+  <div class="stats-sidebar">
+    <div class="stat-box">
+      <span class="stat-label">Blokken</span>
+      <span id="blockCount" class="stat-value">0/11</span>
+    </div>
+    <div class="stat-box">
+      <span class="stat-label">Score</span>
+      <span id="currentScore" class="stat-value">0</span>
+    </div>
+  </div>
+
   <div id="gameArea">
-    <div id="goal" style="position: absolute;">🚩</div>
-    <div id="player" style="position: absolute; transform: translate(0px, 0px) rotate(0deg); z-index: 10;">🧍</div>
+    <div id="player" style="position: absolute; z-index: 10;">🧍</div>
   </div>
 </div>
 
@@ -26,14 +37,13 @@
   </div>
 
   <xml id="workspaceBlocks" style="display: none">
-    <block type="start_block" x="20" y="20"></block>
+    <block type="start_block" x="10" y="10"></block>
   </xml>
 
   <xml id="toolbox" style="display: none">
-    <block type="move_forward"></block>
+    <block type="move_forward_n"></block>
     <block type="turn_left"></block>
     <block type="turn_right"></block>
-    <block type="repeat_n"></block>
   </xml>
   <script src="blockscript.js"></script>
 </body>
