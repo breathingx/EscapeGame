@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<!-- Using the Perfect Pitch JS library from https://github.com/devowski256/perfect-pitch-js/tree/main
+     Added by TeamTim on 2026-04-07 -->
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start - Het Spel</title>
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      font-family: sans-serif;
+    }
+
+    .main-content {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    .content-wrapper {
+      max-width: 800px;
+      width: 100%;
+    }
+
+    #container {
+      width: 600px;
+      max-width: 90%;
+      margin: 20px auto;
+    }
+
+    canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* Responsive mobile-friendly sizing */
+    #game {
+      width: 90vw;    /* 90% of the viewport width */
+      height: 60vh;   /* 60% of the viewport height */
+      max-width: 400px;  /* optional max width for larger screens */
+      max-height: 600px; /* optional max height */
+      margin: 0 auto;    /* center horizontally */
+      display: block;
+    }
+
+    #waveform,
+    #spectrum {
+      height: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="main-content">
+    <div class="content-wrapper">
+      <h1 class="start-title">Perfect Pitch</h1>
+      <div class="start-subtitle">Het Zangspel</div>
+      <p>Klaar om te beginnen?</p>
+
+      <div id="container">
+        <div id="message"></div>
+        <canvas id="game"></canvas>
+        <canvas id="waveform"></canvas>
+        <canvas id="spectrum"></canvas>
+      </div>
+
+      <img src="logo.png" alt="Logo" class="logo">
+    </div>
+  </div>
+
+  <script type="importmap">
+  {
+    "imports": {
+      "gl-matrix": "https://cdn.jsdelivr.net/npm/gl-matrix@3.4.4/+esm"
+    }
+  }
+  </script>
+
+  <script type="module" src="toonladder.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
