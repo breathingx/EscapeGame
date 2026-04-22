@@ -658,11 +658,10 @@ button.correct-state:hover {
     padding: 18px 40px;
 }
 
-/* Minor adjustments for very small screens */
 @media (max-width: 800px) {
     #blocklyDiv {
-        /* Forces the editor to only be half the height of the phone screen */
-        height: 50vh !important; 
+        height: 480px !important; 
+        max-height: 80vh;
     }
     
     .stats-sidebar {
@@ -670,12 +669,7 @@ button.correct-state:hover {
     }
 }
 
-/* ======================================== */
-/* BLOCKLY MOBILE SCROLL FIX                */
-/* ======================================== */
-.blocklySvg, 
-.blocklyMainBackground, 
-.blocklyFlyoutBackground,
-.blocklyToolboxDiv {
-    touch-action: pan-y !important;
+.blocklySVG {
+    width: 100% !important;
+    height: 100% !important;
 }

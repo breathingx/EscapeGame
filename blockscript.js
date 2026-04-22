@@ -294,7 +294,7 @@ function initBlockly() {
     trashcan: true,
     horizontalLayout: isMobile, 
     toolboxPosition: isMobile ? 'bottom' : 'start',
-    scrollbars: false
+    scrollbars: true
   });
   const workspaceBlocksElement = document.getElementById('workspaceBlocks');
   if (workspaceBlocksElement) {
