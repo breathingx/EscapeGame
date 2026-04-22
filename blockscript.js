@@ -42,6 +42,19 @@ Blockly.Blocks['turn_right'] = {
     }
 };
 
+Blockly.Blocks['repeat_n'] = {
+  init: function() {
+    this.appendDummyInput()
+        .appendField("Herhaal")
+        .appendField(new Blockly.FieldNumber(3, 1, 100), "N")
+        .appendField("keer");
+    this.appendStatementInput("DO").appendField("doe");
+    this.setPreviousStatement(true, null);
+    this.setNextStatement(true, null);
+    this.setColour(120);
+  }
+};
+
 
 // =================================================
 // SCRIPT GENERATIE
@@ -64,7 +77,11 @@ javascript.javascriptGenerator.forBlock['turn_left'] = function() {
 javascript.javascriptGenerator.forBlock['turn_right'] = function() {
   return 'queueAction("right");\n';
 };
-
+javascript.javascriptGenerator.forBlock['repeat_n'] = function(block) {
+  var repeats = block.getFieldValue('N');
+  var branch = javascript.javascriptGenerator.statementToCode(block, 'DO');
+  return 'for (var i = 0; i < ' + Math.floor(repeats) + '; i++) {\n' + branch + '}\n';
+};
 
 // =================================================
 // LEVEL & SCORING SETTINGS
@@ -73,11 +90,11 @@ javascript.javascriptGenerator.forBlock['turn_right'] = function() {
 const levelGrid = [
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
   [1, 3, 0, 0, 2, 0, 0, 0, 2, 1], 
-  [1, 0, 1, 0, 0, 1, 1, 1, 0, 1], 
-  [1, 0, 0, 1, 0, 0, 0, 0, 0, 1], 
-  [1, 2, 1, 0, 2, 0, 0, 0, 2, 1],
-  [1, 0, 0, 1, 0, 1, 1, 1, 0, 1], 
-  [1, 0, 1, 0, 0, 1, 0, 1, 0, 1], 
+  [1, 0, 2, 0, 0, 1, 1, 1, 0, 1], 
+  [1, 0, 0, 1, 0, 1, 0, 0, 0, 1], 
+  [1, 2, 1, 0, 2, 0, 0, 1, 2, 1],
+  [1, 0, 0, 1, 0, 0, 2, 1, 0, 1], 
+  [1, 0, 1, 0, 0, 1, 0, 0, 0, 1], 
   [1, 0, 0, 1, 0, 1, 1, 1, 0, 1], 
   [1, 2, 0, 0, 2, 0, 0, 0, 2, 1], 
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  
