@@ -642,7 +642,7 @@ button.correct-state:hover {
     top: 0;
     margin: 0;
     padding: 0;
-    transition: transform 0.4s ease;
+    transition: transform 0.2s ease;
 }
 
 .action-button-wrapper {

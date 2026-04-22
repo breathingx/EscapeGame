@@ -250,7 +250,7 @@ function playNextMove() {
   else if (action === "right") playerAngle += 90;
 
   updatePlayerVisuals();
-  moveTimer = setTimeout(playNextMove, 400);
+  moveTimer = setTimeout(playNextMove, 250);
 }
 
 function runGame() {
