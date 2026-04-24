@@ -14,6 +14,14 @@ on:
 jobs:
   run-lint:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      packages: read
+      issues: write
+      pull-requests: write
+      statuses: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -26,5 +34,10 @@ jobs:
         env:
           VALIDATE_ALL_CODEBASE: false
           DEFAULT_BRANCH: "main"
+          VALIDATE_HTML: true
+          VALIDATE_HTML_PRETTIER: true
+          VALIDATE_CSS: true
+          VALIDATE_CSS_PRETTIER: true
           VALIDATE_JAVASCRIPT_ES: true
+          VALIDATE_JAVASCRIPT_PRETTIER: true
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
