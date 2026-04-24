@@ -13,33 +13,29 @@
 <h2 id="teamTitel"></h2>
 
 <div class="main-content">
-
     <h3 id="opdrachtNummer"></h3>
-
     <div id="vraagContainer">
-
-    <!-- UITLEG BLOK -->
-    <div id="uitlegBlok">
-        <p id="uitlegTekst"></p>
+        <!-- UITLEG BLOK -->
+        <div id="uitlegBlok">
+            <p id="uitlegTekst"></p>
+        </div>
+        <div id="extraContent"></div>
+        <!-- 6 INPUT BLOKJES -->
+        <div id="codeInputContainer">
+            <input type="text" maxlength="1" class="codeInput">
+            <input type="text" maxlength="1" class="codeInput">
+            <input type="text" maxlength="1" class="codeInput">
+            <input type="text" maxlength="1" class="codeInput">
+            <input type="text" maxlength="1" class="codeInput">
+            <input type="text" maxlength="1" class="codeInput">
+        </div>
+        <div id="truth-lie-div" hidden>
+            <button id="truth-lie-ja" onclick="verwerkTruthLie(true)">Waar</button>
+            <button id="truth-lie-nee" onclick="verwerkTruthLie(false)">Niet waar</button>
+        </div>
+        <button id="actieBtn" onclick="verwerkActie()">Controleer</button>
+        <p id="feedback"></p>
     </div>
-
-    <div id="extraContent"></div>
-
-    <!-- 6 INPUT BLOKJES -->
-    <div id="codeInputContainer">
-        <input type="text" maxlength="1" class="codeInput">
-        <input type="text" maxlength="1" class="codeInput">
-        <input type="text" maxlength="1" class="codeInput">
-        <input type="text" maxlength="1" class="codeInput">
-        <input type="text" maxlength="1" class="codeInput">
-        <input type="text" maxlength="1" class="codeInput">
-    </div>
-
-    <button id="actieBtn" onclick="verwerkActie()">Controleer</button>
-    <p id="feedback"></p>
-
-</div>
-
 </div>
 
 

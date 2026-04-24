@@ -345,8 +345,13 @@ function laadOpdracht() {
         input.disabled = false;
     });
 
-    document.getElementById("uitlegTekst").textContent =
-        uitlegData[team][huidigeOpdracht];
+    if (team == "aandrijving") {
+        laadOpdrachtAandrijving();
+    } else if (team == "programma") {
+        laadOpdrachtProgramma();
+    } else {
+        laadopdrachtKlankbron();
+    }
 
     document.getElementById("teamTitel").textContent = "Team: " + team.charAt(0).toUpperCase() + team.slice(1);
     document.getElementById("opdrachtNummer").textContent =
@@ -368,6 +373,38 @@ function laadOpdracht() {
     updateProgressBar();
 }
 
+function laadOpdrachtAandrijving() {
+    //TODO aanpassen volgorde
+    if (huidigeOpdracht == 0) {
+        document.getElementById("uitlegTekst").textContent = "Waar, of niet waar?";
+        document.getElementById("codeInputContainer").style.display = "none";
+        document.getElementById("truth-lie-div").hidden = false;
+    } else {
+        document.getElementById("uitlegTekst").textContent =
+                uitlegData[team][huidigeOpdracht];
+    }
+}
+
+function laadOpdrachtProgramma() {
+    document.getElementById("uitlegTekst").textContent =
+        uitlegData[team][huidigeOpdracht];
+}
+
+function laadopdrachtKlankbron() {
+    document.getElementById("uitlegTekst").textContent =
+        uitlegData[team][huidigeOpdracht];
+}
+
+
+function verwerkTruthLie(isCorrect) {
+    //TODO als je op waar klikt ga je meteen naar volgende vraag, willen we dit wel?
+    antwoordIsCorrect = isCorrect;
+    if (isCorrect) {
+        document.getElementById("codeInputContainer").style.display = "";
+        document.getElementById("truth-lie-div").hidden = true;
+    }
+    verwerkActie();
+}
 
 function verwerkActie() {
 
