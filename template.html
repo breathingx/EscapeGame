@@ -8,24 +8,37 @@
 </head>
 <body class="game-page">
 
-<div id="timer"></div>
-<div id="scoreDisplay">Score: 0</div>
-<h2 id="teamTitel"></h2>
+<!-- voor de minigames -->
+ <script type="importmap">
+{
+  "imports": {
+    "gl-matrix": "https://cdn.jsdelivr.net/npm/gl-matrix@3.4.4/+esm"
+  }
+}
+</script>
+<!-- ---------------------------- -->
+
+<div class="header">
+    <div id="timer"></div>
+    <div id="scoreDisplay">Score: 0</div>
+</div>
+
+<div class="subheader">
+    <h2 id="teamTitel"></h2>
+    <h3 id="opdrachtNummer"></h3>
+</div>
+
 
 <div class="main-content">
 
-    <h3 id="opdrachtNummer"></h3>
-
     <div id="vraagContainer">
 
-    <!-- UITLEG BLOK -->
     <div id="uitlegBlok">
         <p id="uitlegTekst"></p>
     </div>
 
     <div id="extraContent"></div>
 
-    <!-- 6 INPUT BLOKJES -->
     <div id="codeInputContainer">
         <input type="text" maxlength="1" class="codeInput">
         <input type="text" maxlength="1" class="codeInput">
@@ -61,7 +74,6 @@
 
 <img src="logo.png" alt="Logo" class="logo">
 
-<!-- HINT OVERLAY -->
 <div id="hintOverlay">
     <div id="hintModal">
         <button id="closeHint">&times;</button>

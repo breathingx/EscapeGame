@@ -4,15 +4,11 @@
 // =================================================
 
 if (
-    // window.location.pathname.includes("game.html") ||
-    // window.location.pathname.includes("codes.html") ||
-    // window.location.pathname.includes("template.html")
     document.getElementById("timer")
 ) {
 
     const timerElement = document.getElementById("timer");
 
-    // Als er nog geen timer bestaat, start op 60 min
     if (!localStorage.getItem("totalSeconds")) {
         localStorage.setItem("totalSeconds", 60 * 60);
     }
@@ -257,11 +253,6 @@ function startGame(gekozenTeam) {
     }, 300);
 }
 
-// const uitlegTekst = document.getElementById("uitlegTekst");
-// if (uitlegTekst && team) {
-//     uitlegTekst.textContent = uitlegData[team][huidigeOpdracht];
-// }
-
 
 if (window.location.pathname.includes("template.html")) {
 
@@ -333,7 +324,6 @@ function laadOpdracht() {
     actieBtn.classList.remove("correct-state");
     actieBtn.classList.remove("aandrijving", "programma", "klankbron");
 
-    // document.getElementById("antwoordInput").disabled = false;
     const antwoordInput = document.getElementById("antwoordInput");
     if (antwoordInput) {
         antwoordInput.disabled = false;
@@ -352,11 +342,37 @@ function laadOpdracht() {
     document.getElementById("opdrachtNummer").textContent =
         "Opdracht " + (huidigeOpdracht + 1) + " van 6";
 
-    // document.getElementById("vraag").textContent =
-    //     opdrachten[team][huidigeOpdracht].vraag;
+
+    // =================================================
+    // MINI_GAME PAGINA'S
+    // =================================================
+
+    const extraContent = document.getElementById("extraContent");
+
+    extraContent.innerHTML = "";
+
+    if (team === "klankbron" && huidigeOpdracht === 1) {
+
+        fetch("perfect-pitch/toonladder.html")
+            .then(res => res.text())
+            .then(html => {
+                extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
+
+                // CSS laden
+                const link = document.createElement("link");
+                link.rel = "stylesheet";
+                link.href = "perfect-pitch/toonladder.css";
+                document.head.appendChild(link);
+
+                // script laden
+                const script = document.createElement("script");
+                script.type = "module";
+                script.src = "perfect-pitch/toonladder.js";
+                document.body.appendChild(script);
+})
+    }
 
     document.getElementById("feedback").textContent = "";
-    // document.getElementById("antwoordInput").value = "";
     document.getElementById("scoreDisplay").textContent = "Score: " + score;
 
     foutPogingen = 0;
@@ -415,7 +431,6 @@ function verwerkActie() {
         actieBtn.classList.add("correct-state");
         actieBtn.classList.add(team);
 
-        // inputs locken
         inputs.forEach(input => input.disabled = true);
 
     } else {
@@ -584,7 +599,6 @@ document.addEventListener("DOMContentLoaded", function() {
             overlay.style.display = "none";
         });
 
-        // Extra: klik buiten de modal sluit ook
         overlay.addEventListener("click", function(e) {
             if (e.target === overlay) {
                 overlay.style.display = "none";
@@ -646,11 +660,9 @@ function controleerCodes() {
 
     if (input1 === juiste1 && input2 === juiste2) {
 
-        // haal score correct uit localStorage
         const eindScore = localStorage.getItem("score");
         const eindTijd = localStorage.getItem("totalSeconds");
 
-        // tijd omrekenen naar weergave
         let totalSeconds = parseInt(eindTijd);
         let minutes = Math.floor(totalSeconds / 60);
         let seconds = totalSeconds % 60;
@@ -686,7 +698,6 @@ if (window.location.pathname.includes("resultaat.html")) {
 // =================================================
 // TEMPLATE
 // =================================================
-// AUTOMATISCH DOORSPRINGEN
 
 window.addEventListener("DOMContentLoaded", () => {
 
@@ -696,14 +707,12 @@ window.addEventListener("DOMContentLoaded", () => {
         input.addEventListener("input", (e) => {
             let value = e.target.value.toUpperCase();
 
-            // Zorg dat er maar 1 karakter blijft
             if (value.length > 1) {
                 value = value.charAt(0);
             }
 
             e.target.value = value;
 
-            // Ga door als er iets ingevuld is
             if (value !== "" && index < inputs.length - 1) {
                 inputs[index + 1].focus();
             }
