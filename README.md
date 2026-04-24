@@ -1,3 +1,10 @@
+######### OUR STUFF #########################
+
+# LINTERS #
+When the linters find an issue a pull request is created with comments at the issue.
+
+####################################################
+
 # ✨ Welcome to your team’s GitHub repository! ✨
 
 This repository will be the home of your project.
