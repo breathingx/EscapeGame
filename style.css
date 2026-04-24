@@ -37,7 +37,6 @@
 /* ================================================= */
 
 :root {
-    /* --page-margin: calc(100vh / 14); */
     --scale: 1;
     --page-margin: 7vh;
     --content-width: 100%;
@@ -56,7 +55,7 @@
     padding-left: var(--page-margin);
     padding-right: var(--page-margin);
     padding-top: var(--page-margin);
-    padding-bottom: calc(var(--page-margin) * 2);
+    padding-bottom: calc(var(--page-margin) + 20px);
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -90,6 +89,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: flex-start;
 }
 
 
@@ -108,9 +108,8 @@ h1, h2, h3, h4, h5, h6 {
 /* ================== HEADER ======================= */
 /* ================================================= */
 
-/* Timer linksboven */
 #timer {
-    position: fixed;
+    position: static;
     top: var(--page-margin);
     left: var(--page-margin);
     font-family: "Montserrat";
@@ -118,9 +117,8 @@ h1, h2, h3, h4, h5, h6 {
     font-weight: 500;
 }
 
-/* Score rechtsboven */
 #scoreDisplay {
-    position: fixed;
+    position: static;
     top: var(--page-margin);
     right: var(--page-margin);
     font-family: "Montserrat";
@@ -129,21 +127,18 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #teamTitel {
-    position: fixed;
+    position: static;
     top: calc(var(--page-margin) * 2);
-    left: 50%;
-    transform: translateX(-50%);
     text-align: center;
     font-family: "Right Grotesk Compact";
     font-weight: 900;
     font-size: clamp(22px, 3.5vw, 36px);
+    margin-bottom: 10px;
 } 
 
 #opdrachtNummer {
-    position: fixed;
+    position: static;
     top: calc(var(--page-margin) * 2.8);
-    left: 50%;
-    transform: translateX(-50%);
     text-align: center;
     font-family: "Right Grotesk Light";
     font-weight: 300;
@@ -156,12 +151,8 @@ h1, h2, h3, h4, h5, h6 {
 /* ================================================= */
 
  #vraagContainer {
-    position: fixed;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 85%;
-    max-width: 500px;
+    position: static;
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -188,6 +179,19 @@ h1, h2, h3, h4, h5, h6 {
 #feedback {
     font-family: "Montserrat";
     margin-top: 10px;
+}
+
+.fullscreen-content {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.minigame {
+    width: 100%;
+    max-width: 500px;
+    margin: 40px auto;
 }
 
 
@@ -235,7 +239,7 @@ button:hover {
 }
 
 .aandrijving {
-    background-color: #ff6800;
+    background-color: #00f280;
     color: black;
 }
 
@@ -245,7 +249,7 @@ button:hover {
 }
 
 .klankbron {
-    background-color: #00f280;
+    background-color: #ff6800;
     color: black;
 }
 
@@ -256,21 +260,21 @@ button.correct-state {
 }
 
 button.correct-state:hover {
-    transform: scale(1.05); /* geen extra hover vergroting */
+    transform: scale(1.05); 
 }
 
 /* ================================================= */
 /* ================== START ======================== */
 /* ================================================= */
 
-.start-title {
+.index-title {
     font-family: "Right Grotesk Compact";
     margin-bottom: var(--scale);
     font-size: clamp(28px, 6vw, 64px);
     text-align: center;
 }
 
-.start-subtitle {
+.index-subtitle {
     font-size: clamp(20px, 6vw, 40px);
     margin-bottom: var(--scale);
     text-align: center;
@@ -306,11 +310,10 @@ button.correct-state:hover {
 
 /* Standaard (alle pagina's behalve game) */
 .logo {
-    position: fixed;
+    position: static;
     bottom: var(--page-margin);
-    left: 50%;
     transform: translateX(-50%);
-    width: clamp(140px, 22vw, 260px); /* iets groter */
+    width: clamp(140px, 22vw, 260px); 
     height: auto;
 }
 
@@ -319,15 +322,15 @@ button.correct-state:hover {
     left: auto;
     right: var(--page-margin);
     transform: none;
-    width: clamp(100px, 18vw, 200px); /* originele maat */
-}
+    width: clamp(100px, 18vw, 200px); 
+} */
 
 /* ================================================= */
 /* ================== PROGRESS BAR ================= */
 /* ================================================= */
 
 .progress-bar.aandrijving {
-    background-color: #ff6800;
+    background-color: #00f280;
 }
 
 .progress-bar.programma {
@@ -335,7 +338,7 @@ button.correct-state:hover {
 }
 
 .progress-bar.klankbron {
-    background-color: #00f280;
+    background-color: #ff6800;
 }
 
 .progress-container {
@@ -346,6 +349,7 @@ button.correct-state:hover {
     height: calc(var(--page-margin) / 3);
     background-color: rgba(0, 0, 0, 0.2);
     overflow: hidden;
+    z-index: 0;
 }
 
 .progress-bar {
@@ -358,8 +362,8 @@ button.correct-state:hover {
 .progress-bar.aandrijving {
     background: linear-gradient(
         to right,
-        #ff6800,
-        #ff9a3c
+        #00f280,
+        #5cffb0
     );
 }
 
@@ -376,8 +380,8 @@ button.correct-state:hover {
 .progress-bar.klankbron {
     background: linear-gradient(
         to right,
-        #00f280,
-        #5cffb0
+        #ff6800,
+        #ff9a3c
     );
 }
 
@@ -392,18 +396,21 @@ button.correct-state:hover {
 /* ================================================= */
 
 
-#hintContainer {
-    position: fixed;
+#hintContainer { 
+    position: static;
     left: var(--page-margin);
     width: clamp(80px, 18vw, 200px);
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 6px;
+    margin-left: calc(var(--page-margin) * 1.5);
 }
 
+
 #hintBtn {
-    position: fixed;
+    position: static;
     bottom: calc(var(--page-margin) + 28px);
     left: var(--page-margin);
     width: clamp(80px, 18vw, 200px);
@@ -412,7 +419,7 @@ button.correct-state:hover {
 }
 
 #hintBlocks {
-    position: fixed;
+    position: static;
     bottom: var(--page-margin);
     left: var(--page-margin);
     width: clamp(80px, 18vw, 200px);
@@ -448,11 +455,11 @@ button.correct-state:hover {
 
 #hintModal {
     background: #ffd700;
-    width: min(60vw, 420px);   /* iets smaller */
-    min-height: 60px;        /* iets langwerpiger */
+    width: min(60vw, 420px);   
+    min-height: 60px;        
     padding: 40px 30px;
     position: relative;
-    border: 4px solid black;  /* dikkere zwarte rand */
+    border: 4px solid black;  
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -481,6 +488,32 @@ button.correct-state:hover {
 }
 
 
+#hintActions {
+    display: flex;
+    gap: 10px;
+}
+
+#confirmHint {
+    background-color: black;
+    color: white;
+}
+
+#cancelHint {
+    background-color: transparent;
+    color: black;
+    border: 2px solid black;
+}
+
+#hintModal ul {
+    padding-left: 20px;
+    margin-top: 10px;
+}
+
+#hintModal li {
+    margin-bottom: 5px;
+}
+
+
 /* ================================================= */
 /* ================== CODES PAGINA ================= */
 /* ================================================= */
@@ -505,7 +538,6 @@ button.correct-state:hover {
 }
 
 .teamCodeBlok {
-    /* width: 100%; */
     width: var(--content-width);
     padding: 20px;
     display: flex;
@@ -567,4 +599,52 @@ button.correct-state:hover {
 }
 
 
+
+/* ================================================= */
+/* ================== TEMPLATE ===================== */
+/* ================================================= */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: var(--page-margin);
+    box-sizing: border-box;
+}
+
+
+/* UITLEG BLOK */
+#uitlegBlok {
+    width: 90%;
+    border: 3px solid black;
+    padding: 15px;
+    margin-bottom: 50px;
+    font-family: "Montserrat";
+    font-size: clamp(16px, 3vw, 20px);
+}
+
+/* CODE INPUTS */
+#codeInputContainer {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.codeInput {
+    width: 100%;
+    height: clamp(50px, 7vh, 70px);
+    text-align: center;
+    font-size: clamp(20px, 4vw, 28px);
+    font-family: "Right Grotesk Medium";
+    border: 3px solid black;
+    box-sizing: border-box;
+}
+
+#extraContent {
+    width: 100%;
+    margin-bottom: 20px;
+}
 

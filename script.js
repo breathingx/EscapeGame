@@ -4,13 +4,11 @@
 // =================================================
 
 if (
-    window.location.pathname.includes("game.html") ||
-    window.location.pathname.includes("codes.html")
+    document.getElementById("timer")
 ) {
 
     const timerElement = document.getElementById("timer");
 
-    // Als er nog geen timer bestaat, start op 60 min
     if (!localStorage.getItem("totalSeconds")) {
         localStorage.setItem("totalSeconds", 60 * 60);
     }
@@ -53,55 +51,173 @@ let score = 0;
 let foutPogingen = 0;
 let antwoordIsCorrect = false;
 
-let hintGebruiktPerVraag = false;
-let totaleHintsGebruikt = 0;
-let opgeslagenHint = "";
+let hintGebruiktPerVraag = 0;
+let laatsteHintTijd = 0;
+let gebruikteHints = [];
 const maxHints = 3;
+const hintCooldown = 180;
+let hintInterval = null;
 
 
 // =================================================
 // DATA
 // =================================================
 
-const opdrachten = {
+const uitlegData = {
     aandrijving: [
-        { vraag: "Hoe wordt een speeldoos meestal aangedreven?", antwoord: "aa aa Door een opwindveer die langzaam ontspant en zo het mechaniek laat draaien." },
-        { vraag: "Wat doet een gewichtsaandrijving in een grote muziekautomaat?", antwoord: "aa aa Het gewicht zakt naar beneden en levert zo een constante kracht aan het mechaniek." },
-        { vraag: "Waarom gebruiken sommige orgels een elektromotor als aandrijving?", antwoord: "aa aa Omdat een elektromotor een stabiele en langdurige aandrijving geeft zonder handmatig werk." },
-        { vraag: "Wat is het voordeel van een slingermechanisme in oude muziekklokken?", antwoord: "aa aa Het zorgt voor een gelijkmatige beweging en een stabiel tempo." },
-        { vraag: "Hoe wordt een draaiorgel op straat meestal aangedreven?", antwoord: "aa aa Met een handzwengel die de interne pomp en het speelmechaniek aandrijft." },
-        { vraag: "Waarom moet een opwindveer regelmatig worden opgewonden?", antwoord: "aa aa Omdat de veer langzaam ontspant en anders de kracht op het mechaniek te zwak wordt." },
-        { vraag: "Wat gebeurt er als een gewicht in een muziekautomaat de grond bereikt?", antwoord: "aa aa De aandrijving stopt en het gewicht moet opnieuw omhoog worden getrokken." },
-        { vraag: "Hoe zorgt een elektromotor voor constante snelheid in een muziekautomaat?", antwoord: "aa aa Door een regelmechanisme dat de motorsnelheid stabiel houdt." },
-        { vraag: "Waarom is smering belangrijk bij mechanische aandrijving?", antwoord: "aa aa Om wrijving te verminderen en slijtage van tandwielen en assen te voorkomen." },
-        { vraag: "Wat is een typische aandrijving voor kleine tafelorgeltjes?", antwoord: "aa aa Een handpomp of zwengel die lucht en beweging levert." }
+        "Koppel mechaniek interactives aan dagelijkse dingen.",
+        "Bekijk het object met een blacklight.",
+        "Shuif de ballans om het draaipunt te vinden.",
+        "Beantwoord de vragen correct.",
+        "Draai aan de tandwielen om de code te kraaken.",
+        "Draai aan de hendel voor de muziek."
     ],
     programma: [
-        { vraag: "Wat bepaalt het programma van een speeldoos?", antwoord: "bb bb De nopjes op de metalen cilinder die de tanden van de kam aanslaan." },
-        { vraag: "Hoe werkt een ponsband in een draaiorgel?", antwoord: "bb bb De gaatjes in de band bepalen welke tonen worden aangespeeld wanneer de band langs de leeskoppen loopt." },
-        { vraag: "Waarom gebruiken sommige muziekautomaten een kartonnen boek?", antwoord: "bb bb Omdat de uitgesneden sleuven een duurzaam en eenvoudig te vervangen programma vormen." },
-        { vraag: "Wat is het voordeel van een cilinderprogramma?", antwoord: "bb bb Het is zeer precies en kan complexe melodieën bevatten." },
-        { vraag: "Hoe kan een muziekautomaat meerdere melodieën spelen?", antwoord: "bb bb Door een cilinder met meerdere posities of door verschillende programmas te wisselen, zoals boeken of banden." },
-        { vraag: "Wat gebeurt er als een ponsband scheurt?", antwoord: "bb bb Het programma wordt onderbroken en de automaat kan de juiste tonen niet meer lezen." },
-        { vraag: "Hoe wordt een programma in een speelklok geselecteerd?", antwoord: "bb bb Door de cilinder te verschuiven naar een andere rij nopjes die een andere melodie vormen." },
-        { vraag: "Waarom zijn kartonnen muziekboeken vaak zo groot?", antwoord: "bb bb Omdat ze voldoende ruimte nodig hebben voor de sleuven die de volledige melodie bevatten." },
-        { vraag: "Hoe werkt een metalen schijf in een schijfspeeldoos?", antwoord: "bb bb De gaatjes en uitstulpingen op de schijf haken in pennen die de klankkam aanslaan." },
-        { vraag: "Wat is een voordeel van een schijfprogramma boven cilinders?", antwoord: "bb bb Schijven zijn goedkoper te produceren en eenvoudig te wisselen voor nieuwe muziek." }
+        "Maak de QR-puzzel, en scan de QR-code.",
+        "Programeer met de blokken de juiste route.",
+        "Draai met de schijf en vind de code.",
+        "Draai de decoder om de juiste letters te vinden.",
+        "Leg het orgelboek over de plaat en vind de letters.",
+        "Gebruik de 1 en 0 om een woord te schrijven."
     ],
     klankbron: [
-        { vraag: "Wat is de klankbron van een speeldoos?", antwoord: "cc cc Een metalen kam waarvan de tanden trillen wanneer ze worden aangeslagen." },
-        { vraag: "Hoe produceert een draaiorgel geluid?", antwoord: "cc cc Door lucht die via pijpen stroomt en zo tonen vormt, vergelijkbaar met een kerkorgel." },
-        { vraag: "Waarom klinken houten orgelpijpen anders dan metalen?", antwoord: "cc cc Omdat het materiaal de resonantie en klankkleur beïnvloedt." },
-        { vraag: "Wat is de klankbron in een carillon-automaat?", antwoord: "cc cc Bronzen klokken die door hamers worden aangeslagen." },
-        { vraag: "Hoe ontstaat geluid in een mechanische piano-automaat?", antwoord: "cc cc Door hamers die snaren aanslaan, net als bij een gewone piano." },
-        { vraag: "Waarom hebben orgelpijpen verschillende lengtes?", antwoord: "cc cc Omdat de lengte de toonhoogte bepaalt: langere pijpen geven lagere tonen." },
-        { vraag: "Wat maakt de toon van een speeldoos zo herkenbaar?", antwoord: "cc cc De heldere, metaalachtige resonantie van de stalen kamtanden." },
-        { vraag: "Hoe werkt een rietpijp in een orgel?", antwoord: "cc cc Een metalen riet trilt door luchtstroom en produceert zo een karakteristieke toon." },
-        { vraag: "Waarom gebruiken sommige muziekautomaten trommels of bellen?", antwoord: "cc cc Om ritme en extra klankkleuren toe te voegen aan de melodie." },
-        { vraag: "Wat bepaalt de luidheid van een orgelpijp?", antwoord: "cc cc De luchtdruk en de vorm van de pijpopening." }
+        "Druk de juiste knoppen in om het liedje te spelen.",
+        "Zing de juiste toon.",
+        "Luister naar de muziek en vind het instrument.",
+        "Welk liedje woord hier gecombineerd.",
+        "Hoe zien de geluidsgolven van dit liedje er uit?",
+        "Beantwoord de vragen correct."        
     ]
 };
 
+
+const hintData = {
+    aandrijving: [
+        [
+            "Denk aan beweging en kracht.",
+            "Het heeft te maken met mechaniek koppelen.",
+            "AAN111"
+        ],
+        [
+            "Gebruik licht om iets te zien dat normaal verborgen blijft.",
+            "Blacklight maakt het zichtbaar.",
+            "AAN222"
+        ],
+        [
+            "Het draait om balans en evenwicht.",
+            "Zoek het punt waar alles in balans komt.",
+            "AAN333"
+        ],
+        [
+            "Lees goed en denk logisch na.",
+            "De antwoorden wijzen je de weg.",
+            "AAN444"
+        ],
+        [
+            "Tandwielen werken samen om iets te onthullen.",
+            "Draai tot alles precies in elkaar past.",
+            "AAN555"
+        ],
+        [
+            "Beweging zorgt voor geluid.",
+            "De hendel activeert de muziek.",
+            "AAN666"
+        ]
+    ],
+    programma: [
+        [
+            "Je moet iets scannen om verder te komen.",
+            "De QR-code onthult de volgende stap.",
+            "PRO111"
+        ],
+        [
+            "Denk in stappen en volgorde.",
+            "De blokken vormen samen de juiste route.",
+            "PRO222"
+        ],
+        [
+            "De schijf draait en onthult een code.",
+            "Let op de juiste positie.",
+            "PRO333"
+        ],
+        [
+            "Zoek de juiste letters door te draaien.",
+            "De decoder geeft het antwoord prijs.",
+            "PRO444"
+        ],
+        [
+            "Het orgelboek bevat verborgen informatie.",
+            "Leg het precies op de plaat om letters te vinden.",
+            "PRO555"
+        ],
+        [
+            "Denk binair: 1 en 0 vormen samen een woord.",
+            "Gebruik de juiste volgorde van bits.",
+            "PRO666"
+        ]
+    ],
+    klankbron: [
+        [
+            "Luister goed naar het patroon.",
+            "De juiste knoppen spelen het liedje.",
+            "KLA111"
+        ],
+        [
+            "Gebruik je stem.",
+            "De toon moet precies kloppen.",
+            "KLA222"
+        ],
+        [
+            "Herken het geluid.",
+            "Het instrument verklapt het antwoord.",
+            "KLA333"
+        ],
+        [
+            "Twee liedjes worden gecombineerd.",
+            "Denk aan bekende melodieën.",
+            "KLA444"
+        ],
+        [
+            "Geluidsgolven hebben een herkenbare vorm.",
+            "Kijk naar het ritme in de golf.",
+            "KLA555"
+        ],
+        [
+            "Lees goed en denk logisch.",
+            "De vragen leiden naar het antwoord.",
+            "KLA666"
+        ]
+    ]
+};
+
+
+
+const antwoordData = {
+    aandrijving: [
+        "AAN111",
+        "AAN222",
+        "AAN333",
+        "AAN444",
+        "AAN555",
+        "AAN666"
+    ],
+    programma: [
+        "PRO111",
+        "PRO222",
+        "PRO333",
+        "PRO444",
+        "PRO555",
+        "PRO666"
+    ],
+    klankbron: [
+        "KLA111",
+        "KLA222",
+        "KLA333",
+        "KLA444",
+        "KLA555",
+        "KLA666"
+    ]
+};
 
 // =================================================
 // NAVIGATIE
@@ -113,7 +229,7 @@ function gaNaarHome() {
 
 function restartGame() {
     localStorage.clear();
-    window.location.href = "home.html";
+    window.location.href = "index.html";
 }
 
 // =================================================
@@ -133,11 +249,12 @@ function startGame(gekozenTeam) {
     document.body.classList.add("fade-out");
 
     setTimeout(() => {
-        window.location.href = "game.html";
+        window.location.href = "template.html";
     }, 300);
 }
 
-if (window.location.pathname.includes("game.html")) {
+
+if (window.location.pathname.includes("template.html")) {
 
     team = localStorage.getItem("team");
     huidigeOpdracht = parseInt(localStorage.getItem("opdracht")) || 0;
@@ -149,7 +266,7 @@ if (window.location.pathname.includes("game.html")) {
         progressBar.classList.add(team);
     }
 
-    if (!team || !opdrachten[team]) {
+    if (!team || !uitlegData[team]) {
         window.location.href = "home.html";
     } else {
         laadOpdracht();
@@ -167,31 +284,100 @@ if (window.location.pathname.includes("game.html")) {
 // GAME LOGICA
 // =================================================
 
+
+function initHeader() {
+    const team = localStorage.getItem("team");
+    const opdracht = parseInt(localStorage.getItem("opdracht")) || 0;
+    const score = localStorage.getItem("score") || 0;
+
+    const teamTitel = document.getElementById("teamTitel");
+    const opdrachtNummer = document.getElementById("opdrachtNummer");
+    const scoreDisplay = document.getElementById("scoreDisplay");
+
+    if (teamTitel) {
+        teamTitel.textContent = "Team: " + team;
+    }
+
+    if (opdrachtNummer) {
+        opdrachtNummer.textContent = "Opdracht " + (opdracht + 1) + " van 6";
+    }
+
+    if (scoreDisplay) {
+        scoreDisplay.textContent = "Score: " + score;
+    }
+}
+
+window.addEventListener("DOMContentLoaded", () => {
+    initHeader();
+});
+
+
 function laadOpdracht() {
 
     antwoordIsCorrect = false;
+    hintGebruiktPerVraag = 0;
+    laatsteHintTijd = 0;
+    gebruikteHints = [];
 
     const actieBtn = document.getElementById("actieBtn");
     actieBtn.textContent = "Controleer";
     actieBtn.classList.remove("correct-state");
     actieBtn.classList.remove("aandrijving", "programma", "klankbron");
 
-    document.getElementById("antwoordInput").disabled = false;
+    const antwoordInput = document.getElementById("antwoordInput");
+    if (antwoordInput) {
+        antwoordInput.disabled = false;
+    }
+
+    const inputs = document.querySelectorAll(".codeInput");
+    inputs.forEach(input => {
+        input.value = "";
+        input.disabled = false;
+    });
+
+    document.getElementById("uitlegTekst").textContent =
+        uitlegData[team][huidigeOpdracht];
 
     document.getElementById("teamTitel").textContent = "Team: " + team.charAt(0).toUpperCase() + team.slice(1);
     document.getElementById("opdrachtNummer").textContent =
-        "Opdracht " + (huidigeOpdracht + 1) + " van 10";
+        "Opdracht " + (huidigeOpdracht + 1) + " van 6";
 
-    document.getElementById("vraag").textContent =
-        opdrachten[team][huidigeOpdracht].vraag;
+
+    // =================================================
+    // MINI_GAME PAGINA'S
+    // =================================================
+
+    const extraContent = document.getElementById("extraContent");
+
+    extraContent.innerHTML = "";
+
+    if (team === "klankbron" && huidigeOpdracht === 1) {
+
+        fetch("perfect-pitch/toonladder.html")
+            .then(res => res.text())
+            .then(html => {
+                extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
+
+                // CSS laden
+                const link = document.createElement("link");
+                link.rel = "stylesheet";
+                link.href = "perfect-pitch/toonladder.css";
+                document.head.appendChild(link);
+
+                // script laden
+                const script = document.createElement("script");
+                script.type = "module";
+                script.src = "perfect-pitch/toonladder.js";
+                document.body.appendChild(script);
+})
+    }
 
     document.getElementById("feedback").textContent = "";
-    document.getElementById("antwoordInput").value = "";
     document.getElementById("scoreDisplay").textContent = "Score: " + score;
 
     foutPogingen = 0;
     opgeslagenHint = "";
-    hintGebruiktPerVraag = false;
+    hintGebruiktPerVraag = 0;
     document.getElementById("hintText").textContent = "";
 
     updateHintBlocks();
@@ -206,10 +392,18 @@ function verwerkActie() {
         return;
     }
 
-    let invoer = document.getElementById("antwoordInput").value.toLowerCase().trim();
-    let juistAntwoord = opdrachten[team][huidigeOpdracht].antwoord.toLowerCase();
+    const inputs = document.querySelectorAll(".codeInput");
 
-    if (juistAntwoord.includes(invoer) && invoer.length > 3) {
+    let invoer = "";
+    inputs.forEach(input => {
+        invoer += input.value;
+    });
+
+    invoer = invoer.toUpperCase().trim();
+
+    let juistAntwoord = antwoordData[team][huidigeOpdracht];
+
+    if (invoer === juistAntwoord) {
 
         document.getElementById("feedback").textContent = "Goed gedaan!";
 
@@ -224,13 +418,11 @@ function verwerkActie() {
         localStorage.setItem("correct", correcteAntwoorden);
         updateProgressBar();
 
-        // BELANGRIJK
         antwoordIsCorrect = true;
 
         const actieBtn = document.getElementById("actieBtn");
 
-        // ALS DIT DE LAATSTE VRAAG IS
-        if (huidigeOpdracht === 9) {
+        if (huidigeOpdracht === 5) {
             actieBtn.textContent = "Kraak de code";
         } else {
             actieBtn.textContent = "Volgende opdracht";
@@ -239,11 +431,10 @@ function verwerkActie() {
         actieBtn.classList.add("correct-state");
         actieBtn.classList.add(team);
 
-        // voorkom opnieuw invoeren
-        document.getElementById("antwoordInput").disabled = true;
+        inputs.forEach(input => input.disabled = true);
 
     } else {
-        document.getElementById("feedback").textContent = "Helaas, probeer opnieuw.";
+        document.getElementById("feedback").textContent = "Onjuist, probeer opnieuw.";
         foutPogingen++;
     }
 }
@@ -253,7 +444,7 @@ function volgendeOpdracht() {
 
     huidigeOpdracht++;
 
-    if (huidigeOpdracht < 10) {
+    if (huidigeOpdracht < 6) {
         localStorage.setItem("opdracht", huidigeOpdracht);
         laadOpdracht();
     } else {
@@ -267,7 +458,7 @@ function volgendeOpdracht() {
 // =================================================
 
 function updateProgressBar() {
-    const percentage = (correcteAntwoorden / 10) * 100;
+    const percentage = (correcteAntwoorden / 6) * 100;
     document.getElementById("progressBar").style.width = percentage + "%";
 }
 
@@ -281,55 +472,85 @@ function geefHint() {
     const overlay = document.getElementById("hintOverlay");
     const modalText = document.getElementById("hintModalText");
     const hintTitle = document.getElementById("hintTitle");
-
-    hintTitle.style.display = "none";
-
-    // ALS ER AL EEN HINT IS GEBRUIKT
-    if (hintGebruiktPerVraag) {
-
-        hintTitle.style.display = "block";
-        hintTitle.textContent = "Hint:";
-
-        modalText.innerHTML = `
-            Je hebt voor deze vraag al een hint gebruikt.<br><br>
-            ${opgeslagenHint}
-        `;
-
-        overlay.style.display = "flex";
-        return;
-    }
-
-    // ALS ER GEEN HINTS MEER BESCHIKBAAR ZIJN
-    if (totaleHintsGebruikt >= maxHints) {
-
-        modalText.textContent = "Je hebt geen hints meer beschikbaar.";
-        overlay.style.display = "flex";
-        return;
-    }
-
-    // NIEUWE HINT MAKEN
-    const vraagObj = opdrachten[team][huidigeOpdracht];
-    opgeslagenHint = vraagObj.antwoord.split(" ").slice(0, 3).join(" ") + " ...";
+    const actions = document.getElementById("hintActions");
 
     hintTitle.style.display = "block";
-    hintTitle.textContent = "Hint:";
+    hintTitle.textContent = "Hint";
 
-    modalText.textContent = opgeslagenHint;
+    const huidigeTijd = Math.floor(Date.now() / 1000);
 
+    if (laatsteHintTijd !== 0) {
+    let verschil = huidigeTijd - laatsteHintTijd;
+
+    if (verschil < hintCooldown) {
+
+        overlay.style.display = "flex";
+        actions.style.display = "none";
+        modalText.innerHTML = "";
+
+        if (hintInterval) clearInterval(hintInterval);
+
+        hintInterval = setInterval(() => {
+
+            let nu = Math.floor(Date.now() / 1000);
+            let resterend = hintCooldown - (nu - laatsteHintTijd);
+
+            let minuten = Math.floor(resterend / 60);
+            let seconden = resterend % 60;
+            if (seconden < 10) seconden = "0" + seconden;
+
+            let vorigeHintsHTML = "";
+
+            if (gebruikteHints.length > 0) {
+                vorigeHintsHTML = "<br><br><strong>Vorige hints:</strong><ul>";
+                gebruikteHints.forEach((hint) => {
+                    vorigeHintsHTML += `<li>${hint}</li>`;
+                });
+                vorigeHintsHTML += "</ul>";
+            }
+
+            if (resterend <= 0) {
+                modalText.innerHTML = "Je kunt nu weer een hint gebruiken." + vorigeHintsHTML;
+                clearInterval(hintInterval);
+                return;
+            }
+
+            modalText.innerHTML =
+                `Wacht nog <strong>${minuten}:${seconden}</strong> voor een nieuwe hint.` +
+                vorigeHintsHTML;
+
+        }, 1000);
+
+        return;
+    }
+}
+
+    if (hintGebruiktPerVraag >= maxHints) {
+        modalText.textContent = "Je hebt alle hints gebruikt.";
+        overlay.style.display = "flex";
+        return;
+    }
+
+    modalText.textContent = "Weet je zeker dat je een hint wilt gebruiken?";
+    actions.style.display = "flex";
     overlay.style.display = "flex";
 
-    foutPogingen += 5;
-    hintGebruiktPerVraag = true;
-    totaleHintsGebruikt++;
+    document.getElementById("confirmHint").onclick = () => {
+        actions.style.display = "none";
+        gebruikHint();
+    };
 
-    updateHintBlocks();
+    document.getElementById("cancelHint").onclick = () => {
+        actions.style.display = "none";
+        overlay.style.display = "none";
+    };
 }
 
 function updateHintBlocks() {
     const blocks = document.querySelectorAll("#hintBlocks .hintBlock");
 
     blocks.forEach((block, index) => {
-        if (index < totaleHintsGebruikt) {
+        if (index < hintGebruiktPerVraag) {
             block.classList.add("used");
         } else {
             block.classList.remove("used");
@@ -337,7 +558,37 @@ function updateHintBlocks() {
     });
 }
 
-// Sluit hint modal
+function gebruikHint() {
+
+    const overlay = document.getElementById("hintOverlay");
+    const modalText = document.getElementById("hintModalText");
+
+    const huidigeTijd = Math.floor(Date.now() / 1000);
+
+    hintGebruiktPerVraag++;
+    laatsteHintTijd = huidigeTijd;
+
+    const hints = hintData[team][huidigeOpdracht];
+
+    let tekst = "";
+
+    if (hintGebruiktPerVraag === 1) {
+        tekst = hints[0];
+    } else if (hintGebruiktPerVraag === 2) {
+        tekst = hints[1];
+    } else if (hintGebruiktPerVraag === 3) {
+        tekst = "Code: " + hints[2];
+    }
+
+    gebruikteHints.push(tekst);
+
+    modalText.innerHTML = `<ul><li>${tekst}</li></ul>`;
+
+    foutPogingen += 5;
+
+    updateHintBlocks();
+}
+
 document.addEventListener("DOMContentLoaded", function() {
 
     const closeBtn = document.getElementById("closeHint");
@@ -348,7 +599,6 @@ document.addEventListener("DOMContentLoaded", function() {
             overlay.style.display = "none";
         });
 
-        // Extra: klik buiten de modal sluit ook
         overlay.addEventListener("click", function(e) {
             if (e.target === overlay) {
                 overlay.style.display = "none";
@@ -410,11 +660,9 @@ function controleerCodes() {
 
     if (input1 === juiste1 && input2 === juiste2) {
 
-        // haal score correct uit localStorage
         const eindScore = localStorage.getItem("score");
         const eindTijd = localStorage.getItem("totalSeconds");
 
-        // tijd omrekenen naar weergave
         let totalSeconds = parseInt(eindTijd);
         let minutes = Math.floor(totalSeconds / 60);
         let seconds = totalSeconds % 60;
@@ -444,3 +692,39 @@ if (window.location.pathname.includes("resultaat.html")) {
     document.getElementById("eindscore").textContent = eindScore;
 
 }
+
+
+
+// =================================================
+// TEMPLATE
+// =================================================
+
+window.addEventListener("DOMContentLoaded", () => {
+
+    const inputs = document.querySelectorAll(".codeInput");
+
+    inputs.forEach((input, index) => {
+        input.addEventListener("input", (e) => {
+            let value = e.target.value.toUpperCase();
+
+            if (value.length > 1) {
+                value = value.charAt(0);
+            }
+
+            e.target.value = value;
+
+            if (value !== "" && index < inputs.length - 1) {
+                inputs[index + 1].focus();
+            }
+        });
+
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Backspace" && input.value === "" && index > 0) {
+                inputs[index - 1].focus();
+            }
+        });
+    });
+
+    const firstInput = document.querySelector(".codeInput");
+    if (firstInput) firstInput.focus();
+});
