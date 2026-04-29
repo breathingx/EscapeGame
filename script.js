@@ -62,6 +62,11 @@ const maxHints = 3;
 const hintCooldown = 180;
 let hintInterval = null;
 
+let truthLieProgress = 0;
+const truthLieMaxVragen = 3;
+const truthLieVragen = ["Waar, of niet waar? \t 1", "Waar, of niet waar? \t 2", "Waar, of niet waar? \t 3"] //TODO vragen bedenken
+const boolAnswers = [true, false, true]; //TODO volgorde bedenken
+
 
 // =================================================
 // DATA
@@ -375,9 +380,10 @@ function laadOpdracht() {
 
 function laadOpdrachtAandrijving() {
     //TODO aanpassen volgorde
-    if (huidigeOpdracht == 0) {
-        document.getElementById("uitlegTekst").textContent = "Waar, of niet waar?";
+    if (huidigeOpdracht == 0) { //truth lie inladen
+        document.getElementById("uitlegTekst").textContent = truthLieVragen[truthLieProgress];
         document.getElementById("codeInputContainer").style.display = "none";
+        document.getElementById("actieBtn").hidden = true;
         document.getElementById("truth-lie-div").hidden = false;
     } else {
         document.getElementById("uitlegTekst").textContent =
@@ -396,14 +402,39 @@ function laadopdrachtKlankbron() {
 }
 
 
+//TODO willen we hints uitzetten voor truth-lie?
 function verwerkTruthLie(isCorrect) {
-    //TODO als je op waar klikt ga je meteen naar volgende vraag, willen we dit wel?
-    antwoordIsCorrect = isCorrect;
-    if (isCorrect) {
-        document.getElementById("codeInputContainer").style.display = "";
-        document.getElementById("truth-lie-div").hidden = true;
+    //TODO add score element
+    //TODO fix dat knoppen verspringen qua grootte
+    if (isCorrect == boolAnswers[truthLieProgress]) {
+        document.getElementById("ExtraContext").textContent = "TODO Extra context voor vraag " + (truthLieProgress+1);
+        document.getElementById("feedback").textContent = "";
+    } else {
+        //TODO add timeout
+        document.getElementById("feedback").textContent = "Onjuist, probeer opnieuw.";
+        foutPogingen++;
     }
-    verwerkActie();
+
+    if (isCorrect == boolAnswers[truthLieProgress]) {
+        document.getElementById("VolgendeTruthLie").hidden = false;
+    }
+}
+
+function updateTruthLie() {
+    truthLieProgress++;
+    document.getElementById("uitlegTekst").textContent = truthLieVragen[truthLieProgress];
+    document.getElementById("ExtraContext").textContent = "";
+    document.getElementById("VolgendeTruthLie").hidden = true;
+
+    if (truthLieProgress == truthLieMaxVragen) {
+        //restore original template
+        document.getElementById("codeInputContainer").style.display = "";
+        document.getElementById("actieBtn").hidden = false;
+        document.getElementById("truth-lie-div").hidden = true;
+
+        antwoordIsCorrect = true;
+        verwerkActie();
+    }
 }
 
 function verwerkActie() {
