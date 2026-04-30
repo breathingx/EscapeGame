@@ -7,6 +7,7 @@
     let level = 0;
     let retriesLeft = 2;
     let bestScore = 0;
+    let randomval = 0;
 
     const btns = [
         document.getElementById('simon-0'),
@@ -40,7 +41,7 @@
 
     btns.forEach(btn => {
         btn.addEventListener('click', (e) => {
-            if (playerSequence.length < sequence.length && !playing) {
+            if (playerSequence.length < sequence.length && !playing && bestScore != 10) {
                 const index = parseInt(e.target.dataset.index);
                 flashButton(index);
                 playerSequence.push(index);
@@ -108,6 +109,12 @@
         }
         
         statusText.textContent = `Ronde ${level} van ${maxLevel}`;
+        randomval = Math.floor(Math.random() * 4)
+        // if button occured twice before, pick a new button (to avoid too much repetition)
+        if (sequence.length >= 2 && randomval == sequence[-1] && randomval == sequence[-2]) {
+            randomval += Math.floor(Math.random() * 3 + 1)
+            randomval = randomval % 4
+        } 
         sequence.push(Math.floor(Math.random() * 4));
         setTimeout(playSequence, 300); 
     }
