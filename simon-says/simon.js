@@ -1,7 +1,7 @@
 (() => {
     const maxLevel = 10;
     const winCode = "PRO000"; 
-
+    let playing = false;
     let sequence = [];
     let playerSequence = [];
     let level = 0;
@@ -40,7 +40,7 @@
 
     btns.forEach(btn => {
         btn.addEventListener('click', (e) => {
-            if (playerSequence.length < sequence.length) {
+            if (playerSequence.length < sequence.length && !playing) {
                 const index = parseInt(e.target.dataset.index);
                 flashButton(index);
                 playerSequence.push(index);
@@ -78,10 +78,10 @@
 }
 
     function playSequence() {
+    playing = true
     let i = 0;
     
     const interval = setInterval(() => {
-        
         const currentBtnIndex = sequence[i]; 
         
         animateHand(currentBtnIndex);
@@ -92,6 +92,7 @@
 
         i++;
         if (i >= sequence.length) {
+            playing = false
             clearInterval(interval);
         }
     }, 600); 
