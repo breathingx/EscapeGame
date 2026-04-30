@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>QR SPEELIDEE</title>
+    <link rel="stylesheet"  href="style.css">
+  </head>
+  <body>
+    <div class="content-wrapper">
+    <h2>Vul de QR-puzzel met stenen om de QR-code te verkrijgen.</h2>
+    </div>
+    <div id="puzzleContainer">
+      <div>
+        <h3>Puzzelstukjes</h3>
+        <div id="alfabet"></div>
+      </div>
+      <div>
+        <h3>Puzzelbord</h3>
+        <div id="grid"></div>
+        <div id="puzzleControls">
+          <button id="undo">UNDO</button>
+          <button id="check">CHECK</button>
+        </div>
+        <div id="result"></div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
