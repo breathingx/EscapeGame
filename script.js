@@ -87,7 +87,9 @@ const uitlegData = {
     klankbron: [
         "Druk de juiste knoppen in om het liedje te spelen.",
         "Zing de juiste toon.",
-        "Luister naar de muziek en vind het instrument.",
+        "Welk instrument wordt er in Azië getoond in het filmpje?",
+        "Welk instrument wordt er in Noord-Amerika getoond in het filmpje?",
+        "Welk instrument wordt er in Noord-Afrika getoond in het filmpje?",
         "Welk liedje woord hier gecombineerd.",
         "Hoe zien de geluidsgolven van dit liedje er uit?",
         "Beantwoord de vragen correct."        
@@ -172,9 +174,24 @@ const hintData = {
             "KLA222"
         ],
         [
+            "Kijk naar het filmpje en let op de details.",
+            "Azië is te vinden aan de rechterkant van de kaart.",
+            "KLA333"
+        ],
+        [
+            "Kijk naar het filmpje en let op de details.",
+            "Noord Afrika is te vinden in het midden van de kaart.",
+            "KLA444"
+        ],
+        [
+            "Kijk naar het filmpje en let op de details.",
+            "Het instrument heeft een unieke vorm en geluid.",
+            "KLA555"
+        ],
+        [
             "Herken het geluid.",
             "Het instrument verklapt het antwoord.",
-            "KLA333"
+            "KLA666"
         ],
         [
             "Twee liedjes worden gecombineerd.",
