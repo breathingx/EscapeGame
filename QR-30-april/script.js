@@ -111,7 +111,6 @@ function renderBank() {
 }
 
 const grid = document.getElementById("grid");
-// grid.style.gridTemplateColumns = `repeat(${cols}, 50px)`;
 
 function renderGrid() {
   grid.innerHTML = "";
@@ -177,38 +176,12 @@ document.getElementById("check").onclick = () => {
   }
 
   const result = document.getElementById("result");
-  const grid = document.getElementById("grid");
 
   if(!correct) {
     result.innerText = "Fout, probeer het opnieuw";
-    return;
+  } else {
+    result.innerText = "Goed gedaan! De QR-code is correct in elkaar gepuzzeld!";
   }
-
-  const firstcell = grid.children[0];
-  const cellSize = firstcell.getBoundingClientRect().width;
-
-  const overlay = document.createElement("canvas");
-  overlay.width = cols*cellSize;
-  overlay.height = rows*cellSize;
-
-  overlay.style.position = "absolute";
-  overlay.style.left = "0";
-  overlay.style.top = "0";
-  overlay.style.zIndex = "10";
-
-  const octx = overlay.getContext("2d");
-  for (let i = 0; i < TOTAL; i++) {
-    let r = Math.floor(i/cols);
-    let c = i%cols;
-
-    octx.drawImage(tiles[i], c*cellSize, r*cellSize, cellSize, cellSize);
-  }
-
-  Array.from(grid.children).forEach(cell=>{
-    cell.style.visibility = "hidden";
-  });
-
-  grid.appendChild(overlay);
 };
 
 document.getElementById("undo").onclick = ()=> {
