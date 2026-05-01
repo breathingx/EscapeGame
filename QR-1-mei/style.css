@@ -62,7 +62,7 @@ body.scanner-page {
 }
 
 #msg {
-  font-family: "Montserrat", sans-serif;
+  font-family: "Montserrat", sans-serif; 
   font-size: clamp(14px, 2.5vw, 18px);
   color: black;
   text-align: center;
