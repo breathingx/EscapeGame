@@ -20,10 +20,9 @@ function tick () {
     ctx.drawImage(video, 0, 0);
     const data = ctx.getImageData(0, 0, canvas.width, canvas.height);
     const code = jsQR(data.data, data.width, data.height);
-    if (code) {
+    if (code && code.data === 'index.html') { //index.html moet de web-pagina waarheen te redirecten voorstellen
       msg.textContent = 'QR-code gevonden!';
       window.location.href = 'index.html';
-      return;
     }
   }
   requestAnimationFrame(tick);
