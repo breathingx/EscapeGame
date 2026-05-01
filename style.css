@@ -642,3 +642,9 @@ button.correct-state:hover {
     box-sizing: border-box;
 }
 
+#truth-lie-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 60%;
+}

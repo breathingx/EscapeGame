@@ -379,11 +379,11 @@ function laadOpdracht() {
 }
 
 function laadOpdrachtAandrijving() {
-    //TODO aanpassen volgorde
-    if (huidigeOpdracht == 0) { //truth lie inladen
+    if (huidigeOpdracht == 2) { //truth lie inladen
         document.getElementById("uitlegTekst").textContent = truthLieVragen[truthLieProgress];
         document.getElementById("codeInputContainer").style.display = "none";
         document.getElementById("actieBtn").hidden = true;
+        document.getElementById("hintContainer").style.display = "none";
         document.getElementById("truth-lie-div").hidden = false;
     } else {
         document.getElementById("uitlegTekst").textContent =
@@ -401,36 +401,48 @@ function laadopdrachtKlankbron() {
         uitlegData[team][huidigeOpdracht];
 }
 
-
-//TODO willen we hints uitzetten voor truth-lie?
 function verwerkTruthLie(isCorrect) {
-    //TODO add score element
-    //TODO fix dat knoppen verspringen qua grootte
     if (isCorrect == boolAnswers[truthLieProgress]) {
-        document.getElementById("ExtraContext").textContent = "TODO Extra context voor vraag " + (truthLieProgress+1);
-        document.getElementById("feedback").textContent = "";
+        document.getElementById("feedback").textContent = "Goed gedaan!";
     } else {
-        //TODO add timeout
-        document.getElementById("feedback").textContent = "Onjuist, probeer opnieuw.";
-        foutPogingen++;
+        document.getElementById("feedback").textContent = "Onjuist"; //TODO andere text?
+        foutPogingen += 3;
     }
 
-    if (isCorrect == boolAnswers[truthLieProgress]) {
-        document.getElementById("VolgendeTruthLie").hidden = false;
-    }
+    document.getElementById("ExtraContext").textContent = "TODO Extra context voor vraag " + (truthLieProgress+1);
+    document.getElementById("truth-lie-ja").disabled = true;
+    document.getElementById("truth-lie-nee").disabled = true;
+
+    document.getElementById("VolgendeTruthLie").hidden = false;
 }
 
 function updateTruthLie() {
     truthLieProgress++;
     document.getElementById("uitlegTekst").textContent = truthLieVragen[truthLieProgress];
     document.getElementById("ExtraContext").textContent = "";
+    document.getElementById("feedback").textContent = "Goed gedaan!";
     document.getElementById("VolgendeTruthLie").hidden = true;
+    document.getElementById("truth-lie-ja").disabled = false;
+    document.getElementById("truth-lie-nee").disabled = false;
 
     if (truthLieProgress == truthLieMaxVragen) {
         //restore original template
         document.getElementById("codeInputContainer").style.display = "";
+        document.getElementById("hintContainer").style.display = "";
         document.getElementById("actieBtn").hidden = false;
-        document.getElementById("truth-lie-div").hidden = true;
+        document.getElementById("truth-lie-div").style.display = "none";
+
+        //als alle truth-lie vragen verkeerd zijn beantwoord geef 0 punten voor dit gedeelte
+        if (foutPogingen == 9) {
+            foutPogingen = 10;
+        }
+
+        //TODO functie schrijven voor updaten score? ipv hier zo zetten? is nu duplicate van verwerkActie()
+        let punten = 10 - foutPogingen;
+        if (punten < 0) {
+            punten = 0;
+        }
+        score += punten;
 
         antwoordIsCorrect = true;
         verwerkActie();
