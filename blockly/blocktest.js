@@ -1,4 +1,4 @@
-import { movementLogic } from './../blockscript.js';
+import { movementLogic } from 'blockscript.js';
 
 function assert(testName, actual, expected) {
     const isMatch = JSON.stringify(actual) === JSON.stringify(expected);

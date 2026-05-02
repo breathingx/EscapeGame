@@ -372,6 +372,50 @@ function laadOpdracht() {
 })
     }
 
+    if (team === "programma" && huidigeOpdracht === 1) {
+
+        fetch("blockly/blockly.html")
+            .then(res => res.text())
+            .then(html => {
+                extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
+
+                // CSS
+                const link = document.createElement("link");
+                link.rel = "stylesheet";
+                link.href = "blockly/blockly.css";
+                document.head.appendChild(link);
+
+                // scripts in juiste volgorde!
+                const blocklyScript = document.createElement("script");
+                blocklyScript.src = "blockly/blockly.min.js";
+
+                blocklyScript.onload = () => {
+
+                    const jsScript = document.createElement("script");
+                    jsScript.src = "blockly/javascript_compressed.js";
+
+                    jsScript.onload = () => {
+
+                        const gameScript = document.createElement("script");
+                        gameScript.src = "blockly/blockscript.js";
+
+                        gameScript.onload = () => {
+                            // 🔥 HIER gebeurt de magie
+                            if (typeof initBlockly === "function") {
+                                initBlockly();
+                            }
+                        };
+
+                        document.body.appendChild(gameScript);
+                    };
+
+                    document.body.appendChild(jsScript);
+                };
+
+                document.body.appendChild(blocklyScript);
+            });
+    }
+
     document.getElementById("feedback").textContent = "";
     document.getElementById("scoreDisplay").textContent = "Score: " + score;
 
