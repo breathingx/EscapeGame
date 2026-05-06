@@ -699,3 +699,87 @@ button.correct-state:hover {
     margin-top: 20px;
     font-family: "Montserrat";
 }
+
+
+
+/*
+ Match muziek ding
+*/
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+}
+
+#topGrid {
+    margin-bottom: 40px;
+}   
+#bottomGrid {
+    margin-top: 40px;
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr); /* 2x4 on mobile */
+    }
+}
+
+
+.container {
+    width: 500px;
+    margin: 20px auto;
+}
+
+
+.card {
+    position: relative;
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: 0.2s;
+    aspect-ratio: 1 / 1; /* keeps squares */
+}
+
+.card img {
+    width: 100%;
+    display: block;
+}
+
+/* Top card active (dim + overlay) */
+.top-card.active img {
+    filter: brightness(0.6);
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    background: rgba(0,0,0,0.4);
+    color: white;
+    opacity: 0;
+    transition: 0.2s;
+}
+
+.top-card.active .overlay {
+    opacity: 1;
+}
+
+/* Bottom selection */
+.bottom-card.selected {
+    border: 3px solid #34db98;
+}
+
+/* Matched */
+.matched {
+    opacity: 0.5;
+    pointer-events: none;
+}
