@@ -1,9 +1,6 @@
-
 /* ================================================= */
 /* ================== FONTS ======================== */
 /* ================================================= */
-
-/* RIGHT GROTESK */
 
 @font-face {
     font-family: "Right Grotesk Compact";
@@ -23,41 +20,26 @@
     font-weight: 300;
 }
 
-/* MONTSERRAT */
-
 @font-face {
     font-family: "Montserrat";
     src: url("fonts/Montserrat-Regular.ttf") format("truetype");
     font-weight: 400;
 }
 
-
 /* ================================================= */
 /* ================== GRID SYSTEEM ================= */
 /* ================================================= */
 
 :root {
-    --scale: 1;
     --page-margin: 7vh;
     --content-width: 100%;
     --max-content-width: 500px;
 }
 
-
-/* Landscape (laptops / tablets liggend) */
 @media (orientation: landscape) {
     :root {
-        --page-margin: 7vw; /* bij landscape op breedte baseren */
+        --page-margin: 7vw;
     }
-}
-
-.main-content {
-    padding-left: var(--page-margin);
-    padding-right: var(--page-margin);
-    padding-top: var(--page-margin);
-    padding-bottom: calc(var(--page-margin) + 20px);
-    max-width: 1200px;
-    margin: 0 auto;
 }
 
 .content-wrapper {
@@ -67,7 +49,6 @@
     margin-right: auto;
     box-sizing: border-box;
 }
-
 
 /* ================================================= */
 /* ================== BASE ========================= */
@@ -79,188 +60,20 @@ html, body {
 }
 
 body {
-    margin: 0;
-    height: 100vh;
-    min-height: 100dvh;
+    min-height: 100dvh; 
     overflow-x: hidden;
     background-color: #ffd700;
-    font-family: "Montserrat", sans-serif;
-    color: black;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-}
-
-
-body.fade-out {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-h1, h2, h3, h4, h5, h6 {
-    font-family: "Right Grotesk Compact";
-    margin: 0;
-}
-
-
-/* ================================================= */
-/* ================== HEADER ======================= */
-/* ================================================= */
-
-#timer {
-    position: static;
-    top: var(--page-margin);
-    left: var(--page-margin);
-    font-family: "Montserrat";
-    font-size: 24px;
-    font-weight: 500;
-}
-
-#scoreDisplay {
-    position: static;
-    top: var(--page-margin);
-    right: var(--page-margin);
-    font-family: "Montserrat";
-    font-size: 24px;
-    font-weight: 500;
-}
-
-#teamTitel {
-    position: static;
-    top: calc(var(--page-margin) * 2);
-    text-align: center;
-    font-family: "Right Grotesk Compact";
-    font-weight: 900;
-    font-size: clamp(22px, 3.5vw, 36px);
-    margin-bottom: 10px;
-} 
-
-#opdrachtNummer {
-    position: static;
-    top: calc(var(--page-margin) * 2.8);
-    text-align: center;
-    font-family: "Right Grotesk Light";
-    font-weight: 300;
-    font-size: clamp(18px, 2.5vw, 22px);
-} 
-
-
-/* ================================================= */
-/* ================== GAME CONTENT ================= */
-/* ================================================= */
-
- #vraagContainer {
-    position: static;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-#vraag {
-    font-family: "Right Grotesk Medium";
-    font-weight: 500;
-    font-size: clamp(20px, 4vw, 40px);
-    width: var(--content-width);
-    text-align: left;
-    margin: 20px 0;
-}
-
-#antwoordInput {
-    font-family: "Montserrat";
-    font-size: clamp(16px, 3vw, 22px);
-    width: var(--content-width);;
-    height: clamp(38px, 5vh, 52px);
-    padding: 0 12px;
+    padding: 20px; 
     box-sizing: border-box;
 }
 
-#feedback {
-    font-family: "Montserrat";
-    margin-top: 10px;
-}
-
-.fullscreen-content {
-    position: relative;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-}
-
-.minigame {
-    width: 100%;
-    max-width: 500px;
-    margin: 40px auto;
-}
-
-
-/* ================================================= */
-/* ================== BUTTONS ====================== */
-/* ================================================= */
-
-button {
-    font-family: "Right Grotesk Medium";
-    font-weight: 500;
-    padding: 12px 24px;
-    /* margin: 20px; */
-    margin: 10px 0;
-    font-size: clamp(14px, 2.5vw, 20px);
-    border: none;
-    width: var(--content-width);
-    cursor: pointer;
-    transition: 0.3s ease;
-    background-color: black;
-    color: white;
-}
-
-button:hover {
-    transform: scale(1.05);
-}
-
-.team-buttons {
-    display: flex;
-    flex-direction: column;   
-    align-items: center;     
-    gap: 16px;                
-    margin-top: 30px;
-}
-
-.team-buttons button {
-    width: var(--content-width);
-    font-size: clamp(18px, 3vw, 24px);
-    padding: 18px 24px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.team-buttons button:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-}
-
-.aandrijving {
-    background-color: #00f280;
-    color: black;
-}
-
-.programma {
-    background-color: #8268ff;
-    color: black;
-}
-
-.klankbron {
-    background-color: #ff6800;
-    color: black;
-}
-
-/* Correct antwoord staat */
-button.correct-state {
-    color: black;
-    transform: scale(1.05);
-}
-
-button.correct-state:hover {
-    transform: scale(1.05); 
+h1 {
+    font-family: "Right Grotesk Compact";
+    margin: 0;
 }
 
 /* ================================================= */
@@ -268,431 +81,22 @@ button.correct-state:hover {
 /* ================================================= */
 
 .index-title {
-    font-family: "Right Grotesk Compact";
-    margin-bottom: var(--scale);
+    margin-bottom: 10px;
     font-size: clamp(28px, 6vw, 64px);
     text-align: center;
 }
 
 .index-subtitle {
     font-size: clamp(20px, 6vw, 40px);
-    margin-bottom: var(--scale);
+    margin-bottom: 20px;
     text-align: center;
     font-family: "Right Grotesk Light";
-}
-
-
-.video-wrapper {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    margin: 20px 0;
-    aspect-ratio: 16 / 9;
-}
-
-.video-wrapper iframe {
-    width: 100%;
-    max-width: 500px;
-    border: 6px solid black;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-}
-
-.start-button-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-}
-
-
-/* ================================================= */
-/* ================== LOGO ========================= */
-/* ================================================= */
-
-/* Standaard (alle pagina's behalve game) */
-.logo {
-    position: static;
-    bottom: var(--page-margin);
-    transform: translateX(-50%);
-    width: clamp(140px, 22vw, 260px); 
-    height: auto;
-}
-
-/* Alleen op game pagina */
-.game-page .logo {
-    left: auto;
-    right: var(--page-margin);
-    transform: none;
-    width: clamp(100px, 18vw, 200px); 
-} 
-
-/* ================================================= */
-/* ================== PROGRESS BAR ================= */
-/* ================================================= */
-
-.progress-bar.aandrijving {
-    background-color: #00f280;
-}
-
-.progress-bar.programma {
-    background-color: #8268ff;
-}
-
-.progress-bar.klankbron {
-    background-color: #ff6800;
-}
-
-.progress-container {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: calc(var(--page-margin) / 3);
-    background-color: rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    z-index: 0;
-}
-
-.progress-bar {
-    height: 100%;
-    width: 0%;
-    transition: width 0.6s ease-in-out;
-}
-
-/* Aandrijving (oranje) */
-.progress-bar.aandrijving {
-    background: linear-gradient(
-        to right,
-        #00f280,
-        #5cffb0
-    );
-}
-
-/* Programma (paars) */
-.progress-bar.programma {
-    background: linear-gradient(
-        to right,
-        #8268ff,
-        #a594ff
-    );
-}
-
-/* Klankbron (groen) */
-.progress-bar.klankbron {
-    background: linear-gradient(
-        to right,
-        #ff6800,
-        #ff9a3c
-    );
-}
-
-.progress-bar.aandrijving,
-.progress-bar.programma,
-.progress-bar.klankbron {
-    box-shadow: 0 0 8px rgb(255, 255, 255, 0.4);
-}
-
-/* ================================================= */
-/* ================== HINT SYSTEM ================== */
-/* ================================================= */
-
-
-#hintContainer { 
-    position: static;
-    left: var(--page-margin);
-    width: clamp(80px, 18vw, 200px);
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 6px;
-    margin-left: calc(var(--page-margin) * 1.5);
-}
-
-
-#hintBtn {
-    position: static;
-    bottom: calc(var(--page-margin) + 28px);
-    left: var(--page-margin);
-    width: clamp(80px, 18vw, 200px);
-    height: clamp(36px, 6vh, 60px);
-    margin: 0;
-}
-
-#hintBlocks {
-    position: static;
-    bottom: var(--page-margin);
-    left: var(--page-margin);
-    width: clamp(80px, 18vw, 200px);
-    display: flex;
-    justify-content: space-between;
-    height: 18px;
-} 
-
-.hintBlock {
-    width: 30%;
-    height: 18px;
-    background-color: black;
-}
-
-.hintBlock.used {
-    opacity: 0.2;
-}
-
-/* ================================================= */
-/* ================== HINT MODAL =================== */
-/* ================================================= */
-
-#hintOverlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-    transition: opacity 0.3s ease;
-}
-
-#hintModal {
-    background: #ffd700;
-    width: min(60vw, 420px);   
-    min-height: 60px;        
-    padding: 40px 30px;
-    position: relative;
-    border: 4px solid black;  
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    font-family: "Montserrat";
-} 
-
-#hintModalText {
-    font-size: clamp(16px, 3vw, 20px);
-}
-
-#closeHint {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 36px;
-    font-weight: bold;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: black;
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-
-#hintActions {
-    display: flex;
-    gap: 10px;
-}
-
-#confirmHint {
-    background-color: black;
-    color: white;
-}
-
-#cancelHint {
-    background-color: transparent;
-    color: black;
-    border: 2px solid black;
-}
-
-#hintModal ul {
-    padding-left: 20px;
-    margin-top: 10px;
-}
-
-#hintModal li {
-    margin-bottom: 5px;
-}
-
-
-/* ================================================= */
-/* ================== CODES PAGINA ================= */
-/* ================================================= */
-
-#codesContainer h1,
-#codesContainer h2 {
-    font-size: clamp(20px, 4vw, 36px);
-}
-
-#codesContainer {
-    position: fixed;
-    top: 55%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 85%;
-    max-width: 500px;   
-    
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.teamCodeBlok {
-    width: var(--content-width);
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-.teamCodeBlok h1,
-.teamCodeBlok h2,
-.teamCodeBlok p {
-    color: black;
-}
-
-.teamCodeBlok input {
-    width: var(--content-width);
-    height: clamp(38px, 5vh, 52px);
-    font-family: "Montserrat";
-    font-size: clamp(16px, 3vw, 22px);
-    padding: 0 12px;
-    box-sizing: border-box;
-}
-
-
-/* ================================================= */
-/* ================== RESULTAAT PAGINA ============= */
-/* ================================================= */
-
-#resultaatContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-    text-align: center;
-    min-height: 70vh;
-    justify-content: center;
-}
-
-#resultaatTitel {
-    font-family: "Right Grotesk Compact";
-    font-size: clamp(28px, 6vw, 60px);
-    margin-top: 18px;
-    margin-bottom: -18px;
-}
-
-#resultaatSubtitel {
-    font-family: "Right Grotesk Light";
-    font-size: clamp(18px, 4vw, 28px);
-}
-
-.resultaatBlok {
-    width: 100%;
-    border: 4px solid black;
-    padding: 20px;
-}
-
-.resultaatBlok h3 {
-    font-size: clamp(20px, 5vw, 36px);
-    margin: 10px 0 0 0;
-}
-
-
-
-/* ================================================= */
-/* ================== TEMPLATE ===================== */
-/* ================================================= */
-
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    padding: var(--page-margin);
-    box-sizing: border-box;
-}
-
-
-/* UITLEG BLOK */
-#uitlegBlok {
-    width: 90%;
-    border: 3px solid black;
-    padding: 15px;
-    margin-bottom: 50px;
-    font-family: "Montserrat";
-    font-size: clamp(16px, 3vw, 20px);
-}
-
-/* CODE INPUTS */
-#codeInputContainer {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.codeInput {
-    width: 100%;
-    height: clamp(50px, 7vh, 70px);
-    text-align: center;
-    font-size: clamp(20px, 4vw, 28px);
-    font-family: "Right Grotesk Medium";
-    border: 3px solid black;
-    box-sizing: border-box;
-}
-
-#extraContent {
-    width: 100%;
-    margin-bottom: 20px;
 }
 
 /* ================================================= */
 /* ================== MATCH GAME =================== */
 /* ================================================= */
 
-.game-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    width: 100%;
-    max-width: 500px;
-    margin: 40px auto;
-}
-
-.card {
-    border: 3px solid black;
-    cursor: pointer;
-    aspect-ratio: 1 / 1;
-    overflow: hidden;
-    transition: transform 0.2s ease;
-    background-color: white;
-}
-
-.card:hover {
-    transform: scale(1.05);
-}
-
-.card img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* geselecteerd */
-.card.selected {
-    border: 4px solid red;
-}
-
-/* correct match */
-.card.matched {
-    opacity: 0.4;
-    pointer-events: none;
-    border: 4px solid black;
-}
-
-/* feedback tekst */
 #message {
     text-align: center;
     font-size: clamp(18px, 3vw, 26px);
@@ -700,37 +104,29 @@ button.correct-state:hover {
     font-family: "Montserrat";
 }
 
-
-
-/*
- Match muziek ding
-*/
+.container {
+    width: 100%;
+    max-width: 500px;
+    margin: 20px auto;
+}
 
 .grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 10px;
+    width: 100%;
 }
 
-#topGrid {
-    margin-bottom: 40px;
-}   
-#bottomGrid {
-    margin-top: 40px;
-}
+#topGrid { margin-bottom: 40px; } 
+#bottomGrid { margin-top: 40px; }
 
 @media (max-width: 600px) {
     .grid {
-        grid-template-columns: repeat(2, 1fr); /* 2x4 on mobile */
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
     }
+    #topGrid { margin-bottom: 20px; }
 }
-
-
-.container {
-    width: 500px;
-    margin: 20px auto;
-}
-
 
 .card {
     position: relative;
@@ -738,14 +134,18 @@ button.correct-state:hover {
     border-radius: 10px;
     overflow: hidden;
     cursor: pointer;
-    border: 2px solid transparent;
+    border: 3px solid black;
     transition: 0.2s;
-    aspect-ratio: 1 / 1; /* keeps squares */
+    aspect-ratio: 1 / 1;
 }
+
+.card:hover { transform: scale(1.05); }
 
 .card img {
     width: 100%;
+    height: 100%;
     display: block;
+    object-fit: cover;
 }
 
 /* Top card active (dim + overlay) */
@@ -775,11 +175,12 @@ button.correct-state:hover {
 
 /* Bottom selection */
 .bottom-card.selected {
-    border: 3px solid #34db98;
+    border: 4px solid #34db98;
 }
 
 /* Matched */
 .matched {
-    opacity: 0.5;
+    opacity: 0.4;
     pointer-events: none;
+    border: 3px solid black;
 }
