@@ -343,14 +343,10 @@ function laadOpdracht() {
 
     const antwoordInput = document.getElementById("antwoordInput");
     if (antwoordInput) {
+        antwoordInput.value = "";
         antwoordInput.disabled = false;
     }
 
-    const inputs = document.querySelectorAll(".codeInput");
-    inputs.forEach(input => {
-        input.value = "";
-        input.disabled = false;
-    });
 
     document.getElementById("uitlegTekst").textContent =
         uitlegData[team][huidigeOpdracht];
@@ -453,14 +449,9 @@ function verwerkActie() {
         return;
     }
 
-    const inputs = document.querySelectorAll(".codeInput");
-
-    let invoer = "";
-    inputs.forEach(input => {
-        invoer += input.value;
-    });
-
-    invoer = invoer.toUpperCase().trim();
+    let invoer = document.getElementById("antwoordInput").value
+        .toUpperCase()
+        .trim();
 
     let juistAntwoord = antwoordData[team][huidigeOpdracht];
 
@@ -492,7 +483,7 @@ function verwerkActie() {
         actieBtn.classList.add("correct-state");
         actieBtn.classList.add(team);
 
-        inputs.forEach(input => input.disabled = true);
+        document.getElementById("antwoordInput").disabled = true;
 
     } else {
         document.getElementById("feedback").textContent = "Onjuist, probeer opnieuw.";
@@ -760,32 +751,15 @@ if (window.location.pathname.includes("resultaat.html")) {
 // TEMPLATE
 // =================================================
 
+
 window.addEventListener("DOMContentLoaded", () => {
+    const antwoordInput = document.getElementById("antwoordInput");
 
-    const inputs = document.querySelectorAll(".codeInput");
+    if (antwoordInput) {
+        antwoordInput.focus();
 
-    inputs.forEach((input, index) => {
-        input.addEventListener("input", (e) => {
-            let value = e.target.value.toUpperCase();
-
-            if (value.length > 1) {
-                value = value.charAt(0);
-            }
-
-            e.target.value = value;
-
-            if (value !== "" && index < inputs.length - 1) {
-                inputs[index + 1].focus();
-            }
+        antwoordInput.addEventListener("input", (e) => {
+            e.target.value = e.target.value.toUpperCase();
         });
-
-        input.addEventListener("keydown", (e) => {
-            if (e.key === "Backspace" && input.value === "" && index > 0) {
-                inputs[index - 1].focus();
-            }
-        });
-    });
-
-    const firstInput = document.querySelector(".codeInput");
-    if (firstInput) firstInput.focus();
+    }
 });

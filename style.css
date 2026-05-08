@@ -624,7 +624,7 @@ button.correct-state:hover {
     font-size: clamp(16px, 3vw, 20px);
 }
 
-/* CODE INPUTS */
+/* ANTWOORD INPUTS */
 #codeInputContainer {
     display: flex;
     justify-content: space-between;
@@ -633,14 +633,19 @@ button.correct-state:hover {
     margin-bottom: 20px;
 }
 
-.codeInput {
+#antwoordInput {
     width: 100%;
     height: clamp(50px, 7vh, 70px);
-    text-align: center;
+    padding: 0 20px;
+
     font-size: clamp(20px, 4vw, 28px);
     font-family: "Right Grotesk Medium";
+
     border: 3px solid black;
     box-sizing: border-box;
+
+    background: white;
+    color: black;
 }
 
 #extraContent {
