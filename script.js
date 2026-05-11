@@ -58,6 +58,9 @@ const maxHints = 3;
 const hintCooldown = 180;
 let hintInterval = null;
 
+let verzameldeBonusVragen = JSON.parse(localStorage.getItem("bonusVragen")) || [];
+let pendingBonusVragen = [];
+let zitOpTussenPagina = false;
 
 // =================================================
 // DATA
@@ -236,6 +239,153 @@ const antwoordData = {
     ]
 };
 
+const tussenPaginaData = {
+
+    aandrijving: [
+
+        {
+            tekst: "De volgende opdracht bevindt zich bij de zwarte machine achterin.",
+            bonus: [
+                { vraag: "Hoeveel tandwielen zie je?", antwoord: "4" },
+                { vraag: "Welke kleur heeft de hendel?", antwoord: "ROOD" },
+                { vraag: "Welk materiaal ligt bovenop?", antwoord: "HOUT" }
+            ]
+        },
+
+        {
+            tekst: "Zoek nu naar het object met UV-licht.",
+            bonus: [
+                { vraag: "Welke kleur licht op?", antwoord: "GROEN" },
+                { vraag: "Hoeveel lampen hangen hier?", antwoord: "2" },
+                { vraag: "Welke vorm zie je?", antwoord: "CIRKEL" }
+            ]
+        },
+
+        {
+            tekst: "Ga naar de balans-opdracht.",
+            bonus: [
+                { vraag: "Hoeveel gewichten liggen er?", antwoord: "3" },
+                { vraag: "Welke vorm heeft de balans?", antwoord: "DRIEHOEK" },
+                { vraag: "Welke kleur heeft het plateau?", antwoord: "ZWART" }
+            ]
+        },
+
+        {
+            tekst: "Loop naar de tandwielen.",
+            bonus: [
+                { vraag: "Hoeveel tandwielen draaien?", antwoord: "5" },
+                { vraag: "Welke draait het snelst?", antwoord: "KLEINE" },
+                { vraag: "Welke kleur heeft de hendel?", antwoord: "GEEL" }
+            ]
+        },
+
+        {
+            tekst: "Ga naar de muziek-hendel.",
+            bonus: [
+                { vraag: "Welk instrument hoor je?", antwoord: "PIANO" },
+                { vraag: "Hoeveel hendels zijn zichtbaar?", antwoord: "2" },
+                { vraag: "Welke kleur heeft de machine?", antwoord: "GRIJS" }
+            ]
+        }
+    ],
+
+    programma: [
+
+        {
+            tekst: "Ga naar het programmeerstation.",
+            bonus: [
+                { vraag: "Welke kleur heeft de kabel?", antwoord: "BLAUW" },
+                { vraag: "Hoeveel blokken liggen er?", antwoord: "6" },
+                { vraag: "Welke letter zie je links?", antwoord: "P" }
+            ]
+        },
+
+        {
+            tekst: "Zoek de route-opdracht.",
+            bonus: [
+                { vraag: "Hoeveel pijlen zie je?", antwoord: "4" },
+                { vraag: "Welke richting wijst omhoog?", antwoord: "NOORD" },
+                { vraag: "Welke kleur heeft het bord?", antwoord: "WIT" }
+            ]
+        },
+
+        {
+            tekst: "Ga naar de decoder.",
+            bonus: [
+                { vraag: "Welke letter staat centraal?", antwoord: "E" },
+                { vraag: "Hoeveel ringen heeft de decoder?", antwoord: "3" },
+                { vraag: "Welke kleur heeft de schijf?", antwoord: "ZWART" }
+            ]
+        },
+
+        {
+            tekst: "Zoek het orgelboek.",
+            bonus: [
+                { vraag: "Hoeveel pagina’s heeft het boek?", antwoord: "8" },
+                { vraag: "Welke kleur heeft de omslag?", antwoord: "BRUIN" },
+                { vraag: "Welke letter zie je rechts?", antwoord: "M" }
+            ]
+        },
+
+        {
+            tekst: "Ga naar de binaire opdracht.",
+            bonus: [
+                { vraag: "Hoeveel nullen zie je?", antwoord: "5" },
+                { vraag: "Welke code staat bovenaan?", antwoord: "1010" },
+                { vraag: "Welke kleur heeft het scherm?", antwoord: "GROEN" }
+            ]
+        }
+    ],
+
+    klankbron: [
+
+        {
+            tekst: "Loop naar het instrument aan de rechterzijde.",
+            bonus: [
+                { vraag: "Hoeveel snaren heeft het?", antwoord: "4" },
+                { vraag: "Welke kleur heeft het hout?", antwoord: "BRUIN" },
+                { vraag: "Welke vorm heeft het?", antwoord: "OVAAL" }
+            ]
+        },
+
+        {
+            tekst: "Ga naar de toonhoogte-opdracht.",
+            bonus: [
+                { vraag: "Welke noot hoor je?", antwoord: "C" },
+                { vraag: "Hoeveel toetsen zie je?", antwoord: "12" },
+                { vraag: "Welke kleur heeft het instrument?", antwoord: "ZWART" }
+            ]
+        },
+
+        {
+            tekst: "Bekijk het filmpje.",
+            bonus: [
+                { vraag: "Welk continent zie je?", antwoord: "AZIE" },
+                { vraag: "Hoeveel instrumenten zie je?", antwoord: "3" },
+                { vraag: "Welke kleur overheerst?", antwoord: "ROOD" }
+            ]
+        },
+
+        {
+            tekst: "Luister naar de combinatie.",
+            bonus: [
+                { vraag: "Hoeveel liedjes hoor je?", antwoord: "2" },
+                { vraag: "Welk tempo hoor je?", antwoord: "SNEL" },
+                { vraag: "Welk instrument hoor je eerst?", antwoord: "DRUM" }
+            ]
+        },
+
+        {
+            tekst: "Bekijk de geluidsgolven.",
+            bonus: [
+                { vraag: "Welke vorm heeft de golf?", antwoord: "ROND" },
+                { vraag: "Hoeveel pieken zie je?", antwoord: "6" },
+                { vraag: "Welke kleur heeft de achtergrond?", antwoord: "ZWART" }
+            ]
+        }
+    ]
+};
+
 // =================================================
 // NAVIGATIE
 // =================================================
@@ -246,6 +396,7 @@ function gaNaarHome() {
 
 function restartGame() {
     localStorage.clear();
+    localStorage.removeItem("bonusVragen");
     window.location.href = "index.html";
 }
 
@@ -261,6 +412,8 @@ function startGame(gekozenTeam) {
     localStorage.setItem("correct", 0);
     localStorage.setItem("score", 0);
     localStorage.setItem("totalSeconds", 60 * 60);
+
+    localStorage.removeItem("bonusVragen");
 
     // Fade animatie
     document.body.classList.add("fade-out");
@@ -335,6 +488,9 @@ function laadOpdracht() {
     hintGebruiktPerVraag = 0;
     laatsteHintTijd = 0;
     gebruikteHints = [];
+
+    document.getElementById("hintContainer").style.display = "flex";
+    document.getElementById("codeInputContainer").style.display = "flex";
 
     const actieBtn = document.getElementById("actieBtn");
     actieBtn.textContent = "Controleer";
@@ -445,9 +601,36 @@ function laadOpdracht() {
 function verwerkActie() {
 
     if (antwoordIsCorrect) {
-        volgendeOpdracht();
+
+        if (zitOpTussenPagina) {
+
+            pendingBonusVragen.forEach(vraag => {
+                verzameldeBonusVragen.push({
+                    vraag: vraag.vraag,
+                    antwoord: vraag.antwoord,
+                    gehaald: false
+                });
+            });
+
+            localStorage.setItem(
+                "bonusVragen",
+                JSON.stringify(verzameldeBonusVragen)
+            );
+
+            zitOpTussenPagina = false;
+            volgendeOpdracht();
+
+            return;
+        }
+
+        if (huidigeOpdracht < 5) {
+            toonTussenPagina();
+        } else {
+            volgendeOpdracht();
+        }
+
         return;
-    }
+    }   
 
     let invoer = document.getElementById("antwoordInput").value
         .toUpperCase()
@@ -477,7 +660,7 @@ function verwerkActie() {
         if (huidigeOpdracht === 5) {
             actieBtn.textContent = "Kraak de code";
         } else {
-            actieBtn.textContent = "Volgende opdracht";
+            actieBtn.textContent = "Naar volgende opdracht";
         }
 
         actieBtn.classList.add("correct-state");
@@ -489,6 +672,39 @@ function verwerkActie() {
         document.getElementById("feedback").textContent = "Onjuist, probeer opnieuw.";
         foutPogingen++;
     }
+}
+
+
+function toonTussenPagina() {
+
+    const data = tussenPaginaData[team][huidigeOpdracht];
+
+    if (!data) {
+        volgendeOpdracht();
+        return;
+    }
+
+    zitOpTussenPagina = true;
+    pendingBonusVragen = data.bonus;
+
+    document.getElementById("uitlegTekst").textContent = data.tekst;
+
+    document.getElementById("extraContent").innerHTML = `
+    <div class="tussenBonusBlok">
+        <h3 class="bonusTitel">Bonus vragen</h3>
+        ${data.bonus.map(vraag => `
+            <div class="bonusPreview">
+                <p>${vraag.vraag}</p>
+            </div>
+        `).join("")}
+
+    </div>
+`;
+
+    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("feedback").textContent = "";
+    document.getElementById("actieBtn").textContent = "Volgende opdracht";
+    document.getElementById("hintContainer").style.display = "none";
 }
 
 
@@ -659,6 +875,140 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+// =================================================
+// BONUS POPUP
+// =================================================
+
+function toonBonusPopup() {
+
+    const overlay = document.getElementById("bonusOverlay");
+    const lijst = document.getElementById("bonusLijst");
+
+    lijst.innerHTML = "";
+
+    if (verzameldeBonusVragen.length === 0) {
+        lijst.innerHTML = `
+            <div class="bonusLeeg">
+                <p>Hier vind je na iedere opdracht 3 nieuwe bonusvragen.</p>
+            </div>
+        `;
+
+        overlay.style.display = "flex";
+        return;
+    }
+
+    verzameldeBonusVragen.forEach((bonus, index) => {
+
+        lijst.innerHTML += `
+            <div class="bonusVraagBlok">
+
+                <p>${bonus.vraag}</p>
+
+                ${
+                    bonus.gehaald
+                    ? `
+                        <div class="bonusCorrectRow bonus-correct ${team}">
+                            <span class="bonusAntwoord">
+                                ${bonus.antwoord}
+                            </span>
+
+                            <span class="bonusPunten">
+                                +3
+                            </span>
+                        </div>
+                    `
+                    : `
+                        <input
+                            type="text"
+                            id="bonusInput${index}"
+                        >
+
+                        <button onclick="controleerBonus(${index})">
+                            Controleer
+                        </button>
+
+                        <p id="bonusFeedback${index}"></p>
+                    `
+                }
+
+            </div>
+        `;
+    });
+
+    overlay.style.display = "flex";
+}
+
+function controleerBonus(index) {
+
+    const bonus = verzameldeBonusVragen[index];
+
+    if (bonus.gehaald) return;
+
+    const input = document.getElementById(`bonusInput${index}`);
+
+    const invoer = input.value
+        .trim()
+        .toUpperCase();
+
+    if (invoer === bonus.antwoord) {
+
+        bonus.gehaald = true;
+        score += 3;
+        localStorage.setItem("score", score);
+
+        document.getElementById("scoreDisplay").textContent =
+            "Score: " + score;
+
+
+        const bonusBlok = input.parentElement;
+        const knop = bonusBlok.querySelector("button");
+
+        bonusBlok.innerHTML = `
+            <p>${bonus.vraag}</p>
+
+            <div class="bonusCorrectRow bonus-correct ${team}">
+                <span class="bonusAntwoord">
+                    ${bonus.antwoord}
+                </span>
+
+                <span class="bonusPunten">
+                    +3
+                </span>
+            </div>
+        `;
+
+
+        localStorage.setItem(
+            "bonusVragen",
+            JSON.stringify(verzameldeBonusVragen)
+        );
+
+    } else {
+
+        document.getElementById(`bonusFeedback${index}`).textContent =
+            "Onjuist";
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+
+    const closeBonus = document.getElementById("closeBonus");
+    const bonusOverlay = document.getElementById("bonusOverlay");
+
+    if (closeBonus && bonusOverlay) {
+
+        closeBonus.addEventListener("click", () => {
+            bonusOverlay.style.display = "none";
+        });
+
+        bonusOverlay.addEventListener("click", (e) => {
+            if (e.target === bonusOverlay) {
+                bonusOverlay.style.display = "none";
+            }
+        });
+    }
+});
+
 
 // =================================================
 // TEAM CODES
@@ -695,39 +1045,80 @@ if (window.location.pathname.includes("codes.html")) {
 
     document.getElementById("team3Naam").textContent =
         "Team: " + andereTeams[1];
+
+    document.getElementById("team2Input").addEventListener("input", (e) => {
+        e.target.value = e.target.value.toUpperCase();
+    });
+
+    document.getElementById("team3Input").addEventListener("input", (e) => {
+        e.target.value = e.target.value.toUpperCase();
+    });
 }
 
-function controleerCodes() {
+let correcteCodes = [false, false];
+
+function controleerCode(index) {
 
     const team = localStorage.getItem("team");
 
     const alleTeams = ["aandrijving", "programma", "klankbron"];
     const andereTeams = alleTeams.filter(t => t !== team);
 
-    const input1 = document.getElementById("team2Input").value.trim();
-    const input2 = document.getElementById("team3Input").value.trim();
+    const inputId = index === 0 ? "team2Input" : "team3Input";
+    const feedbackId = index === 0 ? "team2Feedback" : "team3Feedback";
+    const blokId = index === 0 ? "team2Blok" : "team3Blok";
 
-    const juiste1 = teamCodes[andereTeams[0]];
-    const juiste2 = teamCodes[andereTeams[1]];
+    const input = document.getElementById(inputId);
+    const feedback = document.getElementById(feedbackId);
+    const blok = document.getElementById(blokId);
 
-    if (input1 === juiste1 && input2 === juiste2) {
+    const invoer = input.value.trim().toUpperCase();
 
-        const eindScore = localStorage.getItem("score");
-        const eindTijd = localStorage.getItem("totalSeconds");
+    const juisteCode = teamCodes[andereTeams[index]];
 
-        let totalSeconds = parseInt(eindTijd);
-        let minutes = Math.floor(totalSeconds / 60);
-        let seconds = totalSeconds % 60;
-        if (seconds < 10) seconds = "0" + seconds;
+    if (invoer === juisteCode) {
 
-        localStorage.setItem("eindScore", eindScore);
-        localStorage.setItem("eindTijd", minutes + ":" + seconds);
+        correcteCodes[index] = true;
 
-        window.location.href = "resultaat.html";
+        const knop = blok.querySelector("button");
+
+        blok.innerHTML = `
+            <h2>
+                Team: ${andereTeams[index]}
+            </h2>
+
+
+            <div class="codeCorrect">
+                ${juisteCode}
+            </div>
+
+        `;
+
+        if (correcteCodes[0] && correcteCodes[1]) {
+
+            const eindScore = localStorage.getItem("score");
+            const eindTijd = localStorage.getItem("totalSeconds");
+
+            let totalSeconds = parseInt(eindTijd);
+
+            let minutes = Math.floor(totalSeconds / 60);
+            let seconds = totalSeconds % 60;
+
+            if (seconds < 10) seconds = "0" + seconds;
+
+            localStorage.setItem("eindScore", eindScore);
+
+            localStorage.setItem(
+                "eindTijd",
+                minutes + ":" + seconds
+            );
+
+            window.location.href = "resultaat.html";
+        }
 
     } else {
-        document.getElementById("codeFeedback").textContent =
-            "Nog niet alle codes zijn correct.";
+
+        feedback.textContent = "Onjuist";
     }
 }
 

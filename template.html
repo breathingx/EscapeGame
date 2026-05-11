@@ -52,22 +52,31 @@
 
 
 <div id="hintContainer">
-    <button id="hintBtn" onclick="geefHint()">Hint</button>
 
-    <div id="hintBlocks">
-        <span class="hintBlock"></span>
-        <span class="hintBlock"></span>
-        <span class="hintBlock"></span>
+    <div class="hintLeft">
+        <button id="hintBtn" onclick="geefHint()">Hint</button>
+
+        <div id="hintBlocks">
+            <span class="hintBlock"></span>
+            <span class="hintBlock"></span>
+            <span class="hintBlock"></span>
+        </div>
     </div>
 
-    <p id="hintText"></p>
+    <button id="bonusBtn" onclick="toonBonusPopup()">Bonus</button>
+
 </div>
 
-<div class="progress-container">
-    <div class="progress-bar" id="progressBar"></div>
+<p id="hintText"></p>
+
+<div class="hud-footer">
+    <img src="M3L.png" alt="Logo" class="logo">
+
+    <div class="progress-container">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
 </div>
 
-<img src="logo.png" alt="Logo" class="logo">
 
 <div id="hintOverlay">
     <div id="hintModal">
@@ -84,6 +93,17 @@
 
     </div>
 </div>
+
+<div id="bonusOverlay">
+    <div id="bonusModal">
+
+        <button id="closeBonus">&times;</button>
+        <h2>Bonusvragen</h2>
+        <div id="bonusLijst"></div>
+
+    </div>
+</div>
+
 
 <script src="script.js"></script>
 </body>

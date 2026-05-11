@@ -8,8 +8,10 @@
 </head>
 <body>
 
-<div id="timer"></div>
-<div id="scoreDisplay"></div>
+<div class="header">
+    <div id="timer"></div>
+    <div id="scoreDisplay"></div>
+</div>
 
 <div id="codesContainer">
 
@@ -18,19 +20,38 @@
         <p id="eigenCode"></p>
     </div>
 
+
     <div class="teamCodeBlok" id="team2Blok">
         <h2 id="team2Naam"></h2>
-        <input type="text" id="team2Input" placeholder="Voer code in">
+
+        <input
+            type="text"
+            id="team2Input"
+            placeholder="Voer code in"
+        >
+
+        <button onclick="controleerCode(0)">
+            Controleer
+        </button>
+
+        <p id="team2Feedback"></p>
     </div>
 
     <div class="teamCodeBlok" id="team3Blok">
         <h2 id="team3Naam"></h2>
-        <input type="text" id="team3Input" placeholder="Voer code in">
+
+        <input
+            type="text"
+            id="team3Input"
+            placeholder="Voer code in"
+        >
+
+        <button onclick="controleerCode(1)">
+            Controleer
+        </button>
+
+        <p id="team3Feedback"></p>
     </div>
-
-    <button onclick="controleerCodes()">Controleer Codes</button>
-
-    <p id="codeFeedback"></p>
 
 </div>
 
