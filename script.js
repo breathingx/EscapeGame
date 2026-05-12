@@ -50,6 +50,7 @@ let correcteAntwoorden = 0;
 let score = 0;
 let foutPogingen = 0;
 let antwoordIsCorrect = false;
+let simon_punten = 0; 
 
 let hintGebruiktPerVraag = 0;
 let laatsteHintTijd = 0;
@@ -76,6 +77,7 @@ const uitlegData = {
         "Draai aan de hendel voor de muziek."
     ],
     programma: [
+        "Volg de instructies van Toon!",
         "Maak de QR-puzzel, en scan de QR-code.",
         "Programeer met de blokken de juiste route.",
         "Draai met de schijf en vind de code.",
@@ -130,6 +132,11 @@ const hintData = {
         ]
     ],
     programma: [
+        [
+            "Doe na wat Toon doet.",
+            "Druk dezelfde volgorde die Toon indrukt",
+            "PRO000"
+        ],
         [
             "Je moet iets scannen om verder te komen.",
             "De QR-code onthult de volgende stap.",
@@ -222,6 +229,7 @@ const antwoordData = {
         "AAN666"
     ],
     programma: [
+        "PRO000",
         "PRO111",
         "PRO222",
         "PRO333",
@@ -487,6 +495,7 @@ function laadOpdracht() {
     antwoordIsCorrect = false;
     hintGebruiktPerVraag = 0;
     laatsteHintTijd = 0;
+    simon_punten = 0;
     gebruikteHints = [];
 
     document.getElementById("hintContainer").style.display = "flex";
@@ -539,6 +548,24 @@ function laadOpdracht() {
                 script.src = "perfect-pitch/toonladder.js";
                 document.body.appendChild(script);
 })
+    }
+    else if (team === "programma" && huidigeOpdracht === 0) {
+        
+        fetch("simon-says/simon.html")
+            .then(res => res.text())
+            .then(html => {
+                extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
+
+                const link = document.createElement("link");
+                link.rel = "stylesheet";
+                link.href = "simon-says/simon.css";
+                document.head.appendChild(link);
+
+                const script = document.createElement("script");
+                script.type = "module";
+                script.src = "simon-says/simon.js";
+                document.body.appendChild(script);
+            });
     }
 
     if (team === "programma" && huidigeOpdracht === 1) {
@@ -643,6 +670,9 @@ function verwerkActie() {
         document.getElementById("feedback").textContent = "Goed gedaan!";
 
         let punten = 10 - foutPogingen;
+        if (team === "programma" && huidigeOpdracht === 1) {
+            punten = simon_punten
+        }
         if (punten < 0) punten = 0;
 
         score += punten;
