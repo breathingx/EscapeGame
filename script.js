@@ -670,7 +670,7 @@ function verwerkActie() {
         document.getElementById("feedback").textContent = "Goed gedaan!";
 
         let punten = 10 - foutPogingen;
-        if (team === "programma" && huidigeOpdracht === 1) {
+        if (team === "programma" && huidigeOpdracht === 0) {
             punten = simon_punten
         }
         if (punten < 0) punten = 0;
