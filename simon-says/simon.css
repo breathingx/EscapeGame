@@ -27,6 +27,11 @@
     cursor: pointer;
     border: 3px solid black;
     transition: opacity 0.1s;
+
+    touch-action: manipulation;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
 }
 
 .simon-btn.green { background-color: #00f280; }

@@ -40,7 +40,7 @@
     }
 
     btns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
+        btn.addEventListener('pointerdown', (e) => {
             if (playerSequence.length < sequence.length && !playing && bestScore != 10) {
                 const index = parseInt(e.target.dataset.index);
                 flashButton(index);
