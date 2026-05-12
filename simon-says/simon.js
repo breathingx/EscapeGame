@@ -41,13 +41,14 @@
 
     btns.forEach(btn => {
         btn.addEventListener('pointerdown', (e) => {
+            if (e.cancelable) e.preventDefault();
             if (playerSequence.length < sequence.length && !playing && bestScore != 10) {
                 const index = parseInt(e.target.dataset.index);
                 flashButton(index);
                 playerSequence.push(index);
                 checkSequence();
             }
-        });
+        }, { passive: false });
     });
 
     function flashButton(index) {
