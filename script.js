@@ -611,68 +611,6 @@ function laadOpdracht() {
                 document.body.appendChild(script);
 })
     }
-    else if (team === "programma" && huidigeOpdracht === 0) {
-        
-        fetch("simon-says/simon.html")
-            .then(res => res.text())
-            .then(html => {
-                extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
-
-                const link = document.createElement("link");
-                link.rel = "stylesheet";
-                link.href = "simon-says/simon.css";
-                document.head.appendChild(link);
-
-                const script = document.createElement("script");
-                script.type = "module";
-                script.src = "simon-says/simon.js";
-                document.body.appendChild(script);
-            });
-    }
-
-    if (team === "programma" && huidigeOpdracht === 1) {
-
-        fetch("blockly/blockly.html")
-            .then(res => res.text())
-            .then(html => {
-                extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
-
-                // CSS
-                const link = document.createElement("link");
-                link.rel = "stylesheet";
-                link.href = "blockly/blockly.css";
-                document.head.appendChild(link);
-
-                // scripts in juiste volgorde!
-                const blocklyScript = document.createElement("script");
-                blocklyScript.src = "blockly/blockly.min.js";
-
-                blocklyScript.onload = () => {
-
-                    const jsScript = document.createElement("script");
-                    jsScript.src = "blockly/javascript_compressed.js";
-
-                    jsScript.onload = () => {
-
-                        const gameScript = document.createElement("script");
-                        gameScript.src = "blockly/blockscript.js";
-
-                        gameScript.onload = () => {
-                            // 🔥 HIER gebeurt de magie
-                            if (typeof initBlockly === "function") {
-                                initBlockly();
-                            }
-                        };
-
-                        document.body.appendChild(gameScript);
-                    };
-
-                    document.body.appendChild(jsScript);
-                };
-
-                document.body.appendChild(blocklyScript);
-            });
-    }
 
     document.getElementById("feedback").textContent = "";
     document.getElementById("scoreDisplay").textContent = "Score: " + score;
@@ -705,10 +643,75 @@ function laadOpdrachtAandrijving() {
     }
 }
 
+function simon_says() {
+    fetch("simon-says/simon.html")
+            .then(res => res.text())
+            .then(html => {
+                extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
+
+                const link = document.createElement("link");
+                link.rel = "stylesheet";
+                link.href = "simon-says/simon.css";
+                document.head.appendChild(link);
+
+                const script = document.createElement("script");
+                script.type = "module";
+                script.src = "simon-says/simon.js";
+                document.body.appendChild(script);
+            });
+}
+
+function blockly() {
+    fetch("blockly/blockly.html")
+        .then(res => res.text())
+        .then(html => {
+            extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = "blockly/blockly.css";
+            document.head.appendChild(link);
+
+            const blocklyScript = document.createElement("script");
+            blocklyScript.src = "blockly/blockly.min.js";
+
+            blocklyScript.onload = () => {
+
+                const jsScript = document.createElement("script");
+                jsScript.src = "blockly/javascript_compressed.js";
+
+                jsScript.onload = () => {
+
+                    const gameScript = document.createElement("script");
+                    gameScript.src = "blockly/blockscript.js";
+
+                    gameScript.onload = () => {
+                        if (typeof initBlockly === "function") {
+                            initBlockly();
+                        }
+                    };
+
+                    document.body.appendChild(gameScript);
+                };
+
+                document.body.appendChild(jsScript);
+            };
+
+            document.body.appendChild(blocklyScript);
+        });
+}
+
 function laadOpdrachtProgramma() {
     //TODO truth-lie hierin zetten, zie laadOpdrachtAandrijving()
-    document.getElementById("uitlegTekst").textContent =
+    if (huidigeOpdracht == 0) {
+        simon_says();
+    }
+    else if (huidigeOpdracht == 1) {
+        blockly();
+    }
+    else {
+        document.getElementById("uitlegTekst").textContent =
         uitlegData[team][huidigeOpdracht];
+    }
 }
 
 function laadopdrachtKlankbron() {
@@ -721,7 +724,7 @@ function verwerkTruthLie(isCorrect) {
     if (isCorrect == truthLieAntwoordData[team][truthLieProgress]) {
         document.getElementById("feedback").textContent = "Goed gedaan!";
     } else {
-        document.getElementById("feedback").textContent = "Onjuist"; //TODO andere text?
+        document.getElementById("feedback").textContent = "Dat is onjuist..."; //TODO andere text?
         foutPogingen += 1;
     }
 
