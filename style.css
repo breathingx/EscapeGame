@@ -254,19 +254,14 @@ button:hover {
     color: black;
 }
 
-/* TODO betere kleur voor knop kiezen? */
 #truth-lie-ja {
     background-color: #00f280;
     color:black
-    /* background-color: black;
-    color: white; */
 }
-/* TODO betere kleur voor knop kiezen? */
+
 #truth-lie-nee {
     background-color: #df3c3c;
     color:black
-    /* background-color: black;
-    color: white; */
 }
 
 /* Correct antwoord staat */

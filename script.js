@@ -65,10 +65,7 @@ let zitOpTussenPagina = false;
 
 
 let truthLieProgress = 0;
-const truthLieMaxVragen = 3;
-const truthLieVragen = ["Waar, of niet waar? \t 1", "Waar, of niet waar? \t 2", "Waar, of niet waar? \t 3"] //TODO vragen bedenken
-const boolAnswers = [true, false, true]; //TODO volgorde bedenken
-
+const truthLieMaxVragen = 6;
 
 // =================================================
 // DATA
@@ -103,7 +100,6 @@ const uitlegData = {
         "Beantwoord de vragen correct."        
     ]
 };
-
 
 const hintData = {
     aandrijving: [
@@ -401,6 +397,60 @@ const tussenPaginaData = {
     ]
 };
 
+const truthLieVragen = {
+    aandrijving: [
+        "Een krukas wordt gebruikt om energie in op te slaan.",
+        "In een muziekdoosje zit dezelfde soort veer als in een balpen.",
+        "De gewichten in een klok werken door opgeslagen spierkracht.",
+        "Met een hefboom ben je sterker dan jezelf.",
+        "Alle orgels in Museum Speelklok werken door spierkracht.",
+        "Een balg moet in beweging blijven om te werken."
+    ],
+    programma: [
+        "De enige plek waar je code tegenkomt, is in je computer.",
+        "Een boek in een orgel werkt op dezelfde manier als een papieren rol in een pianola",
+        "Een MIDI stuurt geluid vanaf een computer naar een instrument.",
+        "Op één cilinder kun je meerdere/verschillende melodieën zetten.",
+        "Als je arrangeert, bewerk je een muziekstuk dat al bestaat.",
+        "Arrangeren is een ander woord voor componeren."
+    ],
+    klankbron: [
+        "Carillons zijn de oudste instrumenten die je in de buitenlucht kunt horen",
+        "Een snaar kan alleen geluid maken als je hem aanraakt wanneer hij onder spanning staat.",
+        "Een ritme bestaat uit een maatsoort, tempo en een melodie.",
+        "Als je een melodie wil krijgen uit orgelpijpen, moet je ze één voor één aanblazen.",
+        "Hoe korter de tand op een speelkam, hoe lager de toon.",
+        "Bellen kunnen van metaal, glas en keramiek zijn."
+    ]
+};
+
+const truthLieAntwoordData = {
+    aandrijving: [
+        false,
+        false,
+        true,
+        true,
+        false,
+        true
+    ],
+    programma: [
+        false,
+        false,
+        false,
+        true,
+        true,
+        false
+    ],
+    klankbron: [
+        true,
+        true,
+        false,
+        false,
+        false,
+        true
+    ]
+};
+
 // =================================================
 // NAVIGATIE
 // =================================================
@@ -636,13 +686,19 @@ function laadOpdracht() {
     updateProgressBar();
 }
 
+function inladenTruthLieElementen() {
+    document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
+    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("actieBtn").hidden = true;
+    document.getElementById("hintContainer").style.display = "none";
+    document.getElementById("truth-lie-div").hidden = false;
+    document.getElementById("truth-lie-ja").hidden = false;
+    document.getElementById("truth-lie-nee").hidden = false;
+}
+
 function laadOpdrachtAandrijving() {
     if (huidigeOpdracht == 2) { //truth lie inladen
-        document.getElementById("uitlegTekst").textContent = truthLieVragen[truthLieProgress];
-        document.getElementById("codeInputContainer").style.display = "none";
-        document.getElementById("actieBtn").hidden = true;
-        document.getElementById("hintContainer").style.display = "none";
-        document.getElementById("truth-lie-div").hidden = false;
+        inladenTruthLieElementen();
     } else {
         document.getElementById("uitlegTekst").textContent =
                 uitlegData[team][huidigeOpdracht];
@@ -650,21 +706,23 @@ function laadOpdrachtAandrijving() {
 }
 
 function laadOpdrachtProgramma() {
+    //TODO truth-lie hierin zetten, zie laadOpdrachtAandrijving()
     document.getElementById("uitlegTekst").textContent =
         uitlegData[team][huidigeOpdracht];
 }
 
 function laadopdrachtKlankbron() {
+    //TODO truth-lie hierin zetten, zie laadOpdrachtAandrijving()
     document.getElementById("uitlegTekst").textContent =
         uitlegData[team][huidigeOpdracht];
 }
 
 function verwerkTruthLie(isCorrect) {
-    if (isCorrect == boolAnswers[truthLieProgress]) {
+    if (isCorrect == truthLieAntwoordData[team][truthLieProgress]) {
         document.getElementById("feedback").textContent = "Goed gedaan!";
     } else {
         document.getElementById("feedback").textContent = "Onjuist"; //TODO andere text?
-        foutPogingen += 3;
+        foutPogingen += 1;
     }
 
     document.getElementById("ExtraContext").textContent = "TODO Extra context voor vraag " + (truthLieProgress+1);
@@ -676,7 +734,7 @@ function verwerkTruthLie(isCorrect) {
 
 function updateTruthLie() {
     truthLieProgress++;
-    document.getElementById("uitlegTekst").textContent = truthLieVragen[truthLieProgress];
+    document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
     document.getElementById("ExtraContext").textContent = "";
     document.getElementById("feedback").textContent = "Goed gedaan!";
     document.getElementById("VolgendeTruthLie").hidden = true;
@@ -690,13 +748,14 @@ function updateTruthLie() {
         document.getElementById("actieBtn").hidden = false;
         document.getElementById("truth-lie-div").style.display = "none";
 
-        //als alle truth-lie vragen verkeerd zijn beantwoord geef 0 punten voor dit gedeelte
-        if (foutPogingen == 9) {
-            foutPogingen = 10;
+        //aantal fouten {0, 1, 2, 3, 4, 5, 6} geeft zoveel punten: {10, 9, 8, 6, 4, 2, 0}
+        let punten = 10;
+        if (foutPogingen == 0 || foutPogingen == 1) {
+            punten = punten - foutPogingen;
+        } else {
+            punten = punten - (foutPogingen-1) * 2;
         }
 
-        //TODO functie schrijven voor updaten score? ipv hier zo zetten? is nu duplicate van verwerkActie()
-        let punten = 10 - foutPogingen;
         if (punten < 0) {
             punten = 0;
         }
