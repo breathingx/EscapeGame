@@ -43,6 +43,13 @@
         <input type="text" id="antwoordInput" placeholder="Voer antwoord in" autocomplete="off">
     </div>
 
+    <div id="truth-lie-div" hidden>
+        <button id="truth-lie-ja" onclick="verwerkTruthLie(true)">Waar</button>
+        <button id="truth-lie-nee" onclick="verwerkTruthLie(false)">Niet waar</button>
+        <button id="VolgendeTruthLie" onclick="updateTruthLie()" hidden="true">Volgende</button>
+        <p id ="ExtraContext"></p>
+    </div>
+
     <button id="actieBtn" onclick="verwerkActie()">Controleer</button>
     <p id="feedback"></p>
 

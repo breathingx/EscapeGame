@@ -254,6 +254,22 @@ button:hover {
     color: black;
 }
 
+/* TODO betere kleur voor knop kiezen? */
+#truth-lie-ja {
+    background-color: #00f280;
+    color:black
+    /* background-color: black;
+    color: white; */
+}
+/* TODO betere kleur voor knop kiezen? */
+#truth-lie-nee {
+    background-color: #df3c3c;
+    color:black
+    /* background-color: black;
+    color: white; */
+}
+
+/* Correct antwoord staat */
 button.correct-state {
     color: black;
     transform: scale(1.05);
@@ -792,4 +808,10 @@ button.correct-state:hover {
     /* padding-top: calc(var(--max-content-width) / 4); */
     padding-top: 80px;
     z-index: 10;
+}
+#truth-lie-div {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 60%;
 }

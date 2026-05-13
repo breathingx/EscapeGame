@@ -63,6 +63,13 @@ let verzameldeBonusVragen = JSON.parse(localStorage.getItem("bonusVragen")) || [
 let pendingBonusVragen = [];
 let zitOpTussenPagina = false;
 
+
+let truthLieProgress = 0;
+const truthLieMaxVragen = 3;
+const truthLieVragen = ["Waar, of niet waar? \t 1", "Waar, of niet waar? \t 2", "Waar, of niet waar? \t 3"] //TODO vragen bedenken
+const boolAnswers = [true, false, true]; //TODO volgorde bedenken
+
+
 // =================================================
 // DATA
 // =================================================
@@ -513,8 +520,13 @@ function laadOpdracht() {
     }
 
 
-    document.getElementById("uitlegTekst").textContent =
-        uitlegData[team][huidigeOpdracht];
+    if (team == "aandrijving") {
+        laadOpdrachtAandrijving();
+    } else if (team == "programma") {
+        laadOpdrachtProgramma();
+    } else {
+        laadopdrachtKlankbron();
+    }
 
     document.getElementById("teamTitel").textContent = "Team: " + team.charAt(0).toUpperCase() + team.slice(1);
     document.getElementById("opdrachtNummer").textContent =
@@ -624,6 +636,76 @@ function laadOpdracht() {
     updateProgressBar();
 }
 
+function laadOpdrachtAandrijving() {
+    if (huidigeOpdracht == 2) { //truth lie inladen
+        document.getElementById("uitlegTekst").textContent = truthLieVragen[truthLieProgress];
+        document.getElementById("codeInputContainer").style.display = "none";
+        document.getElementById("actieBtn").hidden = true;
+        document.getElementById("hintContainer").style.display = "none";
+        document.getElementById("truth-lie-div").hidden = false;
+    } else {
+        document.getElementById("uitlegTekst").textContent =
+                uitlegData[team][huidigeOpdracht];
+    }
+}
+
+function laadOpdrachtProgramma() {
+    document.getElementById("uitlegTekst").textContent =
+        uitlegData[team][huidigeOpdracht];
+}
+
+function laadopdrachtKlankbron() {
+    document.getElementById("uitlegTekst").textContent =
+        uitlegData[team][huidigeOpdracht];
+}
+
+function verwerkTruthLie(isCorrect) {
+    if (isCorrect == boolAnswers[truthLieProgress]) {
+        document.getElementById("feedback").textContent = "Goed gedaan!";
+    } else {
+        document.getElementById("feedback").textContent = "Onjuist"; //TODO andere text?
+        foutPogingen += 3;
+    }
+
+    document.getElementById("ExtraContext").textContent = "TODO Extra context voor vraag " + (truthLieProgress+1);
+    document.getElementById("truth-lie-ja").disabled = true;
+    document.getElementById("truth-lie-nee").disabled = true;
+
+    document.getElementById("VolgendeTruthLie").hidden = false;
+}
+
+function updateTruthLie() {
+    truthLieProgress++;
+    document.getElementById("uitlegTekst").textContent = truthLieVragen[truthLieProgress];
+    document.getElementById("ExtraContext").textContent = "";
+    document.getElementById("feedback").textContent = "Goed gedaan!";
+    document.getElementById("VolgendeTruthLie").hidden = true;
+    document.getElementById("truth-lie-ja").disabled = false;
+    document.getElementById("truth-lie-nee").disabled = false;
+
+    if (truthLieProgress == truthLieMaxVragen) {
+        //restore original template
+        document.getElementById("codeInputContainer").style.display = "";
+        document.getElementById("hintContainer").style.display = "";
+        document.getElementById("actieBtn").hidden = false;
+        document.getElementById("truth-lie-div").style.display = "none";
+
+        //als alle truth-lie vragen verkeerd zijn beantwoord geef 0 punten voor dit gedeelte
+        if (foutPogingen == 9) {
+            foutPogingen = 10;
+        }
+
+        //TODO functie schrijven voor updaten score? ipv hier zo zetten? is nu duplicate van verwerkActie()
+        let punten = 10 - foutPogingen;
+        if (punten < 0) {
+            punten = 0;
+        }
+        score += punten;
+
+        antwoordIsCorrect = true;
+        verwerkActie();
+    }
+}
 
 function verwerkActie() {
 
