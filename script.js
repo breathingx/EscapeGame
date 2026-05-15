@@ -591,27 +591,6 @@ function laadOpdracht() {
 
     extraContent.innerHTML = "";
 
-    if (team === "klankbron" && huidigeOpdracht === 1) {
-
-        fetch("perfect-pitch/toonladder.html")
-            .then(res => res.text())
-            .then(html => {
-                extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
-
-                // CSS laden
-                const link = document.createElement("link");
-                link.rel = "stylesheet";
-                link.href = "perfect-pitch/toonladder.css";
-                document.head.appendChild(link);
-
-                // script laden
-                const script = document.createElement("script");
-                script.type = "module";
-                script.src = "perfect-pitch/toonladder.js";
-                document.body.appendChild(script);
-})
-    }
-
     document.getElementById("feedback").textContent = "";
     document.getElementById("scoreDisplay").textContent = "Score: " + score;
 
@@ -714,10 +693,34 @@ function laadOpdrachtProgramma() {
     }
 }
 
+function toonladder() {
+    fetch("perfect-pitch/toonladder.html")
+        .then(res => res.text())
+        .then(html => {
+            extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
+
+        // CSS laden
+        const link = document.createElement("link");
+        link.rel = "stylesheet";
+        link.href = "perfect-pitch/toonladder.css";
+        document.head.appendChild(link);
+
+        // script laden
+        const script = document.createElement("script");
+        script.type = "module";
+        script.src = "perfect-pitch/toonladder.js";
+        document.body.appendChild(script);
+    })
+}
 function laadopdrachtKlankbron() {
+    if (huidigeOpdracht == 1) {
+        toonladder();
+    } else {
+        document.getElementById("uitlegTekst").textContent =
+            uitlegData[team][huidigeOpdracht];
+    }
     //TODO truth-lie hierin zetten, zie laadOpdrachtAandrijving()
-    document.getElementById("uitlegTekst").textContent =
-        uitlegData[team][huidigeOpdracht];
+    
 }
 
 function verwerkTruthLie(isCorrect) {
