@@ -112,11 +112,11 @@
         statusText.textContent = `Ronde ${level} van ${maxLevel}`;
         randomval = Math.floor(Math.random() * 4)
         // if button occured twice before, pick a new button (to avoid too much repetition)
-        if (sequence.length >= 2 && randomval == sequence[-1] && randomval == sequence[-2]) {
+        if (sequence.length >= 2 && randomval == sequence[sequence.length - 1] && randomval == sequence[sequence.length-2]) {
             randomval += Math.floor(Math.random() * 3 + 1)
             randomval = randomval % 4
         } 
-        sequence.push(Math.floor(Math.random() * 4));
+        sequence.push(randomval);
         setTimeout(playSequence, 300); 
     }
 
