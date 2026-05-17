@@ -18,6 +18,8 @@
     
     const simonGame = document.getElementById('simon-game');
     const startBtn = document.getElementById('start-simon');
+    const endBtn = document.getElementById('end-simon');
+    endBtn.style.display = 'none';
     const statusText = document.getElementById('simon-status');
     
     const retryText = document.createElement('p');
@@ -32,11 +34,14 @@
     simonGame.appendChild(pointerImg);
 
     startBtn.addEventListener('click', startGame);
-
+    endBtn.addEventListener('click', nextGame);
     function startGame() {
         sequence = [];
         startBtn.style.display = 'none';
         nextLevel();
+    }
+    function nextGame() {
+        if (typeof volgendeOpdracht === "function") volgendeOpdracht();
     }
 
     btns.forEach(btn => {
@@ -144,8 +149,24 @@
 
     function endGame() {
         startBtn.style.display = 'none';
-        retryText.style.display = 'none';
-        statusText.innerHTML = `Beste score: ${bestScore}<br><br>Vul de code in om verder te gaan:<br>${winCode}</span>`;
+        endBtn.style.display = 'block';
+        if (document.getElementById('simon-retries')) {
+            document.getElementById('simon-retries').style.display = 'none';
+        }
+        
+        statusText.innerHTML = `Spel afgelopen!<br>Jouw score: ${bestScore} punten.`;
+        
         window.simon_punten = bestScore;
+        score += bestScore;
+        localStorage.setItem("score", score);
+        if (document.getElementById("scoreDisplay")) {
+            document.getElementById("scoreDisplay").textContent = "Score: " + score;
+        }
+
+        correcteAntwoorden++;
+        localStorage.setItem("correct", correcteAntwoorden);
+        if (typeof updateProgressBar === "function") {
+            updateProgressBar();
+        }
     }
 })();

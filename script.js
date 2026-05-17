@@ -503,10 +503,17 @@ if (window.location.pathname.includes("template.html")) {
 
     if (!team || !uitlegData[team]) {
         window.location.href = "home.html";
-    } else {
+    }
+    else if (huidigeOpdracht >= 6) {
+        window.location.href = "codes.html";
+    }
+    else if (correcteAntwoorden > huidigeOpdracht) {
+        toonTussenPagina();
+    }
+    else {
         laadOpdracht();
     }
-
+    
     document.addEventListener("keydown", function(event) {
         if (event.key === "Enter") {
             verwerkActie();
@@ -659,6 +666,12 @@ function laadOpdrachtAandrijving() {
 }
 
 function simon_says() {
+    document.getElementById("uitlegBlok").style.display = "none";
+    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("actieBtn").style.display = "none";
+    document.getElementById("hintBtn").style.display = "none";
+    document.getElementById("hintBlocks").style.display = "none";
+
     fetch("simon-says/simon.html")
             .then(res => res.text())
             .then(html => {
@@ -930,8 +943,9 @@ function volgendeOpdracht() {
 
     huidigeOpdracht++;
 
+    localStorage.setItem("opdracht", huidigeOpdracht);
+
     if (huidigeOpdracht < 6) {
-        localStorage.setItem("opdracht", huidigeOpdracht);
         laadOpdracht();
     } else {
         window.location.href = "codes.html";
@@ -1362,8 +1376,17 @@ if (window.location.pathname.includes("resultaat.html")) {
 
 
 window.addEventListener("DOMContentLoaded", () => {
+    
+    const continueBtn = document.getElementById("continueBtn");
+    if (continueBtn && localStorage.getItem("team") && localStorage.getItem("totalSeconds") && localStorage.getItem("score") > 0) {
+        continueBtn.style.display = "block";
+        document.getElementById("continueText").style.display = "block";
+        
+        continueBtn.addEventListener("click", () => {
+            window.location.href = "template.html";
+        });
+    }
     const antwoordInput = document.getElementById("antwoordInput");
-
     if (antwoordInput) {
         antwoordInput.focus();
 

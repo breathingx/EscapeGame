@@ -274,6 +274,21 @@ button.correct-state:hover {
     transform: scale(1.05); 
 }
 
+#continueBtn {
+    display: none;
+    background-color: black;
+    color: white;
+}
+
+#continueText {
+    display: none;
+    color: #df3c3c;
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    text-align: center;
+    max-width: 250px;
+}
+
 /* ================================================= */
 /* ================== START ======================== */
 /* ================================================= */
