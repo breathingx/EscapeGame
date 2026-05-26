@@ -59,7 +59,7 @@ btn.addEventListener("click", () => {
 
   } else {
 
-    window.location.href = `../resultaat.html?team=${team}`;
+    window.location.href = `../resultaat/resultaat.html?team=${team}`;
 
   }
 
