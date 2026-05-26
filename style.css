@@ -103,6 +103,43 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
 }
 
+/* ================================================= */
+/* =================  QR SCANNER   ================= */
+/* ================================================= */
+
+body.scanner-page {
+  justify-content: center;
+  gap: 1.5rem;
+}
+
+.scanner-wrapper {
+  width: 70vmin;
+  height: 70vmin;
+  border: 5px solid red;
+  background: #000;
+  overflow: hidden;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.scanner-wrapper video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+#canvas {
+  display: none;
+}
+
+#msg {
+  font-family: "Montserrat", sans-serif; 
+  font-size: clamp(14px, 2.5vw, 18px);
+  color: black;
+  text-align: center;
+}
+
 
 /* ================================================= */
 /* ================== HEADER ======================= */
