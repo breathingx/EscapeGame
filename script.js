@@ -467,12 +467,20 @@ function restartGame() {
 }
 
 // =================================================
+// INDEX: VIDEO
+// =================================================
+
+setTimeout(() => {
+    document.getElementById("buttons").classList.add("show");
+    document.getElementById("buttons").classList.remove("hidden");
+}, 3000); // 60000
+
+// =================================================
 // GAME INITIALISATIE
 // =================================================
 
 function startGame(gekozenTeam) {
 
-    // Reset game state
     localStorage.setItem("team", gekozenTeam);
     localStorage.setItem("opdracht", 0);
     localStorage.setItem("correct", 0);
@@ -482,11 +490,10 @@ function startGame(gekozenTeam) {
     localStorage.removeItem("bonusVragen");
     localStorage.removeItem("simon_done"); 
     localStorage.removeItem("blockly_done");
-    // Fade animatie
     document.body.classList.add("fade-out");
 
     setTimeout(() => {
-        window.location.href = "template.html";
+        window.location.href = "video/video.html?team=" + gekozenTeam + "&type=intro";
     }, 300);
 }
 
@@ -980,7 +987,7 @@ function volgendeOpdracht() {
     if (huidigeOpdracht < 6) {
         laadOpdracht();
     } else {
-        window.location.href = "codes.html";
+        window.location.href = "video/video.html?team=" + team + "&type=outro";
     }
 }
 

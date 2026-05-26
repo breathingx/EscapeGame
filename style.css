@@ -275,7 +275,6 @@ button.correct-state:hover {
 }
 
 #continueBtn {
-    display: none;
     background-color: black;
     color: white;
 }
@@ -327,6 +326,17 @@ button.correct-state:hover {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.show {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 

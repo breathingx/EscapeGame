@@ -11,9 +11,8 @@
 <div class="main-content">
     <div class="content-wrapper">
 
-        <h1 class="index-title">Muziekautomaat</h1>
+        <h1 class="index-title">Music Machines and Me</h1>
         <div class="index-subtitle">Het Teamspel</div>
-        <p>Klaar om te beginnen?</p>
 
         <div class="video-wrapper">
             <iframe 
@@ -22,14 +21,18 @@
             </iframe>
         </div>
 
-        <div class="start-button-wrapper">
-            <button onclick="gaNaarHome()">Start Spel</button>
+        <div class="start-button-wrapper hidden" id="buttons">
+            <button onclick="window.location.href='QRScanner/qrScanner.html'">
+                QR Kies je Team
+            </button>
+            <button onclick="window.location.href='home.html'">
+                Knop Kies je Team
+            </button>
         </div>
-
     </div>
 </div>
 
-<img src="logo.png" alt="Logo" class="logo">
+<img src="M3L.png" alt="Logo" class="logo">
 
 <script src="script.js"></script>
 </body>
