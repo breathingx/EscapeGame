@@ -196,10 +196,6 @@ const scoreResultaten = [
 ];
 
 
-// =================================================
-// RESULTAAT
-// =================================================
-
 
 
 function maakSlotRow(data) {
@@ -234,7 +230,6 @@ function secondenVanTijd(tijdString) {
     return parseInt(parts[0]) * 60 + parseInt(parts[1]);
 }
 
-// if (window.location.pathname.includes("resultaat/resultaat.html")) {
 
 const eindTijd = localStorage.getItem("eindTijd");
 const eindScore = parseInt(localStorage.getItem("eindScore"));
@@ -379,11 +374,6 @@ document.getElementById("scoreOnder").innerHTML =
         right: scoreOnderData.naam,
         artist: scoreOnderData.onderdeel
     });
-// }
-
-
-
-
 
 
 
