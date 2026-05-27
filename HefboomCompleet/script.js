@@ -98,13 +98,13 @@ function draw() {
   ctx.fillStyle = "#ff6800";
   ctx.fillText("arm2",(right+pivotX)/2,beamY-55);
 
-  drawArrow(left,beamY+5,left,beamY+60,"#00f280"); //fspier
+  drawArrow(left,beamY+5,left,beamY+60,"#00f280"); //fz
   ctx.fillStyle = "#00f280";
-  ctx.fillText("Fspier",left,beamY+88);
+  ctx.fillText("Fz",left,beamY+88);
 
-  drawArrow(right,beamY+5,right,beamY+60,"#ff6800"); //fzwaartekracht
+  drawArrow(right,beamY+5,right,beamY+60,"#ff6800"); //fspier
   ctx.fillStyle = "#ff6800";
-  ctx.fillText("Fz",right,beamY+88);
+  ctx.fillText("Fspier",right,beamY+88);
 
   if(projectile) {
     const age = (Date.now()-projectile.t0)/1000;
@@ -128,7 +128,7 @@ function draw() {
   ctx.setTransform(1,0,0,1,0,0);
 }
 
-function launch(){
+function launch() {
   if (launching) return;
   launching = true;
 
@@ -137,7 +137,7 @@ function launch(){
   const {left,beamY,pivotX,right} = layout();
   const arm1 = pivotX-left;
   const arm2 = right-pivotX;
-  const ratio = arm1/arm2;
+  const ratio = arm2/Math.max(arm1,1);
   const speed=140+ratio*120;
 
   projectile = {x0:left, y0:beamY-16, vx:speed, vy:-speed*0.8, t0:Date.now()};
