@@ -1,14 +1,10 @@
-<div class="minigame">
-
-  <!-- <h1>Pak zo veel mogelijk muzieknoten!</h1> -->
-
-    <div class="game-container">
+<div class="game-container">
   <div id="blocklyDiv"></div>
 
   <div class="stats-sidebar">
     <div class="stat-box">
       <span class="stat-label">Blokken</span>
-      <span id="blockCount" class="stat-value">0/11</span>
+      <span id="blockCount" class="stat-value">0/10</span>
     </div>
     <div class="stat-box">
       <span class="stat-label">Score</span>
@@ -19,12 +15,13 @@
   <div id="gameArea">
     <div id="player" style="position: absolute; z-index: 10;"><span style="display: inline-block; transform: scaleX(-1);">🚶</span></div>
   </div>
-</div>
 
-  <button onclick="runGame()">▶ SPEEL PROGRAMMA</button>
-</div>
+  <div class="action-button-wrapper" style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; min-height: 160px; margin-top: 30px; width: 100%;">
+    <button id="runBlocklyBtn" onclick="runGame()" class="run-btn">▶ SPEEL PROGRAMMA</button>
+    <button id="advance-blockly" style="display: none; background-color: #8268ff; color: black; font-size: clamp(18px, 3vw, 24px); padding: 18px 40px; width: auto;" class="run-btn">Verder</button>
+  </div>
 
-<xml id="workspaceBlocks" style="display: none">
+</div> <xml id="workspaceBlocks" style="display: none">
   <block type="start_block" x="10" y="10"></block>
 </xml>
 

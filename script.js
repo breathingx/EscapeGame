@@ -51,6 +51,7 @@ let score = 0;
 let foutPogingen = 0;
 let antwoordIsCorrect = false;
 let simon_punten = 0; 
+let blockly_punten = 0;
 
 let hintGebruiktPerVraag = 0;
 let laatsteHintTijd = 0;
@@ -454,6 +455,10 @@ const truthLieAntwoordData = {
     ]
 };
 
+
+
+
+
 // =================================================
 // NAVIGATIE
 // =================================================
@@ -462,11 +467,20 @@ function gaNaarHome() {
     window.location.href = "home.html";
 }
 
-function restartGame() {
-    localStorage.clear();
-    localStorage.removeItem("bonusVragen");
-    window.location.href = "index.html";
-}
+// function restartGame() {
+//     localStorage.clear();
+//     localStorage.removeItem("bonusVragen");
+//     window.location.href = "index.html";
+// }
+
+// =================================================
+// INDEX: VIDEO
+// =================================================
+
+setTimeout(() => {
+    document.getElementById("buttons").classList.add("show");
+    document.getElementById("buttons").classList.remove("hidden");
+}, 3000); // 60000
 
 // =================================================
 // GAME INITIALISATIE
@@ -474,7 +488,6 @@ function restartGame() {
 
 function startGame(gekozenTeam) {
 
-    // Reset game state
     localStorage.setItem("team", gekozenTeam);
     localStorage.setItem("opdracht", 0);
     localStorage.setItem("correct", 0);
@@ -482,12 +495,12 @@ function startGame(gekozenTeam) {
     localStorage.setItem("totalSeconds", 60 * 60);
 
     localStorage.removeItem("bonusVragen");
-
-    // Fade animatie
+    localStorage.removeItem("simon_done"); 
+    localStorage.removeItem("blockly_done");
     document.body.classList.add("fade-out");
 
     setTimeout(() => {
-        window.location.href = "template.html";
+        window.location.href = "video/video.html?team=" + gekozenTeam + "&type=intro";
     }, 300);
 }
 
@@ -563,6 +576,7 @@ function laadOpdracht() {
     hintGebruiktPerVraag = 0;
     laatsteHintTijd = 0;
     simon_punten = 0;
+    blockly_punten = 0;
     gebruikteHints = [];
 
     document.getElementById("hintContainer").style.display = "flex";
@@ -673,7 +687,7 @@ function veranderMultChoiceElementen(vraag, MultChoiceOpties) {
 function inladenTruthLieElementen() {
     document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
     document.getElementById("codeInputContainer").style.display = "none";
-    document.getElementById("actieBtn").hidden = true;
+    document.getElementById("actieBtn").style.display = "none";
     document.getElementById("hintContainer").style.display = "none";
     document.getElementById("truth-lie-div").hidden = false;
     document.getElementById("truth-lie-ja").hidden = false;
@@ -812,6 +826,11 @@ function simon_says() {
 }
 
 function blockly() {
+    document.getElementById("uitlegBlok").style.display = "none";
+    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("actieBtn").style.display = "none";
+    document.getElementById("hintBtn").style.display = "none";
+    document.getElementById("hintBlocks").style.display = "none";
     fetch("blockly/blockly.html")
         .then(res => res.text())
         .then(html => {
@@ -918,7 +937,7 @@ function verwerkTruthLie(isCorrect) {
 function updateTruthLie() {
     truthLieProgress++;
     document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
-    document.getElementById("feedback").textContent = "Goed gedaan!";
+    document.getElementById("feedback").textContent = "";
     document.getElementById("VolgendeTruthLie").hidden = true;
     document.getElementById("truth-lie-ja").disabled = false;
     document.getElementById("truth-lie-nee").disabled = false;
@@ -927,7 +946,7 @@ function updateTruthLie() {
         //restore original template
         document.getElementById("codeInputContainer").style.display = "";
         document.getElementById("hintContainer").style.display = "";
-        document.getElementById("actieBtn").hidden = false;
+        document.getElementById("actieBtn").style.display = "block";
         document.getElementById("truth-lie-div").style.display = "none";
 
         //aantal fouten {0, 1, 2, 3, 4, 5, 6} geeft zoveel punten: {10, 9, 8, 6, 4, 2, 0}
@@ -949,6 +968,27 @@ function updateTruthLie() {
 }
 
 function verwerkActie() {
+
+    if (zitOpTussenPagina) {
+
+        pendingBonusVragen.forEach(vraag => {
+            verzameldeBonusVragen.push({
+                vraag: vraag.vraag,
+                antwoord: vraag.antwoord,
+                gehaald: false
+            });
+        });
+
+        localStorage.setItem(
+            "bonusVragen",
+            JSON.stringify(verzameldeBonusVragen)
+        );
+
+        zitOpTussenPagina = false;
+        volgendeOpdracht();
+
+        return;
+    }
 
     if (antwoordIsCorrect) {
 
@@ -995,6 +1035,8 @@ function verwerkActie() {
         let punten = 10 - foutPogingen;
         if (team === "programma" && huidigeOpdracht === 5) {
             punten = window.simon_punten
+        } else if (team === "programma" && huidigeOpdracht === 4) {
+            punten = window.blockly_punten || 0;
         }
         if (punten < 0) punten = 0;
 
@@ -1056,6 +1098,7 @@ function toonTussenPagina() {
 
     document.getElementById("codeInputContainer").style.display = "none";
     document.getElementById("feedback").textContent = "";
+    document.getElementById("actieBtn").style.display = "block";
     document.getElementById("actieBtn").textContent = "Volgende opdracht";
     document.getElementById("hintContainer").style.display = "none";
 }
@@ -1071,6 +1114,9 @@ function volgendeOpdracht() {
     } else {
         window.location.href = "codes.html";
     }
+    // } else {
+    //     window.location.href = "video/video.html?team=" + team + "&type=outro";
+    // }
 }
 
 
@@ -1412,8 +1458,9 @@ let correcteCodes = [false, false];
 
 function controleerCode(index) {
 
-    const team = localStorage.getItem("team");
 
+    const team = localStorage.getItem("team");
+    
     const alleTeams = ["aandrijving", "programma", "klankbron"];
     const andereTeams = alleTeams.filter(t => t !== team);
 
@@ -1466,7 +1513,7 @@ function controleerCode(index) {
                 minutes + ":" + seconds
             );
 
-            window.location.href = "resultaat.html";
+            window.location.href = "video/video.html?team=" + team + "&type=outro";
         }
 
     } else {
@@ -1474,21 +1521,6 @@ function controleerCode(index) {
         feedback.textContent = "Onjuist";
     }
 }
-
-// =================================================
-// RESULTAAT
-// =================================================
-
-if (window.location.pathname.includes("resultaat.html")) {
-
-    const eindTijd = localStorage.getItem("eindTijd");
-    const eindScore = localStorage.getItem("eindScore");
-
-    document.getElementById("eindtijd").textContent = eindTijd;
-    document.getElementById("eindscore").textContent = eindScore;
-
-}
-
 
 
 // =================================================

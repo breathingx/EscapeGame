@@ -275,7 +275,6 @@ button.correct-state:hover {
 }
 
 #continueBtn {
-    display: none;
     background-color: black;
     color: white;
 }
@@ -327,6 +326,17 @@ button.correct-state:hover {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+}
+
+.hidden {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.show {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 
@@ -621,9 +631,7 @@ button.correct-state:hover {
     display: flex;
     justify-content: space-between;
     align-items: center;
-
     margin-top: 8px;
-
     font-family: "Right Grotesk Medium";
     font-size: 20px;
 }
@@ -717,45 +725,6 @@ button.correct-state:hover {
     padding: 0 12px;
     box-sizing: border-box;
 }
-
-
-/* ================================================= */
-/* ================== RESULTAAT PAGINA ============= */
-/* ================================================= */
-
-#resultaatContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-    text-align: center;
-    min-height: 70vh;
-    justify-content: center;
-}
-
-#resultaatTitel {
-    font-family: "Right Grotesk Compact";
-    font-size: clamp(28px, 6vw, 60px);
-    margin-top: 18px;
-    margin-bottom: -18px;
-}
-
-#resultaatSubtitel {
-    font-family: "Right Grotesk Light";
-    font-size: clamp(18px, 4vw, 28px);
-}
-
-.resultaatBlok {
-    width: 100%;
-    border: 4px solid black;
-    padding: 20px;
-}
-
-.resultaatBlok h3 {
-    font-size: clamp(20px, 5vw, 36px);
-    margin: 10px 0 0 0;
-}
-
 
 
 /* ================================================= */

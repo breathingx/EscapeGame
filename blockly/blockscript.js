@@ -132,12 +132,13 @@ function updatePlayerVisuals() {
   const player = document.getElementById('player');
   if (!area || !player) return;
 
+  area.style.setProperty('height', area.offsetWidth + 'px', 'important');
+  
   const currentWidth = area.clientWidth;
-  if (currentWidth === 0) return; // Safety check
+  if (currentWidth === 0) return; 
 
   const step = currentWidth / 10;
 
-  // 1. Position Player
   player.style.width = step + 'px';
   player.style.height = step + 'px';
   player.style.fontSize = (step * 0.7) + 'px';
@@ -160,6 +161,8 @@ function renderLevel() {
   const area = document.getElementById('gameArea');
   const player = document.getElementById('player');
   if (!area || !player) return;
+
+  area.style.setProperty('height', area.offsetWidth + 'px', 'important');
 
   const currentWidth = area.clientWidth;
   if (currentWidth === 0) return;
@@ -211,8 +214,7 @@ function playNextMove() {
   if (!isPlaying || actionQueue.length === 0) {
     isPlaying = false;
     clearTimeout(moveTimer);
-    // Final feedback when the program ends
-    setTimeout(() => alert(`Programma voltooid! Totale score: ${currentScore}`), 200);
+    setTimeout(endGameBlockly, 200);
     return;
   }
 
@@ -227,17 +229,14 @@ function playNextMove() {
     else if (facing === 270) nextY--;
 
     if (nextX >= 0 && nextX < 10 && nextY >= 0 && nextY < 10) {
-      // Check collision with the master grid walls
       if (levelGrid[nextY][nextX] !== 1) {
         tileX = nextX;
         tileY = nextY;
         
-        // SCORING LOGIC: Check the working grid for goals
         if (workingGrid[tileY][tileX] === 2) {
-          currentScore += 10; // Add 10 points
-          workingGrid[tileY][tileX] = 0; // "Collect" it so it's gone
+          currentScore += 2;
+          workingGrid[tileY][tileX] = 0; 
           
-          // Visually hide the specific flag
           let goalElement = document.getElementById(`goal-${tileX}-${tileY}`);
           if (goalElement) goalElement.style.opacity = '0';
           
@@ -254,11 +253,28 @@ function playNextMove() {
 }
 
 function runGame() {
-  let count = workspace.getAllBlocks(false).length - 1;
-  if (count > maxBlocks) {
-    alert(`Te veel blokken! Gebruik maximaal ${maxBlocks}.`);
-    return;
+  let runBtn = document.getElementById('runBlocklyBtn');
+  let advanceBtn = document.getElementById('advance-blockly');
+  
+  // Check if the button is currently in the "Retry" state
+  let isRetry = runBtn && runBtn.innerText.includes("OPNIEUW");
+
+  if (isRetry) {
+    // Switch the button back to Play mode and hide the Verder button
+    runBtn.innerText = "▶ SPEEL PROGRAMMA";
+    if (advanceBtn) advanceBtn.style.display = 'none';
+  } else {
+    // Only check block limits if they are actually trying to run the code
+    let count = workspace.getAllBlocks(false).length - 1;
+    if (count > maxBlocks) {
+      alert(`Te veel blokken! Gebruik maximaal ${maxBlocks}.`);
+      return;
+    }
+    // Hide advance button just in case they click play quickly
+    if (advanceBtn) advanceBtn.style.display = 'none'; 
   }
+
+  // --- This block cleans the board and resets everything back to 0 ---
   clearTimeout(moveTimer);
   isPlaying = false;
   actionQueue = [];
@@ -267,17 +283,28 @@ function runGame() {
   document.querySelectorAll('.goal').forEach(g => g.style.opacity = '1');
   workingGrid = levelGrid.map(row => [...row]);
   tileX = startX; tileY = startY; playerAngle = 0;
+  
   let player = document.getElementById('player');
   player.style.transition = 'none';
   updatePlayerVisuals();
   player.offsetHeight; 
   player.style.transition = 'transform 0.4s ease';
+
+  // If they only clicked Retry, stop here so they can edit their blocks!
+  if (isRetry) {
+    return; 
+  }
+
+  // --- Otherwise, read the blocks and run the new code! ---
   let code = javascript.javascriptGenerator.workspaceToCode(workspace);
   try { eval(code); } catch (e) { console.error(e); }
 
   if (actionQueue.length > 0) {
     isPlaying = true;
     playNextMove();
+  } else {
+    // If they click play with an empty workspace, instantly end the run
+    setTimeout(endGameBlockly, 200);
   }
 }
 
@@ -288,12 +315,13 @@ function initBlockly() {
     console.error("Toolbox element not found!");
     return;
   }
-  let isMobile = window.innerWidth <= 800;
+
+  blocklyDiv.innerHTML = '';
   workspace = Blockly.inject('blocklyDiv', {
     toolbox: toolboxElement,
     trashcan: true,
-    horizontalLayout: isMobile, 
-    toolboxPosition: isMobile ? 'bottom' : 'start',
+    horizontalLayout: true, 
+    toolboxPosition: 'start',
     scrollbars: true
   });
   const workspaceBlocksElement = document.getElementById('workspaceBlocks');
@@ -323,11 +351,90 @@ function initBlockly() {
   window.addEventListener('resize', function() {
     if (workspace) {
         Blockly.svgResize(workspace);
-        updatePlayerVisuals(); 
+        updatePlayerVisuals();
+        renderLevel();
     }
-});
+  });
+  
+  setTimeout(() => {
+      if (workspace) {
+          Blockly.svgResize(workspace);
+          updatePlayerVisuals();
+          renderLevel();
+      }
+  }, 250);
 }
 
-window.onload = initBlockly;
+let bestBlocklyScore = 0;
 
+function endGameBlockly(bestscore=bestBlocklyScore) {
+    let runBtn = document.getElementById('runBlocklyBtn');
+    let advanceBtn = document.getElementById('advance-blockly');
+    
+    // Save their best attempt
+    if (currentScore > bestBlocklyScore) {
+        bestBlocklyScore = currentScore;
+    }
+
+    if (currentScore >= 20) {
+        if (runBtn) runBtn.style.display = 'none'; 
+        if (advanceBtn) {
+            advanceBtn.style.display = 'block';
+            advanceBtn.innerText = "Verder (Max Score!)";
+        }
+    } else {
+        if (runBtn) {
+            runBtn.style.display = 'block';
+            runBtn.innerText = "↻OPNIEUW PROBEREN";
+        }
+        if (advanceBtn) {
+            advanceBtn.style.display = 'block';
+            advanceBtn.innerText = "Verder";
+        }
+    }
+
+    if (advanceBtn && !advanceBtn.hasAttribute("data-bound")) {
+        advanceBtn.setAttribute("data-bound", "true");
+        advanceBtn.addEventListener("pointerdown", (e) => {
+            if (e.cancelable) e.preventDefault();
+            submitBlocklyScore();
+        }, { passive: false });
+    }
+}
+
+function submitBlocklyScore() {
+    if (localStorage.getItem("blockly_done") !== "true") {
+        localStorage.setItem("blockly_done", "true");
+ 
+        window.blockly_punten = bestBlocklyScore;
+
+        if(typeof score !== 'undefined') {
+            score += bestBlocklyScore;
+            localStorage.setItem("score", score);
+            if (document.getElementById("scoreDisplay")) {
+                document.getElementById("scoreDisplay").textContent = "Score: " + score;
+            }
+
+            correcteAntwoorden++;
+            localStorage.setItem("correct", correcteAntwoorden);
+            if (typeof updateProgressBar === "function") {
+                updateProgressBar();
+            }
+        }
+    }
+
+    // Move to the next screen
+    if (typeof huidigeOpdracht !== 'undefined' && huidigeOpdracht < 5) {
+        if (typeof toonTussenPagina === "function") toonTussenPagina();
+    } else {
+        if (typeof volgendeOpdracht === "function") volgendeOpdracht();
+    }
+}
+if (localStorage.getItem("blockly_done") === "true") {
+  if (typeof huidigeOpdracht !== 'undefined' && huidigeOpdracht < 5) {
+      if (typeof toonTussenPagina === "function") toonTussenPagina();
+  } else {
+      if (typeof volgendeOpdracht === "function") volgendeOpdracht();
+  }
+}
 

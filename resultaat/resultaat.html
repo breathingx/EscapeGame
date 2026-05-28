@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultaat</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="resultaat.css">
+</head>
+<body>
+
+<div class="main-content">
+
+    <div class="content-wrapper resultaat-wrapper">
+
+        <h1 class="resultaat-title">Jullie Resultaat</h1>
+        <p class="resultaat-subtitle">
+            Hoe hebben jullie het gedaan?
+        </p>
+
+
+        <div class="leaderboard-blok">
+
+            <p class="leaderboard-title" id="tijdSubtitle"></p>
+        
+            <div class="slotmachine">
+
+                <div class="slot-row faded" id="tijdBoven"></div>
+
+                <div class="slot-row active">
+                    <div class="slot-left" id="eindtijd"></div>
+                    <div class="slot-divider"></div>
+                    <div class="slot-right" id="tijdMuziek"></div>
+                </div>
+
+                <div class="slot-row faded" id="tijdOnder"></div>
+
+            </div>
+        </div>
+
+
+        <div class="leaderboard-blok">
+
+            <p class="leaderboard-title" id="scoreSubtitle"></p>
+
+            <div class="slotmachine">
+
+                <div class="slot-row faded" id="scoreBoven"></div>
+
+                <div class="slot-row active">
+                    <div class="slot-left" id="eindscore"></div>
+                    <div class="slot-divider"></div>
+                    <div class="slot-right" id="scoreInstrument"></div>
+                </div>
+
+                <div class="slot-row faded" id="scoreOnder"></div>
+
+            </div>
+        </div>
+
+        <button onclick="restartGame()">
+            Speel opnieuw
+        </button>
+
+    </div>
+</div>
+
+<img src="../M3L.png" alt="Logo" class="logo">
+
+<script src="resultaat.js"></script>
+
+</body>
+</html>
