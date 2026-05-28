@@ -825,3 +825,26 @@ button.correct-state:hover {
     justify-content: center;
     width: 60%;
 }
+
+.mc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.MC-btn {
+    min-width: 150px;
+    min-height: 150px;
+    border: 2px solid black;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.MC-btn.green { background-color: #00f280; }
+.MC-btn.red { background-color: #ff3333; }
+.MC-btn.yellow { background-color: #ffd700; }
+.MC-btn.blue { background-color: #3388ff; }

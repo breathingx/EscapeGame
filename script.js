@@ -67,6 +67,9 @@ let zitOpTussenPagina = false;
 let truthLieProgress = 0;
 const truthLieMaxVragen = 6;
 
+let currentMultChoiceAnswer = 0;
+let currentMultChoiceIndex = 0;
+
 // =================================================
 // DATA
 // =================================================
@@ -576,7 +579,6 @@ function laadOpdracht() {
         antwoordInput.disabled = false;
     }
 
-
     if (team == "aandrijving") {
         laadOpdrachtAandrijving();
     } else if (team == "programma") {
@@ -631,6 +633,43 @@ function laadOpdracht() {
     updateProgressBar();
 }
 
+
+
+function inladenMultChoiceElementen() {
+    //TODO inladen/uitladen MC elementen
+    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("actieBtn").hidden = true;
+    document.getElementById("hintContainer").style.display = "none";
+    document.getElementById("MC-vragen").hidden = false;
+
+    document.getElementById("MC-0").hidden = false;
+    document.getElementById("MC-1").hidden = false;
+    document.getElementById("MC-2").hidden = false;
+    document.getElementById("MC-3").hidden = false;
+
+    currentMultChoiceAnswer = 0;
+    currentMultChoiceIndex = 0;
+}
+
+function uitladenMultChoiceElementen() {
+    document.getElementById("codeInputContainer").style.display = "";
+    document.getElementById("actieBtn").hidden = false;
+    document.getElementById("hintContainer").style.display = "";
+    document.getElementById("MC-vragen").hidden = true;
+
+    document.getElementById("MC-0").hidden = true;
+    document.getElementById("MC-1").hidden = true;
+    document.getElementById("MC-2").hidden = true;
+    document.getElementById("MC-3").hidden = true;
+}
+
+function veranderMultChoiceElementen(vraag, MultChoiceOpties) {
+    document.getElementById("uitlegTekst").textContent = vraag;
+    for (let i = 0; i < 4; i++) {
+        document.getElementById(`MC-${i}`).innerText = MultChoiceOpties[i];
+    }
+}
+
 function inladenTruthLieElementen() {
     document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
     document.getElementById("codeInputContainer").style.display = "none";
@@ -641,7 +680,86 @@ function inladenTruthLieElementen() {
     document.getElementById("truth-lie-nee").hidden = false;
 }
 
-function laadOpdrachtAandrijving() {
+
+function resetBtns() {
+    btns.forEach((btn, i) => {
+        const fresh = btn.cloneNode(true);
+        btn.replaceWith(fresh);
+        btns[i] = fresh;
+    });
+}
+
+function setupMultChoiceButtons(vragen, MultChoiceOpties, multChoiceAntwoorden, onComplete) {
+    let currentIndex = 0;
+    let correctBeantwoord = 0;
+
+    veranderMultChoiceElementen(vragen[0], MultChoiceOpties);
+
+    const handler = (clickedIndex) => {
+        if (clickedIndex === multChoiceAntwoorden[currentIndex]) {
+            console.log("nice"); //TODO remove
+            correctBeantwoord++;
+        } else {
+            console.log("rip"); //TODO remove
+        }
+
+        currentIndex++;
+
+        if (currentIndex < vragen.length) {
+            veranderMultChoiceElementen(vragen[currentIndex], MultChoiceOpties);
+        } else {
+            console.log("klaar met MC"); //TODO remove
+            uitladenMultChoiceElementen();
+            onComplete(correctBeantwoord);
+        }
+    };
+
+    const btns = [
+        document.getElementById("MC-0"),
+        document.getElementById("MC-1"),
+        document.getElementById("MC-2"),
+        document.getElementById("MC-3")
+    ];
+
+    btns.forEach((btn, index) => {
+        btn.addEventListener("pointerdown", () => handler(index), { passive: false });
+    });
+}
+
+function automataBouw() {
+    inladenMultChoiceElementen();
+
+    const vragen = [ //TODO invullen met echte vragen
+        "Vraag 1",
+        "Vraag 2",
+        "Vraag 3",
+        "Vraag 4"
+    ]
+
+    const MultChoiceOpties = [ //TODO invullen met echte antwoorden
+        "A", "B", "C", "D"
+    ]
+
+    const multChoiceAntwoorden = [0, 1, 0, 3]; //TODO correcte antwoorden
+    currentMultChoiceAnswer = multChoiceAntwoorden[0];
+
+    setupMultChoiceButtons(vragen, MultChoiceOpties, multChoiceAntwoorden, (correctBeantwoord) => {
+        console.log(`Score: ${correctBeantwoord}/${vragen.length}`);  //TODO remove
+
+        if (correctBeantwoord <= 2) {
+            score += 3* correctBeantwoord;
+        } else if (correctBeantwoord == 3) {
+            score += 8;
+        } else {
+            score += 10;
+        }
+
+        antwoordIsCorrect = true;
+        verwerkActie();
+    });
+}
+
+function laadOpdrachtAandrijving(eersteMultChoiceVraag) {
     /* volgorde spellen:
         naam                         fysiek/code?                       merged into main voor code?             af?
     0) tandwielenpuzzel                 fysiek                                  -                               mostly, vraag/antwoord tekst aanpassen, op juiste plek zetten
@@ -656,7 +774,11 @@ function laadOpdrachtAandrijving() {
 
     todo, maybe simon says naar hier verplaatsen zodat er hier ook een game is
     */
+
     switch (huidigeOpdracht) {
+        case 0: //TODO ander nummer voor deze opdracht
+            automataBouw();
+            break;
         case 4:
             inladenTruthLieElementen();
             break;
@@ -944,8 +1066,7 @@ function volgendeOpdracht() {
     huidigeOpdracht++;
 
     localStorage.setItem("opdracht", huidigeOpdracht);
-
-    if (huidigeOpdracht < 6) {
+    if (huidigeOpdracht < 6) { //TODO aanpassen zodat er meer dan 6 opdrachten mogelijk zijn
         laadOpdracht();
     } else {
         window.location.href = "codes.html";

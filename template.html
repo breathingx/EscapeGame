@@ -49,6 +49,15 @@
         <button id="truth-lie-nee" onclick="verwerkTruthLie(false)" hidden="true">Niet waar</button>
         <button id="VolgendeTruthLie" onclick="updateTruthLie()" hidden="true">Volgende</button>
     </div>
+    <div id="MC-vragen" hidden="true">
+        <div class="mc-grid">
+            <!-- TODO kies betere kleuren? -->
+            <div class="MC-btn green" id="MC-0" data-index="0" hidden="true"></div>
+            <div class="MC-btn red" id="MC-1" data-index="1" hidden="true"></div>
+            <div class="MC-btn yellow" id="MC-2" data-index="2" hidden="true"></div>
+            <div class="MC-btn blue" id="MC-3" data-index="3" hidden="true"></div>
+        </div>
+    </div>
 
     <button id="actieBtn" onclick="verwerkActie()">Controleer</button>
     <p id="feedback"></p>
