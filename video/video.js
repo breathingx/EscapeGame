@@ -55,7 +55,7 @@ btn.addEventListener("click", () => {
 
   if (type === "intro") {
 
-    window.location.href = "../template.html";
+    window.location.href = `../uitleg/uitleg.html?type=team&team=${team}`;
 
   } else {
 
