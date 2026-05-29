@@ -293,9 +293,9 @@ button.correct-state:hover {
 /* ================================================= */
 
 .index-title {
-    font-family: "Right Grotesk Compact";
+    font-family: "Right Grotesk Medium";
     margin-bottom: var(--scale);
-    font-size: clamp(28px, 6vw, 64px);
+    font-size: clamp(32px, 7vw, 72px);
     text-align: center;
 }
 
@@ -337,6 +337,18 @@ button.correct-state:hover {
 .show {
   opacity: 1;
   pointer-events: auto;
+}
+
+.uitleg-tekst {
+    max-width: 700px;
+    margin: 40px auto;
+    text-align: center;
+    font-size: 20px;
+    line-height: 1.7;
+}
+
+.uitleg-tekst p {
+    margin-bottom: 24px;
 }
 
 

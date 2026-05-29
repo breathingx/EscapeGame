@@ -154,10 +154,52 @@ const tijdResultaten = [
         artiest: "Dream Theater",
         tijd: "29:48"
     }
+    ,
+    {
+        naam: "Contact",
+        artiest: "Tim",
+        tijd: "55:00"
+    },
+    {
+        naam: "Scrum",
+        artiest: "Rahul",
+        tijd: "56:00"
+    },
+    {
+        naam: "Product",
+        artiest: "Rens",
+        tijd: "57:00"
+    },
+    {
+        naam: "Notulen",
+        artiest: "Dolf",
+        tijd: "58:00"
+    },
+    {
+        naam: "Developer",
+        artiest: "Filip",
+        tijd: "59:00"
+    },
+    {
+        naam: "Extra",
+        artiest: "Annas",
+        tijd: "60:00"
+    }
 ];
 
 
 const scoreResultaten = [
+
+
+    { naam: "Fluit", onderdeel: "Gaten", aantal: 0 },
+    { naam: "Klarinet", onderdeel: "Kleppen", aantal: 5 },
+    { naam: "Saxofoon", onderdeel: "Kleppen", aantal: 10 },
+    { naam: "Accordeon", onderdeel: "Knoppen", aantal: 15 },
+    { naam: "Xylofoon", onderdeel: "Staven", aantal: 20 },
+    { naam: "Drumkit", onderdeel: "Onderdelen", aantal: 25 },
+    { naam: "Synthesizer", onderdeel: "Toetsen", aantal: 30 },
+    { naam: "Carillon", onderdeel: "Klokken", aantal: 35 },
+
     { naam: "Piano", onderdeel: "Toetsen", aantal: 40 },
     { naam: "Orgel", onderdeel: "Pijpen", aantal: 45 },
     { naam: "Harp", onderdeel: "Snaren", aantal: 50 },
