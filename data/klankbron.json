@@ -1,0 +1,198 @@
+{
+    "opdrachten": [
+        {
+            "type": "fysiek",
+
+            "uitleg": "Om de klankbron van de muziekmachine terug te vinden hebben jullie eerst wat muzikale kennis nodig.\nWe beginnen bij de basis...\nZoek in de ruimte naar een ladder en open de koffer\nKun jij dit omzetten in cijfers?\nTIFALASO",
+
+            "antwoord": "KLA111",
+
+            "hints": [
+                "De letters op de xylofoon en de ladder betekenen niet hetzelfde… maar horen wel bij elkaar.",
+                "Zoek de volgorde van laag naar hoog en probeer de systemen te koppelen."
+            ],
+
+            "tussenPagina": {
+                "tekst": "Zoek de toonladder?",
+
+                "bonus": [
+                    {
+                        "vraag": "Hoeveel theepotten heb je geteld in de tentoonstelling?",
+                        "antwoord": "????"
+                    }
+                ]
+            }
+        },
+
+        {
+            "type": "game",
+
+            "uitleg": "Nu je snapt hoe de westerse toonladder werkt kun je hem gaan zingen!\nRaak de juiste tonen met je stem  zodat je door kan naar de volgende opdracht.",
+
+            "antwoord": "KLA222",
+
+            "hints": [
+                "Als je hoog zingt, gaat het balletje omhoog. Als je laag zingt, gaat het omlaag.",
+                "Gebruik de xylofoon om de tonen te oefenen en zing ze daarna na."
+            ],
+
+            "tussenPagina": {
+                "tekst": "ga naar?????",
+
+                "bonus": [
+                    {
+                        "vraag": "Hoeveel kilo weegt de grootste klok in de Domtoren?",
+                        "antwoord": "8227"
+                    }
+                ]
+            }
+        },
+
+        {
+            "type": "game",
+
+            "uitleg": "Naast echte instrumenten zitten er ook klanken verstopt in objecten waarvan je het niet verwacht.\nLuister goed en zoek in de tentoonstelling waar elk geluid vandaan komt.",
+
+            "antwoord": "KLA333",
+
+            "hints": [
+                "?????",
+                "?????"
+            ],
+
+            "tussenPagina": {
+                "tekst": "ga naar?????",
+
+                "bonus": [
+                    {
+                        "vraag": "Welk instrument vindt zijn oorsprong in Australië?",
+                        "antwoord": "digeridoo"
+                    }
+                ]
+            }
+        },
+
+        {
+            "type": "game",
+
+            "uitleg": "De dief heeft de melodie uit de machine gehaald en ergens in het museum verstopt.\nEr gaat een gerucht dat de melodie is opgebroken en verscholen ligt in... stukken fruit!\nZoek het fruit in het museum én in de koffer.\nLuister naar de fragmenten en ontrafel per stuk een driecijferige code. Los daarna deze som op:",
+
+            "antwoord": "684",
+
+            "hints": [
+                "Je hoeft niet exact dezelfde fruitcombinatie te draaien. Luister vooral naar de instrumenten, het ritme en de sfeer om te herkennen welk nummer bij welk fruit past.",
+                "Koppel eerst één muziekfragment aan één fruitsoort"
+            ],
+
+            "tussenPagina": {
+                "tekst": "ga naar?????",
+
+                "bonus": [
+                    {
+                        "vraag": "Vul in:\nRitme = __________ + __________ + ___________",
+                        "antwoord": "maatsoort + accent + tempo"
+                    }
+                ]
+            }
+        },
+
+        {
+            "type": "fysiek",
+
+            "uitleg": "Geluid kun je niet alleen horen, maar ook zien als golfvorm.\nDe dief heeft een geheime aanwijzing verstopt in een muziekstuk hier uit het museum.\nKijk in de koffer\nKun jij ontrafelen welke geheime aanwijzingen verborgen zit in de waveforms?",
+
+            "antwoord": "PATSBOEM",
+
+            "hints": [
+                "Leg het vel over de waveform tijdlijn. Herken de letters",
+                "Je kan de afzonderlijke letters herkennen; er zitten streepjes tussen in de waveform tijdlijn."
+            ],
+
+            "tussenPagina": {
+                "tekst": "Ga naar de plek waar boem en pats elkaar afwisselen…",
+
+                "bonus": [
+                    {
+                        "vraag": "Hoe noem je de bekendste toonladder in het Westen?",
+                        "antwoord": "diatonische toonladder"
+                    }
+                ]
+            }
+        },
+
+        {
+            "type": "fysiek",
+
+            "uitleg": "Een muziekmachine heeft meer dan alleen een melodie…\nZonder ritme valt alles stil.\nOp de console staan 3 rode knoppen\n(links → rechts).\nElke knop hoort bij een voorbeeld fragment.\nLuister goed en tel:",
+
+            "antwoord": "365",
+
+            "hints": [
+                "Tel per knop steeds maar één soort geluid.",
+                "Naast luisteren, kun je het ook visueel zien."
+            ],
+
+            "tussenPagina": {
+                "tekst": "ga naar?????",
+
+                "bonus": [
+                    {
+                        "vraag": "Hoeveel porcelaine borden zitten er in de piano van Jelle Mastenbroek?",
+                        "antwoord": "?????"
+                    }
+                ]
+            }
+        },
+
+        {
+            "type": "game",
+
+            "uitleg": "Ook zelfspelende muziekmachines moeten gestemd worden. Tijd om te leren hoe dat werkt!\nStem het instrument in de koffer met hulp van de app.\nStem de snaren door te draaien aan de knoppen.",
+
+            "antwoord": "CDEFGAB",
+
+            "hints": [
+                "????",
+                "????"
+            ],
+
+            "tussenPagina": {
+                "tekst": "ga naar?????",
+
+                "bonus": [
+                    {
+                        "vraag": "Hoeveel orgelpijpen heeft het grote kerkorgel in het museum?",
+                        "antwoord": "?????"
+                    }
+                ]
+            }
+        },
+
+        {
+            "type": "fysiek",
+
+            "uitleg": "Hier in MUSIC kun je verschillende klankbronnen vinden.\nEén daarvan laat het carillon tot leven komen… maar welke?\nGebruik de kleurcode en speel het lied:",
+
+            "antwoord": "Wilhelmus",
+
+            "hints": [
+                "Let op het begin: De eerste noten klinken misschien als iets wat je al heel vaak hebt gehoord… vooral in Nederland.",
+                "Dit lied is geen poplied, maar een bekend Nederlands historisch lied dat veel mensen kennen."
+            ],
+
+            "tussenPagina": {
+                "tekst": "ga naar?????",
+
+                "bonus": [
+                    {
+                        "vraag": "Hoeveel orgelpijpen heeft het grote kerkorgel in het museum?",
+                        "antwoord": "3700"
+                    }
+                ]
+            }
+        }
+
+
+
+    ]
+}

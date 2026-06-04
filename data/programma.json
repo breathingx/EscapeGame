@@ -1,0 +1,198 @@
+{
+    "opdrachten": [
+        {
+            "type": "scan",
+
+            "uitleg": "De programmadrager vertelt de machine wat hij moet spelen.\nMuziek wordt omgezet in een code die op een drager staat geprogrammeerd.\nWelke programmadragers kun je vinden in de tentoonstelling?\nGebruik de kubussen uit de koffer en bouw 1 grote kubus.\nAan elke kant staat een manier om code op te slaan.\nAlleen de juiste bouw opent de volgende opdracht.",
+
+            "antwoord": "PRO111",
+
+            "hints": [
+                "Kijk naar de verschillende programmadragers in de tentoonstelling.",
+                "Elke zijde van de kubus hoort bij één programmadrager. "
+            ],
+
+            "tussenPagina": {
+                "tekst": "Loop naar????",
+
+                "bonus": [
+                    {
+                        "vraag": "Hoeveel verschillende melodieën kunnen er op 1 cilinder worden genoteerd? ",
+                        "antwoord": "12"
+                    }
+                ]
+            }
+        },
+
+        {
+            "type": "fysiek",
+
+            "uitleg": "Orgelboeken vertellen aan het orgel welke noten ze wanneer moeten spelen.\n Je kunt de gaten in een orgelboek vergelijken met de 1-en en 0-en van een computer\nOm een deel van de code van de verdwenen programmadrager te achterhalen, heb je een orgelboek nodig.\nKijk in de koffer.\nPak de juiste pagina van het orgelboek en probeer te achterhalen!",
+
+            "antwoord": "1948",
+
+            "hints": [
+                "Leg de vellen precies  over de tekst",
+                "Alleen de juiste gaten laten woorden zien. "
+            ],
+
+            "tussenPagina": {
+                "tekst": "Loop naar????",
+
+                "bonus": [
+                    {
+                        "vraag": "Hoeveel verschillende programmadragers zijn er te zien in deze tentoonstelling?",
+                        "antwoord": "5"
+                    }
+                ]
+            }
+        },
+
+        {
+            "type": "game:blockly",
+
+            "uitleg": "Een programma is een stappenplan. Muziekmachines weten dankzij het programma wat ze moeten spelen.\nTijd om te leren hoe je zo’n stappenplan zelf maakt!\nBouw met blokken een programma en vind de juiste weg terug.",
+
+            "antwoord": "PRO333",
+
+            "hints": [
+                "Kijk goed naar het doel van de route.",
+                "Soms moet je een stap herhalen."
+            ],
+
+            "tussenPagina": {
+                "tekst": "Ga naar de programmeerbare muziekmachine.",
+
+                "bonus": [
+                    {
+                        "vraag": "Waarmee werd in het ‘Musikalisches Würfelspiel’ muziek gecomponeerd?",
+                        "antwoord": "dobbelstenen"
+                    }
+                ]
+            }
+        },
+
+        {
+            "type": "fysiek",
+
+            "uitleg": "Je hebt net geleerd hoe een stappenplan werkt: de basis van programmeren.\nNu ga je zelf een echte muziekmachine programmeren!\nMet pinnetjes bepaal je geluid of stilte.\nVind de code in de koffer en zet de pinnetjes op zes rijen precies hetzelfde omhoog of omlaag.\nKraak jij de code?",
+
+            "antwoord": "PRO444",
+
+            "hints": [
+                "Zet eerst alles op stil om goed te kunnen te luisteren. ",
+                "Elke rij staat voor een ander instrument."
+            ],
+
+            "tussenPagina": {
+                "tekst": "ga naar?????",
+
+                "bonus": [
+                    {
+                        "vraag": "Hoe heet de oudste programmadrager?",
+                        "antwoord": "Speeltrommel"
+                    }
+                ]
+            }
+        },
+
+        {
+            "type": "game:truefals",
+
+            "uitleg": "Jullie weten al veel over programmeren. Tijd om die kennis te testen!\nBeantwoord de vragen met waar of niet waar. Elke keuze levert een 1 of 0 op. Samen vormen de antwoorden een geheime code.",
+
+            "antwoord": "PRO555",
+
+            "hints": [
+                "idk",
+                "idk"
+            ],
+
+            "tussenPagina": {
+                "tekst": "Loop naar????",
+
+                "bonus": [
+                    {
+                        "vraag": "Waarvoor staat de afkorting MIDI?",
+                        "antwoord": "Musical instrument digital interface"
+                    }
+                ]
+            }
+        },
+
+        {
+            "type": "fysiek",
+
+            "uitleg": "Je weet nu hoe een orgelboek werkt en dat een programma een stappenplan is.\nMaar... Er zijn meer programmadragers.\nKijk in de koffer\nDe code van de verdwenen muziekmachine is nog steeds niet compleet.\nDraai de schijven tot een woord verschijnt en kraak de code.",
+
+            "antwoord": "9205",
+
+            "hints": [
+                "Lees de museumteksten. In welk instrument vind je een metalen plaat?",
+                "Platenspeeldoos"
+            ],
+
+            "tussenPagina": {
+                "tekst": "Loop naar het componeerstation",
+
+                "bonus": [
+                    {
+                        "vraag": "Welk materiaal wordt gebruikt voor een orgelboek?",
+                        "antwoord": "karton"
+                    }
+                ]
+            }
+        },
+
+        {
+            "type": "fysiek",
+
+            "uitleg": "Druk op een knop om te starten.\nNoteer de fragmenten\nMACHINE = 1\nMENS = 2",
+
+            "antwoord": "112121",
+
+            "hints": [
+                "Elektronische muziek hoeft niet altijd door een machine gemaakt te zijn.",
+                "AI maakt muziek zonder menselijke muzikant."
+            ],
+
+            "tussenPagina": {
+                "tekst": "Loop naar????",
+
+                "bonus": [
+                    {
+                        "vraag": "Wie was de eerste vrouwelijke programmeur?",
+                        "antwoord": "Ada Lovelace"
+                    }
+                ]
+            }
+        },
+
+        {
+            "type": "fysiek",
+
+            "uitleg": "Je kent nu de verschillende programmadragers.\nBelangrijk is dat je weet welk instrument erbij hoort. Zo kun jij bepalen welke programmadrager de verdwenen muziekmachine weer compleet maakt.\nKijk in de koffer.\nKoppel de juiste programmadrager aan het juiste instrument.\nLeg ze in dezelfde volgorde als de instrumenten.\nKlopt alles? Dan vormt het een woord.",
+
+            "antwoord": "PRO888",
+
+            "hints": [
+                "Kijk goed naar de instrumenten en programmadragers in de vitrines.",
+                "Houd de plaatjes tegen het licht om verborgen details te ontdekken."
+            ],
+
+            "tussenPagina": {
+                "tekst": "",
+
+                "bonus": [
+                    {
+                        "vraag": "Hoeveel orgelpijpen heeft het grote kerkorgel in het museum?",
+                        "antwoord": "3700"
+                    }
+                ]
+            }
+        }
+
+
+
+    ]
+}

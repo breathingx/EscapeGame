@@ -45,6 +45,7 @@ if (
 // =================================================
 
 let team;
+let gameData = {};
 let huidigeOpdracht = 0;
 let correcteAntwoorden = 0;
 let score = 0;
@@ -52,6 +53,7 @@ let foutPogingen = 0;
 let antwoordIsCorrect = false;
 let simon_punten = 0; 
 let blockly_punten = 0;
+let totaal_opdrachten = 0;
 
 let hintGebruiktPerVraag = 0;
 let laatsteHintTijd = 0;
@@ -72,331 +74,6 @@ const truthLieMaxVragen = 6;
 // DATA
 // =================================================
 
-const uitlegData = {
-    aandrijving: [
-        "Koppel mechaniek interactives aan dagelijkse dingen.",
-        "Bekijk het object met een blacklight.",
-        "Shuif de ballans om het draaipunt te vinden.",
-        "Beantwoord de vragen correct.",
-        "Draai aan de tandwielen om de code te kraaken.",
-        "Draai aan de hendel voor de muziek."
-    ],
-    programma: [
-        "Volg de instructies van Toon!",
-        "Maak de QR-puzzel, en scan de QR-code.",
-        "Programeer met de blokken de juiste route.",
-        "Draai met de schijf en vind de code.",
-        "Draai de decoder om de juiste letters te vinden.",
-        "Leg het orgelboek over de plaat en vind de letters.",
-        "Gebruik de 1 en 0 om een woord te schrijven."
-    ],
-    klankbron: [
-        "Druk de juiste knoppen in om het liedje te spelen.",
-        "Zing de juiste toon.",
-        "Welk instrument wordt er in Azië getoond in het filmpje?",
-        "Welk instrument wordt er in Noord-Amerika getoond in het filmpje?",
-        "Welk instrument wordt er in Noord-Afrika getoond in het filmpje?",
-        "Welk liedje woord hier gecombineerd.",
-        "Hoe zien de geluidsgolven van dit liedje er uit?",
-        "Beantwoord de vragen correct."        
-    ]
-};
-
-const hintData = {
-    aandrijving: [
-        [
-            "Denk aan beweging en kracht.",
-            "Het heeft te maken met mechaniek koppelen.",
-            "AAN111"
-        ],
-        [
-            "Gebruik licht om iets te zien dat normaal verborgen blijft.",
-            "Blacklight maakt het zichtbaar.",
-            "AAN222"
-        ],
-        [
-            "Het draait om balans en evenwicht.",
-            "Zoek het punt waar alles in balans komt.",
-            "AAN333"
-        ],
-        [
-            "Lees goed en denk logisch na.",
-            "De antwoorden wijzen je de weg.",
-            "AAN444"
-        ],
-        [
-            "Tandwielen werken samen om iets te onthullen.",
-            "Draai tot alles precies in elkaar past.",
-            "AAN555"
-        ],
-        [
-            "Beweging zorgt voor geluid.",
-            "De hendel activeert de muziek.",
-            "AAN666"
-        ]
-    ],
-    programma: [
-        [
-            "Doe na wat Toon doet.",
-            "Druk dezelfde volgorde die Toon indrukt",
-            "PRO000"
-        ],
-        [
-            "Je moet iets scannen om verder te komen.",
-            "De QR-code onthult de volgende stap.",
-            "PRO111"
-        ],
-        [
-            "Denk in stappen en volgorde.",
-            "De blokken vormen samen de juiste route.",
-            "PRO222"
-        ],
-        [
-            "De schijf draait en onthult een code.",
-            "Let op de juiste positie.",
-            "PRO333"
-        ],
-        [
-            "Zoek de juiste letters door te draaien.",
-            "De decoder geeft het antwoord prijs.",
-            "PRO444"
-        ],
-        [
-            "Het orgelboek bevat verborgen informatie.",
-            "Leg het precies op de plaat om letters te vinden.",
-            "PRO555"
-        ],
-        [
-            "Denk binair: 1 en 0 vormen samen een woord.",
-            "Gebruik de juiste volgorde van bits.",
-            "PRO666"
-        ]
-    ],
-    klankbron: [
-        [
-            "Luister goed naar het patroon.",
-            "De juiste knoppen spelen het liedje.",
-            "KLA111"
-        ],
-        [
-            "Gebruik je stem.",
-            "De toon moet precies kloppen.",
-            "KLA222"
-        ],
-        [
-            "Kijk naar het filmpje en let op de details.",
-            "Azië is te vinden aan de rechterkant van de kaart.",
-            "KLA333"
-        ],
-        [
-            "Kijk naar het filmpje en let op de details.",
-            "Noord Afrika is te vinden in het midden van de kaart.",
-            "KLA444"
-        ],
-        [
-            "Kijk naar het filmpje en let op de details.",
-            "Het instrument heeft een unieke vorm en geluid.",
-            "KLA555"
-        ],
-        [
-            "Herken het geluid.",
-            "Het instrument verklapt het antwoord.",
-            "KLA666"
-        ],
-        [
-            "Twee liedjes worden gecombineerd.",
-            "Denk aan bekende melodieën.",
-            "KLA444"
-        ],
-        [
-            "Geluidsgolven hebben een herkenbare vorm.",
-            "Kijk naar het ritme in de golf.",
-            "KLA555"
-        ],
-        [
-            "Lees goed en denk logisch.",
-            "De vragen leiden naar het antwoord.",
-            "KLA666"
-        ]
-    ]
-};
-
-
-
-const antwoordData = {
-    aandrijving: [
-        "AAN111",
-        "AAN222",
-        "AAN333",
-        "AAN444",
-        "AAN555",
-        "AAN666"
-    ],
-    programma: [
-        "PRO000",
-        "PRO111",
-        "PRO222",
-        "PRO333",
-        "PRO444",
-        "PRO555",
-        "PRO666"
-    ],
-    klankbron: [
-        "KLA111",
-        "KLA222",
-        "KLA333",
-        "KLA444",
-        "KLA555",
-        "KLA666"
-    ]
-};
-
-const tussenPaginaData = {
-
-    aandrijving: [
-
-        {
-            tekst: "De volgende opdracht bevindt zich bij de zwarte machine achterin.",
-            bonus: [
-                { vraag: "Hoeveel tandwielen zie je?", antwoord: "4" },
-                { vraag: "Welke kleur heeft de hendel?", antwoord: "ROOD" },
-                { vraag: "Welk materiaal ligt bovenop?", antwoord: "HOUT" }
-            ]
-        },
-
-        {
-            tekst: "Zoek nu naar het object met UV-licht.",
-            bonus: [
-                { vraag: "Welke kleur licht op?", antwoord: "GROEN" },
-                { vraag: "Hoeveel lampen hangen hier?", antwoord: "2" },
-                { vraag: "Welke vorm zie je?", antwoord: "CIRKEL" }
-            ]
-        },
-
-        {
-            tekst: "Ga naar de balans-opdracht.",
-            bonus: [
-                { vraag: "Hoeveel gewichten liggen er?", antwoord: "3" },
-                { vraag: "Welke vorm heeft de balans?", antwoord: "DRIEHOEK" },
-                { vraag: "Welke kleur heeft het plateau?", antwoord: "ZWART" }
-            ]
-        },
-
-        {
-            tekst: "Loop naar de tandwielen.",
-            bonus: [
-                { vraag: "Hoeveel tandwielen draaien?", antwoord: "5" },
-                { vraag: "Welke draait het snelst?", antwoord: "KLEINE" },
-                { vraag: "Welke kleur heeft de hendel?", antwoord: "GEEL" }
-            ]
-        },
-
-        {
-            tekst: "Ga naar de muziek-hendel.",
-            bonus: [
-                { vraag: "Welk instrument hoor je?", antwoord: "PIANO" },
-                { vraag: "Hoeveel hendels zijn zichtbaar?", antwoord: "2" },
-                { vraag: "Welke kleur heeft de machine?", antwoord: "GRIJS" }
-            ]
-        }
-    ],
-
-    programma: [
-
-        {
-            tekst: "Ga naar het programmeerstation.",
-            bonus: [
-                { vraag: "Welke kleur heeft de kabel?", antwoord: "BLAUW" },
-                { vraag: "Hoeveel blokken liggen er?", antwoord: "6" },
-                { vraag: "Welke letter zie je links?", antwoord: "P" }
-            ]
-        },
-
-        {
-            tekst: "Zoek de route-opdracht.",
-            bonus: [
-                { vraag: "Hoeveel pijlen zie je?", antwoord: "4" },
-                { vraag: "Welke richting wijst omhoog?", antwoord: "NOORD" },
-                { vraag: "Welke kleur heeft het bord?", antwoord: "WIT" }
-            ]
-        },
-
-        {
-            tekst: "Ga naar de decoder.",
-            bonus: [
-                { vraag: "Welke letter staat centraal?", antwoord: "E" },
-                { vraag: "Hoeveel ringen heeft de decoder?", antwoord: "3" },
-                { vraag: "Welke kleur heeft de schijf?", antwoord: "ZWART" }
-            ]
-        },
-
-        {
-            tekst: "Zoek het orgelboek.",
-            bonus: [
-                { vraag: "Hoeveel pagina’s heeft het boek?", antwoord: "8" },
-                { vraag: "Welke kleur heeft de omslag?", antwoord: "BRUIN" },
-                { vraag: "Welke letter zie je rechts?", antwoord: "M" }
-            ]
-        },
-
-        {
-            tekst: "Ga naar de binaire opdracht.",
-            bonus: [
-                { vraag: "Hoeveel nullen zie je?", antwoord: "5" },
-                { vraag: "Welke code staat bovenaan?", antwoord: "1010" },
-                { vraag: "Welke kleur heeft het scherm?", antwoord: "GROEN" }
-            ]
-        }
-    ],
-
-    klankbron: [
-
-        {
-            tekst: "Loop naar het instrument aan de rechterzijde.",
-            bonus: [
-                { vraag: "Hoeveel snaren heeft het?", antwoord: "4" },
-                { vraag: "Welke kleur heeft het hout?", antwoord: "BRUIN" },
-                { vraag: "Welke vorm heeft het?", antwoord: "OVAAL" }
-            ]
-        },
-
-        {
-            tekst: "Ga naar de toonhoogte-opdracht.",
-            bonus: [
-                { vraag: "Welke noot hoor je?", antwoord: "C" },
-                { vraag: "Hoeveel toetsen zie je?", antwoord: "12" },
-                { vraag: "Welke kleur heeft het instrument?", antwoord: "ZWART" }
-            ]
-        },
-
-        {
-            tekst: "Bekijk het filmpje.",
-            bonus: [
-                { vraag: "Welk continent zie je?", antwoord: "AZIE" },
-                { vraag: "Hoeveel instrumenten zie je?", antwoord: "3" },
-                { vraag: "Welke kleur overheerst?", antwoord: "ROOD" }
-            ]
-        },
-
-        {
-            tekst: "Luister naar de combinatie.",
-            bonus: [
-                { vraag: "Hoeveel liedjes hoor je?", antwoord: "2" },
-                { vraag: "Welk tempo hoor je?", antwoord: "SNEL" },
-                { vraag: "Welk instrument hoor je eerst?", antwoord: "DRUM" }
-            ]
-        },
-
-        {
-            tekst: "Bekijk de geluidsgolven.",
-            bonus: [
-                { vraag: "Welke vorm heeft de golf?", antwoord: "ROND" },
-                { vraag: "Hoeveel pieken zie je?", antwoord: "6" },
-                { vraag: "Welke kleur heeft de achtergrond?", antwoord: "ZWART" }
-            ]
-        }
-    ]
-};
 
 const truthLieVragen = {
     aandrijving: [
@@ -483,6 +160,12 @@ setTimeout(() => {
 // GAME INITIALISATIE
 // =================================================
 
+async function laadGameData(team) {
+    const response = await fetch(`data/${team}.json`);
+    gameData = {};
+    gameData[team] = await response.json();
+}
+
 function startGame(gekozenTeam) {
 
     localStorage.setItem("team", gekozenTeam);
@@ -502,38 +185,92 @@ function startGame(gekozenTeam) {
 }
 
 
+// if (window.location.pathname.includes("template.html")) {
+
+//     team = localStorage.getItem("team");
+//     huidigeOpdracht = parseInt(localStorage.getItem("opdracht")) || 0;
+//     correcteAntwoorden = parseInt(localStorage.getItem("correct")) || 0;
+//     score = parseInt(localStorage.getItem("score")) || 0;
+
+//     const progressBar = document.getElementById("progressBar");
+//     if (team && progressBar) {
+//         progressBar.classList.add(team);
+//     }
+
+//     if (!team || !uitlegData[team]) {
+//         window.location.href = "home.html";
+//     }
+//     else if (huidigeOpdracht >= totaal_opdrachten) {
+//         window.location.href = "codes.html";
+//     }
+//     else if (correcteAntwoorden > huidigeOpdracht) {
+//         toonTussenPagina();
+//     }
+//     else {
+//         laadOpdracht();
+//     }
+    
+//     document.addEventListener("keydown", function(event) {
+//         if (event.key === "Enter") {
+//             verwerkActie();
+//         }
+//     });
+// }
 if (window.location.pathname.includes("template.html")) {
 
-    team = localStorage.getItem("team");
-    huidigeOpdracht = parseInt(localStorage.getItem("opdracht")) || 0;
-    correcteAntwoorden = parseInt(localStorage.getItem("correct")) || 0;
-    score = parseInt(localStorage.getItem("score")) || 0;
+    (async () => {
 
-    const progressBar = document.getElementById("progressBar");
-    if (team && progressBar) {
-        progressBar.classList.add(team);
-    }
+        team = localStorage.getItem("team");
 
-    if (!team || !uitlegData[team]) {
-        window.location.href = "home.html";
-    }
-    else if (huidigeOpdracht >= 6) {
-        window.location.href = "codes.html";
-    }
-    else if (correcteAntwoorden > huidigeOpdracht) {
-        toonTussenPagina();
-    }
-    else {
-        laadOpdracht();
-    }
-    
-    document.addEventListener("keydown", function(event) {
-        if (event.key === "Enter") {
-            verwerkActie();
+        await laadGameData(team);
+        totaal_opdrachten = gameData[team].opdrachten.length;
+
+        huidigeOpdracht = parseInt(localStorage.getItem("opdracht")) || 0;
+        correcteAntwoorden = parseInt(localStorage.getItem("correct")) || 0;
+        score = parseInt(localStorage.getItem("score")) || 0;
+
+        const progressBar = document.getElementById("progressBar");
+        if (team && progressBar) {
+            progressBar.classList.add(team);
         }
-    });
+
+        if (!team || !gameData[team]) {
+            window.location.href = "home.html";
+        }
+        else if (huidigeOpdracht >= totaal_opdrachten) {
+            window.location.href = "codes.html";
+        }
+        else if (correcteAntwoorden > huidigeOpdracht) {
+            toonTussenPagina();
+        }
+        else {
+            laadOpdracht();
+        }
+        
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Enter") {
+                verwerkActie();
+            }
+        });
+
+    })();
 }
 
+
+function applyTeamTheme() {
+
+    const team = localStorage.getItem("team");
+
+    if (!team) return;
+
+    document.body.classList.remove(
+        "team-aandrijving",
+        "team-programma",
+        "team-klankbron"
+    );
+
+    document.body.classList.add(`team-${team}`);
+}
 
 // =================================================
 // GAME LOGICA
@@ -554,7 +291,7 @@ function initHeader() {
     }
 
     if (opdrachtNummer) {
-        opdrachtNummer.textContent = "Opdracht " + (opdracht + 1) + " van 6";
+        opdrachtNummer.textContent = "Opdracht " + (opdracht + 1) + " van " + (totaal_opdrachten);
     }
 
     if (scoreDisplay) {
@@ -601,7 +338,7 @@ function laadOpdracht() {
 
     document.getElementById("teamTitel").textContent = "Team: " + team.charAt(0).toUpperCase() + team.slice(1);
     document.getElementById("opdrachtNummer").textContent =
-        "Opdracht " + (huidigeOpdracht + 1) + " van 6";
+        "Opdracht " + (huidigeOpdracht + 1) + " van " + (totaal_opdrachten);
 
 
     // =================================================
@@ -675,7 +412,7 @@ function laadOpdrachtAandrijving() {
             inladenTruthLieElementen();
             break;
         default:
-            document.getElementById("uitlegTekst").textContent = uitlegData[team][huidigeOpdracht];
+            document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
     }
 }
 
@@ -772,7 +509,7 @@ function laadOpdrachtProgramma() {
             simon_says();
             break;
         default:
-            document.getElementById("uitlegTekst").textContent = uitlegData[team][huidigeOpdracht];
+            document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
     }
 }
 
@@ -794,7 +531,7 @@ function laadopdrachtKlankbron() {
     switch (huidigeOpdracht) {
         
         default:
-            document.getElementById("uitlegTekst").textContent = uitlegData[team][huidigeOpdracht];
+            document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
     }
 }
 
@@ -904,7 +641,7 @@ function verwerkActie() {
         .toUpperCase()
         .trim();
 
-    let juistAntwoord = antwoordData[team][huidigeOpdracht];
+    let juistAntwoord = gameData[team].opdrachten[huidigeOpdracht].antwoord.toUpperCase();
 
     if (invoer === juistAntwoord) {
 
@@ -950,7 +687,7 @@ function verwerkActie() {
 
 function toonTussenPagina() {
 
-    const data = tussenPaginaData[team][huidigeOpdracht];
+    const data = gameData[team].opdrachten[huidigeOpdracht].tussenPagina;
 
     if (!data) {
         volgendeOpdracht();
@@ -974,6 +711,14 @@ function toonTussenPagina() {
     </div>
 `;
 
+    const actieBtn = document.getElementById("actieBtn");
+    actieBtn.classList.remove(
+        "aandrijving",
+        "programma",
+        "klankbron"
+    );
+    actieBtn.classList.add("correct-state");
+
     document.getElementById("codeInputContainer").style.display = "none";
     document.getElementById("feedback").textContent = "";
     document.getElementById("actieBtn").style.display = "block";
@@ -988,7 +733,7 @@ function volgendeOpdracht() {
 
     localStorage.setItem("opdracht", huidigeOpdracht);
 
-    if (huidigeOpdracht < 6) {
+    if (huidigeOpdracht < totaal_opdrachten) {
         laadOpdracht();
     } else {
         window.location.href = "codes.html";
@@ -1004,7 +749,7 @@ function volgendeOpdracht() {
 // =================================================
 
 function updateProgressBar() {
-    const percentage = (correcteAntwoorden / 6) * 100;
+    const percentage = (correcteAntwoorden / totaal_opdrachten) * 100;
     document.getElementById("progressBar").style.width = percentage + "%";
 }
 
@@ -1114,16 +859,27 @@ function gebruikHint() {
     hintGebruiktPerVraag++;
     laatsteHintTijd = huidigeTijd;
 
-    const hints = hintData[team][huidigeOpdracht];
+    // const hints = hintData[team][huidigeOpdracht];
 
-    let tekst = "";
+    // let tekst = "";
+
+    // if (hintGebruiktPerVraag === 1) {
+    //     tekst = hints[0];
+    // } else if (hintGebruiktPerVraag === 2) {
+    //     tekst = hints[1];
+    // } else if (hintGebruiktPerVraag === 3) {
+    //     tekst = "Code: " + hints[2];
+    // }
+    const opdracht = gameData[team].opdrachten[huidigeOpdracht];
 
     if (hintGebruiktPerVraag === 1) {
-        tekst = hints[0];
-    } else if (hintGebruiktPerVraag === 2) {
-        tekst = hints[1];
-    } else if (hintGebruiktPerVraag === 3) {
-        tekst = "Code: " + hints[2];
+        tekst = opdracht.hints[0];
+    }
+    else if (hintGebruiktPerVraag === 2) {
+        tekst = opdracht.hints[1];
+    }
+    else if (hintGebruiktPerVraag === 3) {
+        tekst = "Code: " + opdracht.antwoord;
     }
 
     gebruikteHints.push(tekst);
@@ -1167,7 +923,7 @@ function toonBonusPopup() {
     if (verzameldeBonusVragen.length === 0) {
         lijst.innerHTML = `
             <div class="bonusLeeg">
-                <p>Hier vind je na iedere opdracht 3 nieuwe bonusvragen.</p>
+                <p>Hier vind je na iedere opdracht één nieuwe bonusvraag.</p>
             </div>
         `;
 
@@ -1426,4 +1182,15 @@ window.addEventListener("DOMContentLoaded", () => {
             e.target.value = e.target.value.toUpperCase();
         });
     }
+
+    const path = window.location.pathname;
+
+    if (
+        path.includes("template.html") ||
+        path.includes("video.html") ||
+        path.includes("codes.html")
+    ) {
+        applyTeamTheme();
+    }
+
 });
