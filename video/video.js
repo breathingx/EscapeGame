@@ -1,7 +1,11 @@
 const params = new URLSearchParams(window.location.search);
 
-const team = params.get("team");
 const type = params.get("type");
+const team = params.get("team");
+
+if (type === "intro") {
+    document.body.classList.add(`team-${team}`);
+}
 
 const frame = document.getElementById("videoFrame");
 const btnWrap = document.getElementById("continueBtnWrap");

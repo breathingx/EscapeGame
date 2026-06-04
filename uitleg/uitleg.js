@@ -3,6 +3,10 @@ const params = new URLSearchParams(window.location.search);
 const type = params.get("type");
 const team = params.get("team");
 
+if ((type === "team" || type === "einde") && team) {
+    document.body.classList.add(`team-${team}`);
+}
+
 const titel = document.getElementById("uitlegTitel");
 const tekst = document.getElementById("uitlegTekst");
 const buttonContainer = document.getElementById("buttonContainer");
@@ -67,7 +71,7 @@ if (type === "team") {
             </p>
 
             <p>
-                Zorg ervoor dat je straks alles weet over muziek en klank, zodat je de juiste klankbron herkent, voordat de dief terug is!
+                Leer alles over techniek en machines voordat de dief terug is! Help de muziekmachine haar aandrijving terug te krijgen.
             </p>
 
             <p>
@@ -81,7 +85,7 @@ if (type === "team") {
             </p>
 
             <p>
-                Muziekmachines volgen verborgen instructies.
+                Leer alles over programmeren en herken de echte programmadrager vóórdat de dief terug is.
             </p>
 
             <p>
@@ -95,7 +99,7 @@ if (type === "team") {
             </p>
 
             <p>
-                Zonder klank ontstaat geen muziek.
+                Zorg ervoor dat je straks alles weet over muziek en klank, zodat je de juiste klankbron herkent, voordat de dief terug is!
             </p>
 
             <p>
@@ -114,6 +118,31 @@ if (type === "team") {
     buttonContainer.innerHTML = `
         <button onclick="window.location.href='../template.html'">
             START
+        </button>
+    `;
+}
+
+if (type === "einde") {
+
+    titel.textContent = "COMBINEER DE CODES";
+
+    tekst.innerHTML = `
+        <p>
+            Jullie hebben alle opdrachten voltooid!
+        </p>
+
+        <p>
+            Maar om te zien of jullie missie echt is geslaagd, moeten jullie aandrijving, programma en klankbron weer samenbrengen.
+        </p>
+
+        <p>
+            Elke groep heeft een geheime code verzameld. Tijd om te testen of jullie echte experts zijn.
+        </p>
+    `;
+
+    buttonContainer.innerHTML = `
+        <button onclick="window.location.href='../codes.html'">
+            Kraak de code
         </button>
     `;
 }

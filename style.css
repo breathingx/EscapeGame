@@ -104,6 +104,18 @@ h1, h2, h3, h4, h5, h6 {
     margin: 0;
 }
 
+body.team-aandrijving {
+    background-color: #0091FF;
+}
+
+body.team-programma {
+    background-color: #00f280;
+}
+
+body.team-klankbron {
+    background-color: #ff6800;
+}
+
 
 /* ================================================= */
 /* ================== HEADER ======================= */
@@ -240,12 +252,12 @@ button:hover {
 }
 
 .aandrijving {
-    background-color: #00f280;
+    background-color: #0091FF;
     color: black;
 }
 
 .programma {
-    background-color: #8268ff;
+    background-color: #00f280;
     color: black;
 }
 
@@ -264,9 +276,9 @@ button:hover {
     color:black
 }
 
-/* Correct antwoord staat */
 button.correct-state {
-    color: black;
+    background-color: white !important;
+    color: black !important;
     transform: scale(1.05);
 }
 
@@ -375,7 +387,7 @@ button.correct-state:hover {
 }
 
 .progress-bar.programma {
-    background-color: #8268ff;
+    background-color: #0091FF;
 }
 
 .progress-bar.klankbron {
@@ -397,38 +409,20 @@ button.correct-state:hover {
     transition: width 0.6s ease-in-out;
 }
 
-/* Aandrijving (oranje) */
-.progress-bar.aandrijving {
+.progress-bar {
+    height: 100%;
+    width: 0%;
+    transition: width 0.6s ease-in-out;
+
     background: linear-gradient(
         to right,
-        #00f280,
-        #5cffb0
+        #000000,
+        #333333
     );
+
+    box-shadow: 0 0 8px rgba(255,255,255,0.4);
 }
 
-/* Programma (paars) */
-.progress-bar.programma {
-    background: linear-gradient(
-        to right,
-        #8268ff,
-        #a594ff
-    );
-}
-
-/* Klankbron (groen) */
-.progress-bar.klankbron {
-    background: linear-gradient(
-        to right,
-        #ff6800,
-        #ff9a3c
-    );
-}
-
-.progress-bar.aandrijving,
-.progress-bar.programma,
-.progress-bar.klankbron {
-    box-shadow: 0 0 8px rgb(255, 255, 255, 0.4);
-}
 
 /* ================================================= */
 /* ================== HINT SYSTEM ================== */
@@ -493,7 +487,7 @@ button.correct-state:hover {
 }
 
 #hintModal {
-    background: #ffd700;
+    background: #FFFFFF;
     width: min(60vw, 420px);   
     min-height: 60px;        
     padding: 40px 30px;
@@ -575,7 +569,7 @@ button.correct-state:hover {
 }
 
 #bonusModal {
-    background: #ffd700;
+    background: #FFFFFF;
     width: min(70vw, 500px);
     max-height: 80vh;
     overflow-y: auto;
@@ -800,6 +794,12 @@ button.correct-state:hover {
     padding-top: 80px;
     z-index: 10;
 }
+
+#opdrachtTitel {
+    margin-bottom: 24px;
+    font-size: clamp(20px, 4vw, 28px);;
+}
+
 #truth-lie-div {
     display: flex;
     flex-direction: column;

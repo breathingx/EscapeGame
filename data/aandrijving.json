@@ -1,0 +1,229 @@
+{
+    "opdrachten": [
+        {
+            "nummer": "1",
+
+            "naam": "GearCode",
+
+            "type": "fysiek",
+
+            "uitleg": "Open de koffer. In de koffer vind je drie tandwielen. Hiermee kun je een geheime boodschap ontcijferen en kom je dichterbij het verdwenen mechaniek van het gestolen collectiestuk.\nHeb jij de boodschap al ontcijfert? Vul in: ",
+
+            "antwoord": "AAN111",
+
+            "hints": [
+                "De startcode is de volgorde waarin je de tandwielen moet plaatsen.",
+                "Het startwoord bestaat uit de letters van de startpositie (pijltjes)."
+            ],
+
+            "tussenPagina": {
+                "tekst": "Ga naar????",
+
+                "bonus": [
+                    {
+                        "vraag": "Mechaniek = __ __ + ____",
+                        "antwoord": "beweegbare delen + verbinding"
+                    }
+                ]
+            }
+        },
+
+        {
+            "nummer": "2",
+
+            "naam": "True or False",
+
+            "type": "game",
+
+            "uitleg": "Stellingen swipen met pijltjes met daaronder 'true' or 'false' er verschijnt een kleur in het vakje per antwoord\nZonder het te weten gebruik je dagelijks best veel techniek! Maar... weet je ook hoe het werkt?\nZijn deze stellingen 'true or false'?",
+
+            "antwoord": "AAN222",
+
+            "hints": [
+                "???",
+                "???"
+            ],
+
+            "tussenPagina": {
+                "tekst": "Ga naar????",
+
+                "bonus": [
+                    {
+                        "vraag": "Hoeveel collectiestukken kun jij vinden waarin een krukas zit?",
+                        "antwoord": "5"
+                    }
+                ]
+            }
+        },
+
+        {
+            "nummer": "3",
+
+            "naam": "What Moves?",
+
+            "type": "fysiek",
+
+            "uitleg": "Je hebt al gezien dat tandwielen beweging kunnen overbrengen, maar wist je ook dat de grootte van een tandwiel invloed heeft op hoe snel die beweging wordt doorgegeven?\nKijk in de koffer.\nKun jij voorspellen hoe de tandwielen zullen draaien?",
+
+            "antwoord": "AAN333",
+
+            "hints": [
+                "Twee tandwielen die elkaar raken draaien altijd de tegenovergestelde richting.",
+                "Een klein tandwiel draait sneller dan een groot tandwiel dat ermee verbonden is."
+            ],
+
+            "tussenPagina": {
+                "tekst": "Ga naar????",
+
+                "bonus": [
+                    {
+                        "vraag": "Wat wordt in de museumcollectie gebruikt als vervanging voor spierkracht?",
+                        "antwoord": "elektriciteit"
+                    }
+                ]
+            }
+        },
+
+        {
+            "nummer": "4",
+
+            "naam": "Parts Puzzle",
+
+            "type": "fysiek",
+
+            "uitleg": "Machines bestaan uit verschillende onderdelen. Het ene onderdeel geeft de beweging door aan het volgende onderdeel. Kunnen jullie zien in welke volgorde dit gebeurt? En welke onderdelen worden gebruikt om de beweging door te geven?\nZoek naar de juiste onderdelen voor...",
+
+            "antwoord": "AAN444",
+
+            "hints": [
+                "Volg de beweging vanaf het punt waar de energie begint. ",
+                "Vraag jezelf af welk onderdeel direct door het vorige wordt aangedreven."
+            ],
+
+            "tussenPagina": {
+                "tekst": "Ga naar????",
+
+                "bonus": [
+                    {
+                        "vraag": "Noem vier voorbeelden van manieren waarmee energie kan worden opgeslagen in een muziekmachine",
+                        "antwoord": "Gewicht, Veer, Lucht, Electriciteit"
+                    }
+                ]
+            }
+        },
+
+        {
+            "nummer": "5",
+
+            "naam": "Geen techniek, geen beweging!",
+
+            "type": "game",
+
+            "uitleg": "Zonder mechanische techniek geen beweging!\nExperimenteer en ontdek wat techniek voor jou kan doen en wat jij met techniek kan doen ",
+
+            "antwoord": "AAN555",
+
+            "hints": [
+                "???",
+                "???"
+            ],
+
+            "tussenPagina": {
+                "tekst": "Ga naar????",
+
+                "bonus": [
+                    {
+                        "vraag": "Uit hoeveel onderdelen bestaat het techniekmodel “overbrengingen”?",
+                        "antwoord": "????"
+                    }
+                ]
+            }
+        },
+
+        {
+            "nummer": "6",
+
+            "naam": "Verborgen schatten",
+
+            "type": "fysiek",
+
+            "uitleg": "In dit museum zie je vooral de mooie buitenkant van een muziekmachine. De dief dacht ook dat die het belangrijkst was. Maar het binnenwerk zit verstopt en is misschien wel belangrijker, want zonder dat werkt de muziekmachine niet.\nKijk in de koffer\nDe code om verder te gaan zit verstopt in de collectiestukken.\nKun jij de code vinden?",
+
+            "antwoord": "AAN666",
+
+            "hints": [
+                "Gebruik de lamp",
+                "In het mechaniek zitten letters verstopt"
+            ],
+
+            "tussenPagina": {
+                "tekst": "Ga naar????",
+
+                "bonus": [
+                    {
+                        "vraag": "Welke vorm van aandrijving gebruikt een draaiorgel?",
+                        "antwoord": "Spierkracht"
+                    }
+                ]
+            }
+        },
+
+        {
+            "nummer": "7",
+
+            "naam": "Music Movement",
+
+            "type": "fysiek",
+
+            "uitleg": "Een muziekmachine kan worden gezien als een gemechaniseerde muzikant: de machine bootst eigenlijk de bewegingen na die een muzikant normaal gesproken maakt.\nHerken jij de bewegingen die nodig zijn om een instrument te bespelen?\nWanneer gebruiken we deze bewegingen nog meer?\nKijk in de koffer en los de puzzel op.",
+
+            "antwoord": "AAN777",
+
+            "hints": [
+                "Kijk goed rond in de tentoonstelling. Daar vind je hoe deze bewegingen worden benoemd. Dat kan je op weg helpen.",
+                "Voer de bewegingen zelf uit. Herken je ze? Denk daarna na waar je deze bewegingen in het dagelijks leven nog meer tegenkomt."
+            ],
+
+            "tussenPagina": {
+                "tekst": "Ga naar????",
+
+                "bonus": [
+                    {
+                        "vraag": "Maak af:\nMet een hefboom ben je....",
+                        "antwoord": "Sterker dan jezelf"
+                    }
+                ]
+            }
+        },
+
+        {
+            "nummer": "8",
+
+            "naam": "Mechanische muzikant",
+
+            "type": "game",
+
+            "uitleg": "Een muziekmachine kan worden gezien als een gemechaniseerde muzikant: de machine bootst eigenlijk de bewegingen na die een muzikant normaal gesproken maakt.\nIn dit spel hoor je vier muzikanten die opgesloten zitten in machines.\nKlik op de play knop om een hint te horen en raad zo snel mogelijk in welke muziekmachine ze opgesloten zitten.\nHoe minder hints, hoe beter, elke hint kost punten en kun je maar één keer horen.",
+
+            "antwoord": "AAN888",
+
+            "hints": [
+                "???",
+                "???"
+            ],
+
+            "tussenPagina": {
+                "tekst": "Ga naar????",
+
+                "bonus": [
+                    {
+                        "vraag": "Welke kunstenaar maakt grote mechanische beesten?",
+                        "antwoord": "Theo Jansen"
+                    }
+                ]
+            }
+        }
+
+
+    ]
+}
