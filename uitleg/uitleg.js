@@ -3,7 +3,7 @@ const params = new URLSearchParams(window.location.search);
 const type = params.get("type");
 const team = params.get("team");
 
-if (type === "team" && team) {
+if ((type === "team" || type === "einde") && team) {
     document.body.classList.add(`team-${team}`);
 }
 
@@ -118,6 +118,31 @@ if (type === "team") {
     buttonContainer.innerHTML = `
         <button onclick="window.location.href='../template.html'">
             START
+        </button>
+    `;
+}
+
+if (type === "einde") {
+
+    titel.textContent = "COMBINEER DE CODES";
+
+    tekst.innerHTML = `
+        <p>
+            Jullie hebben alle opdrachten voltooid!
+        </p>
+
+        <p>
+            Maar om te zien of jullie missie echt is geslaagd, moeten jullie aandrijving, programma en klankbron weer samenbrengen.
+        </p>
+
+        <p>
+            Elke groep heeft een geheime code verzameld. Tijd om te testen of jullie echte experts zijn.
+        </p>
+    `;
+
+    buttonContainer.innerHTML = `
+        <button onclick="window.location.href='../codes.html'">
+            Kraak de code
         </button>
     `;
 }

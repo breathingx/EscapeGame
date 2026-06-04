@@ -1,4 +1,3 @@
-
 // =================================================
 // TIMER 
 // =================================================
@@ -185,37 +184,6 @@ function startGame(gekozenTeam) {
 }
 
 
-// if (window.location.pathname.includes("template.html")) {
-
-//     team = localStorage.getItem("team");
-//     huidigeOpdracht = parseInt(localStorage.getItem("opdracht")) || 0;
-//     correcteAntwoorden = parseInt(localStorage.getItem("correct")) || 0;
-//     score = parseInt(localStorage.getItem("score")) || 0;
-
-//     const progressBar = document.getElementById("progressBar");
-//     if (team && progressBar) {
-//         progressBar.classList.add(team);
-//     }
-
-//     if (!team || !uitlegData[team]) {
-//         window.location.href = "home.html";
-//     }
-//     else if (huidigeOpdracht >= totaal_opdrachten) {
-//         window.location.href = "codes.html";
-//     }
-//     else if (correcteAntwoorden > huidigeOpdracht) {
-//         toonTussenPagina();
-//     }
-//     else {
-//         laadOpdracht();
-//     }
-    
-//     document.addEventListener("keydown", function(event) {
-//         if (event.key === "Enter") {
-//             verwerkActie();
-//         }
-//     });
-// }
 if (window.location.pathname.includes("template.html")) {
 
     (async () => {
@@ -335,6 +303,8 @@ function laadOpdracht() {
     } else {
         laadopdrachtKlankbron();
     }
+
+    toonOpdrachtTitel();
 
     document.getElementById("teamTitel").textContent = "Team: " + team.charAt(0).toUpperCase() + team.slice(1);
     document.getElementById("opdrachtNummer").textContent =
@@ -667,8 +637,8 @@ function verwerkActie() {
 
         const actieBtn = document.getElementById("actieBtn");
 
-        if (huidigeOpdracht === 5) {
-            actieBtn.textContent = "Kraak de code";
+        if (huidigeOpdracht === totaal_opdrachten - 1) {
+            actieBtn.textContent = "Ga verder";
         } else {
             actieBtn.textContent = "Naar volgende opdracht";
         }
@@ -688,6 +658,7 @@ function verwerkActie() {
 function toonTussenPagina() {
 
     const data = gameData[team].opdrachten[huidigeOpdracht].tussenPagina;
+    document.getElementById("opdrachtTitel").textContent = "Voor de volgende opdracht";
 
     if (!data) {
         volgendeOpdracht();
@@ -701,7 +672,7 @@ function toonTussenPagina() {
 
     document.getElementById("extraContent").innerHTML = `
     <div class="tussenBonusBlok">
-        <h3 class="bonusTitel">Bonus vragen</h3>
+        <h3 class="bonusTitel">Bonus vraag</h3>
         ${data.bonus.map(vraag => `
             <div class="bonusPreview">
                 <p>${vraag.vraag}</p>
@@ -736,11 +707,9 @@ function volgendeOpdracht() {
     if (huidigeOpdracht < totaal_opdrachten) {
         laadOpdracht();
     } else {
-        window.location.href = "codes.html";
+        window.location.href =
+            "uitleg/uitleg.html?type=einde&team=" + team;
     }
-    // } else {
-    //     window.location.href = "video/video.html?team=" + team + "&type=outro";
-    // }
 }
 
 
@@ -984,7 +953,7 @@ function controleerBonus(index) {
         .trim()
         .toUpperCase();
 
-    if (invoer === bonus.antwoord) {
+    if (invoer === bonus.antwoord.trim().toUpperCase()) {
 
         bonus.gehaald = true;
         score += 3;
@@ -1162,6 +1131,15 @@ function controleerCode(index) {
 // TEMPLATE
 // =================================================
 
+function toonOpdrachtTitel() {
+    const opdracht = gameData[team].opdrachten[huidigeOpdracht];
+
+    const titelElement = document.getElementById("opdrachtTitel");
+
+    if (titelElement && opdracht.naam) {
+        titelElement.textContent = opdracht.naam;
+    }
+}
 
 window.addEventListener("DOMContentLoaded", () => {
     
@@ -1186,9 +1164,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const path = window.location.pathname;
 
     if (
-        path.includes("template.html") ||
-        path.includes("video.html") ||
-        path.includes("codes.html")
+        path.includes("template.html")
     ) {
         applyTeamTheme();
     }

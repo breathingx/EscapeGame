@@ -794,6 +794,12 @@ button.correct-state:hover {
     padding-top: 80px;
     z-index: 10;
 }
+
+#opdrachtTitel {
+    margin-bottom: 24px;
+    font-size: clamp(20px, 4vw, 28px);;
+}
+
 #truth-lie-div {
     display: flex;
     flex-direction: column;

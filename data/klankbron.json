@@ -1,6 +1,10 @@
 {
     "opdrachten": [
         {
+            "nummer": "1",
+
+            "naam": "De toonladder",
+
             "type": "fysiek",
 
             "uitleg": "Om de klankbron van de muziekmachine terug te vinden hebben jullie eerst wat muzikale kennis nodig.\nWe beginnen bij de basis...\nZoek in de ruimte naar een ladder en open de koffer\nKun jij dit omzetten in cijfers?\nTIFALASO",
@@ -25,6 +29,10 @@
         },
 
         {
+            "nummer": "2",
+
+            "naam": "De voice of speelklok",
+
             "type": "game",
 
             "uitleg": "Nu je snapt hoe de westerse toonladder werkt kun je hem gaan zingen!\nRaak de juiste tonen met je stem  zodat je door kan naar de volgende opdracht.",
@@ -49,6 +57,10 @@
         },
 
         {
+            "nummer": "3",
+
+            "naam": "SoundMatch",
+
             "type": "game",
 
             "uitleg": "Naast echte instrumenten zitten er ook klanken verstopt in objecten waarvan je het niet verwacht.\nLuister goed en zoek in de tentoonstelling waar elk geluid vandaan komt.",
@@ -73,6 +85,10 @@
         },
 
         {
+            "nummer": "4",
+
+            "naam": "Fruit en Noten",
+
             "type": "game",
 
             "uitleg": "De dief heeft de melodie uit de machine gehaald en ergens in het museum verstopt.\nEr gaat een gerucht dat de melodie is opgebroken en verscholen ligt in... stukken fruit!\nZoek het fruit in het museum én in de koffer.\nLuister naar de fragmenten en ontrafel per stuk een driecijferige code. Los daarna deze som op:",
@@ -97,6 +113,10 @@
         },
 
         {
+            "nummer": "5",
+            
+            "naam": "Waveform message",
+
             "type": "fysiek",
 
             "uitleg": "Geluid kun je niet alleen horen, maar ook zien als golfvorm.\nDe dief heeft een geheime aanwijzing verstopt in een muziekstuk hier uit het museum.\nKijk in de koffer\nKun jij ontrafelen welke geheime aanwijzingen verborgen zit in de waveforms?",
@@ -121,6 +141,10 @@
         },
 
         {
+            "nummer": "6",
+
+            "naam": "PatsBoem",
+
             "type": "fysiek",
 
             "uitleg": "Een muziekmachine heeft meer dan alleen een melodie…\nZonder ritme valt alles stil.\nOp de console staan 3 rode knoppen\n(links → rechts).\nElke knop hoort bij een voorbeeld fragment.\nLuister goed en tel:",
@@ -145,6 +169,10 @@
         },
 
         {
+            "nummer": "7",
+
+            "naam": "Goed gestemd",
+
             "type": "game",
 
             "uitleg": "Ook zelfspelende muziekmachines moeten gestemd worden. Tijd om te leren hoe dat werkt!\nStem het instrument in de koffer met hulp van de app.\nStem de snaren door te draaien aan de knoppen.",
@@ -169,6 +197,10 @@
         },
 
         {
+            "nummer": "8",
+
+            "naam": "????",
+
             "type": "fysiek",
 
             "uitleg": "Hier in MUSIC kun je verschillende klankbronnen vinden.\nEén daarvan laat het carillon tot leven komen… maar welke?\nGebruik de kleurcode en speel het lied:",

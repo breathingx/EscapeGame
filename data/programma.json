@@ -1,6 +1,10 @@
 {
     "opdrachten": [
         {
+            "nummer": "1",
+
+            "naam": "Code blokken",
+
             "type": "scan",
 
             "uitleg": "De programmadrager vertelt de machine wat hij moet spelen.\nMuziek wordt omgezet in een code die op een drager staat geprogrammeerd.\nWelke programmadragers kun je vinden in de tentoonstelling?\nGebruik de kubussen uit de koffer en bouw 1 grote kubus.\nAan elke kant staat een manier om code op te slaan.\nAlleen de juiste bouw opent de volgende opdracht.",
@@ -25,6 +29,10 @@
         },
 
         {
+            "nummer": "2",
+
+            "naam": "Orgelboek raadsel",
+
             "type": "fysiek",
 
             "uitleg": "Orgelboeken vertellen aan het orgel welke noten ze wanneer moeten spelen.\n Je kunt de gaten in een orgelboek vergelijken met de 1-en en 0-en van een computer\nOm een deel van de code van de verdwenen programmadrager te achterhalen, heb je een orgelboek nodig.\nKijk in de koffer.\nPak de juiste pagina van het orgelboek en probeer te achterhalen!",
@@ -49,6 +57,10 @@
         },
 
         {
+            "nummer": "3",
+
+            "naam": "step by step",
+
             "type": "game:blockly",
 
             "uitleg": "Een programma is een stappenplan. Muziekmachines weten dankzij het programma wat ze moeten spelen.\nTijd om te leren hoe je zo’n stappenplan zelf maakt!\nBouw met blokken een programma en vind de juiste weg terug.",
@@ -65,7 +77,7 @@
 
                 "bonus": [
                     {
-                        "vraag": "Waarmee werd in het ‘Musikalisches Würfelspiel’ muziek gecomponeerd?",
+                        "vraag": "Waarmee werd in het 'Musikalisches Würfelspiel' muziek gecomponeerd?",
                         "antwoord": "dobbelstenen"
                     }
                 ]
@@ -73,6 +85,10 @@
         },
 
         {
+            "nummer": "4",
+
+            "naam": "Musicon",
+
             "type": "fysiek",
 
             "uitleg": "Je hebt net geleerd hoe een stappenplan werkt: de basis van programmeren.\nNu ga je zelf een echte muziekmachine programmeren!\nMet pinnetjes bepaal je geluid of stilte.\nVind de code in de koffer en zet de pinnetjes op zes rijen precies hetzelfde omhoog of omlaag.\nKraak jij de code?",
@@ -97,6 +113,10 @@
         },
 
         {
+            "nummer": "5",
+
+            "naam": "1en & 0en",
+
             "type": "game:truefals",
 
             "uitleg": "Jullie weten al veel over programmeren. Tijd om die kennis te testen!\nBeantwoord de vragen met waar of niet waar. Elke keuze levert een 1 of 0 op. Samen vormen de antwoorden een geheime code.",
@@ -121,6 +141,10 @@
         },
 
         {
+            "nummer": "6",
+
+            "naam": "Plaatje draaien",
+
             "type": "fysiek",
 
             "uitleg": "Je weet nu hoe een orgelboek werkt en dat een programma een stappenplan is.\nMaar... Er zijn meer programmadragers.\nKijk in de koffer\nDe code van de verdwenen muziekmachine is nog steeds niet compleet.\nDraai de schijven tot een woord verschijnt en kraak de code.",
@@ -145,6 +169,10 @@
         },
 
         {
+            "nummer": "7",
+
+            "naam": "Mens of Machine?",
+
             "type": "fysiek",
 
             "uitleg": "Druk op een knop om te starten.\nNoteer de fragmenten\nMACHINE = 1\nMENS = 2",
@@ -169,6 +197,10 @@
         },
 
         {
+            "nummer": "8",
+
+            "naam": "Perfect match",
+
             "type": "fysiek",
 
             "uitleg": "Je kent nu de verschillende programmadragers.\nBelangrijk is dat je weet welk instrument erbij hoort. Zo kun jij bepalen welke programmadrager de verdwenen muziekmachine weer compleet maakt.\nKijk in de koffer.\nKoppel de juiste programmadrager aan het juiste instrument.\nLeg ze in dezelfde volgorde als de instrumenten.\nKlopt alles? Dan vormt het een woord.",
