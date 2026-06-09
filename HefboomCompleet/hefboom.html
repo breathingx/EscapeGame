@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="nl">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hefboom</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --page-margin: 7vh;
+        --content-width: 100%;
+      }
+
+      body {
+        background: #ffd700;
+        color: black;
+        font-family: "Montserrat", sans-serif;
+        padding:var(--page-margin);
+        align-items: center;
+      }
+
+      .page {
+        width: 90vw;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .page, .arena, .slider-section, .code-row, .btn-row {max-width: 100%; max-height: 100%;} /*make sure everything always fits*/
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <h1>Hefboom spel</h1>
+      <div class="opdracht">
+        Verander het draaipunt om het verband tussen kracht en afstand te ontdekken.
+      </div>
+      <div class="arena">
+        <canvas id="gameCanvas" height="260"></canvas>
+      </div>
+      <div class="slider-section">
+        <span>Draaipunt</span>
+        <input type="range" id="pivotSlider" min="10" max="88" value="35">
+        <span id="pivotPct">35%</span>
+      </div>
+
+      <div class="code-row">
+        <span class="code-label">Code</span>
+        <span class="digit" id="d1">-</span>
+        <span class="digit" id="d2">-</span>
+        <span class="digit" id="d3">-</span>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-launch" id="launchBtn">Lanceer bal</button>
+        <button id="resetBtn">reset</button>
+      </div>
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
