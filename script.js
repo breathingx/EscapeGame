@@ -65,6 +65,7 @@ let verzameldeBonusVragen = JSON.parse(localStorage.getItem("bonusVragen")) || [
 let pendingBonusVragen = [];
 let zitOpTussenPagina = false;
 
+// const ENABLE_SIMON_SAYS = false;
 
 let truthLieProgress = 0;
 const truthLieMaxVragen = 6;
@@ -150,10 +151,18 @@ function gaNaarHome() {
 // INDEX: VIDEO
 // =================================================
 
-setTimeout(() => {
-    document.getElementById("buttons").classList.add("show");
-    document.getElementById("buttons").classList.remove("hidden");
-}, 3000); // 60000
+// setTimeout(() => {
+//     document.getElementById("buttons").classList.add("show");
+//     document.getElementById("buttons").classList.remove("hidden");
+// }, 3000); // 60000
+if (document.getElementById("buttons")) {
+
+    setTimeout(() => {
+        document.getElementById("buttons").classList.add("show");
+        document.getElementById("buttons").classList.remove("hidden");
+    }, 3000);// 60000
+
+}
 
 // =================================================
 // GAME INITIALISATIE
@@ -274,6 +283,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
 function laadOpdracht() {
 
+    const extraContent = document.getElementById("extraContent");
+
+    extraContent.innerHTML = "";
+
+    // console.log("team:", team);
+    // console.log("opdracht:", huidigeOpdracht);
+    // console.log("laadOpdracht uitgevoerd");
     antwoordIsCorrect = false;
     hintGebruiktPerVraag = 0;
     laatsteHintTijd = 0;
@@ -281,8 +297,15 @@ function laadOpdracht() {
     blockly_punten = 0;
     gebruikteHints = [];
 
-    document.getElementById("hintContainer").style.display = "flex";
+    // document.getElementById("hintContainer").style.display = "flex";
+    // document.getElementById("codeInputContainer").style.display = "flex";
+
+    document.getElementById("uitlegBlok").style.display = "block";
     document.getElementById("codeInputContainer").style.display = "flex";
+    document.getElementById("actieBtn").style.display = "block";
+    document.getElementById("hintBtn").style.display = "block";
+    document.getElementById("hintBlocks").style.display = "flex";
+    document.getElementById("hintContainer").style.display = "flex";
 
     const actieBtn = document.getElementById("actieBtn");
     actieBtn.textContent = "Controleer";
@@ -315,9 +338,9 @@ function laadOpdracht() {
     // MINI_GAME PAGINA'S
     // =================================================
 
-    const extraContent = document.getElementById("extraContent");
+    // const extraContent = document.getElementById("extraContent");
 
-    extraContent.innerHTML = "";
+    // extraContent.innerHTML = "";
 
     if (team === "klankbron" && huidigeOpdracht === 1) {
 
@@ -378,13 +401,42 @@ function laadOpdrachtAandrijving() {
     todo, maybe simon says naar hier verplaatsen zodat er hier ook een game is
     */
     switch (huidigeOpdracht) {
-        case 4:
+        case 1:
             inladenTruthLieElementen();
+            break;
+        case 4:
+            hefboomGame();
             break;
         default:
             document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
     }
 }
+
+
+function hefboomGame() {
+
+    document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+
+    const extraContent = document.getElementById("extraContent");
+
+    fetch("HefboomCompleet/hefboom.html")
+        .then(res => res.text())
+        .then(html => {
+
+            extraContent.innerHTML =
+                `<div class="fullscreen-content">${html}</div>`;
+
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = "HefboomCompleet/hefboom.css";
+            document.head.appendChild(link);
+
+            const script = document.createElement("script");
+            script.src = "HefboomCompleet/hefboom.js";
+            document.body.appendChild(script);
+        });
+}
+
 
 function simon_says() {
     document.getElementById("uitlegBlok").style.display = "none";
@@ -411,11 +463,14 @@ function simon_says() {
 }
 
 function blockly() {
-    document.getElementById("uitlegBlok").style.display = "none";
-    document.getElementById("codeInputContainer").style.display = "none";
-    document.getElementById("actieBtn").style.display = "none";
-    document.getElementById("hintBtn").style.display = "none";
-    document.getElementById("hintBlocks").style.display = "none";
+    // document.getElementById("uitlegBlok").style.display = "none";
+    // document.getElementById("codeInputContainer").style.display = "none";
+    // document.getElementById("actieBtn").style.display = "none";
+    // document.getElementById("hintBtn").style.display = "none";
+    // document.getElementById("hintBlocks").style.display = "none";
+
+    document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+
     fetch("blockly/blockly.html")
         .then(res => res.text())
         .then(html => {
@@ -469,19 +524,140 @@ function laadOpdrachtProgramma() {
     */
 
     switch (huidigeOpdracht) {
-        case 3:
-            inladenTruthLieElementen();
+
+        case 0:
+            qrScannerOpdracht();
             break;
-        case 4:
+
+        case 2:
             blockly();
             break;
-        case 5:
-            simon_says();
+
+        case 4:
+            inladenTruthLieElementen();
             break;
+
+        // case 5:
+        //     simon_says();
+        //     break;
+
         default:
             document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
     }
 }
+
+function qrScannerOpdracht() {
+    const origineleInnerHTML =
+        Object.getOwnPropertyDescriptor(
+            Element.prototype,
+            "innerHTML"
+        );
+
+    Object.defineProperty(Element.prototype, "innerHTML", {
+        set(value) {
+
+            if (this.id === "extraContent") {
+                console.trace(
+                    "extraContent gewijzigd:",
+                    value
+                );
+            }
+
+            return origineleInnerHTML.set.call(
+                this,
+                value
+            );
+        },
+        get() {
+            return origineleInnerHTML.get.call(this);
+        }
+    });
+
+    // console.log("QR opdracht geladen");
+    console.log("qrScannerOpdracht uitgevoerd");
+
+    document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+
+    // document.getElementById("codeInputContainer").style.display = "none";
+    // document.getElementById("actieBtn").style.display = "none";
+
+    const extraContent = document.getElementById("extraContent");
+
+    extraContent.innerHTML = `
+        <button id="startQRScanBtn">
+            Scan QR-code
+        </button>
+    `;
+    
+    console.log("na plaatsen:", extraContent.innerHTML);
+    setTimeout(() => {
+        console.log("1 sec later:", extraContent.innerHTML);
+    }, 1000);
+    setTimeout(() => {
+        console.log("3 sec later:", extraContent.innerHTML);
+    }, 3000);
+
+    document.getElementById("startQRScanBtn")
+        .addEventListener("click", startQRScanner);
+}
+
+function startQRScanner() {
+
+    const extraContent = document.getElementById("extraContent");
+
+    fetch("QRScanner/qrScanner.html")
+        .then(res => res.text())
+        .then(html => {
+
+            extraContent.innerHTML =
+                `<div class="fullscreen-content">${html}</div>`;
+
+            const link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.href = "QRScanner/qrScanner.css";
+            document.head.appendChild(link);
+
+            const script = document.createElement("script");
+            script.src = "QRScanner/qrScanner.js";
+            document.body.appendChild(script);
+        });
+}
+
+window.handleQRCode = function(qrData) {
+
+    const juisteCode =
+        gameData[team].opdrachten[huidigeOpdracht].antwoord
+            .toLowerCase()
+            .trim();
+
+    if (qrData === juisteCode) {
+
+        document.getElementById("feedback").textContent =
+            "QR-code correct gescand!";
+
+        score += 10;
+        localStorage.setItem("score", score);
+
+        correcteAntwoorden++;
+        localStorage.setItem("correct", correcteAntwoorden);
+
+        antwoordIsCorrect = true;
+
+        const actieBtn =
+            document.getElementById("actieBtn");
+
+        actieBtn.textContent =
+            "Naar volgende opdracht";
+
+        actieBtn.classList.add("correct-state");
+        actieBtn.classList.add(team);
+
+    } else {
+
+        document.getElementById("feedback").textContent =
+            "Verkeerde QR-code.";
+    }
+};
 
 function laadopdrachtKlankbron() {
     /* volgorde spellen:
