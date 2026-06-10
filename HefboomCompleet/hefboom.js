@@ -16,8 +16,8 @@ function resize () {
 function layout() {
   const H = canvas.height;
   const W = canvas.width;
-  const left = 70;
-  const right = 430;
+  const left = 50;
+  const right = 410;
   const beamY = H*0.55;
   const pivotX = left+(right-left)*(pivotPct/100);
 
@@ -25,6 +25,7 @@ function layout() {
     W, H, left, right, beamY, pivotX
   };
 }
+
 
 function updateCode() {
   const {left,right,pivotX} = layout();
@@ -56,12 +57,21 @@ function drawArrow(x1,y1,x2,y2,color) {
 }
 
 function draw() {
-  const spaceWidth = 500;
+
+  ctx.setTransform(1,0,0,1,0,0);
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  const spaceWidth = 460;
   const spaceHeight = 260;
-  const scale = Math.min(canvas.width/spaceWidth, canvas.height/spaceHeight);
+  const scale = Math.min(
+    canvas.width/spaceWidth,
+    canvas.height/spaceHeight
+  );
+
   const spaceX = (canvas.width-spaceWidth*scale)/2;
   const spaceY = (canvas.height-spaceHeight*scale)/2;
-  ctx.setTransform(scale, 0, 0, scale, spaceX, spaceY);
+
+  ctx.setTransform(scale,0,0,scale,spaceX,spaceY);
 
   const {
     W,H,left,right,beamY,pivotX
@@ -74,7 +84,7 @@ function draw() {
   ctx.moveTo(left, beamY);
   ctx.lineTo(right, beamY);
   ctx.stroke();
-  ctx.fillStyle = "#ff00ff";
+  ctx.fillStyle = "#ffd700";
   ctx.beginPath();
   ctx.moveTo(pivotX, beamY-10);
   ctx.lineTo(pivotX+18, beamY+24);
@@ -82,7 +92,7 @@ function draw() {
   ctx.fill();
 
   if(!projectile) {
-    ctx.fillStyle = "#ff6800";
+    ctx.fillStyle = "#0091FF";
     ctx.beginPath();
     ctx.arc(left, beamY-16,12,0,Math.PI*2);
     ctx.fill();
@@ -162,6 +172,7 @@ document.getElementById("launchBtn").addEventListener("click",launch);
 document.getElementById("resetBtn").addEventListener("click",()=>{
   projectile = null;
   launching = false;
+  document.getElementById("launchBtn").disabled = false;
   pivotPct = 35;
   slider.value = 35;
   document.getElementById("pivotPct").textContent = "35%";

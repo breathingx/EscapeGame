@@ -2,6 +2,7 @@ const video =  document.getElementById('video');
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const msg =  document.getElementById('msg');
+let scannerActief = true;
 
 navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}})
   .then(stream => {
@@ -30,10 +31,20 @@ function tick () {
           "klankbron"
       ];
 
-      if (geldigeTeams.includes(qrData)) {
-          localStorage.setItem("team", qrData);
-          window.location.href = "template.html";
-      }
+      // if (geldigeTeams.includes(qrData)) {
+      //     localStorage.setItem("team", qrData);
+      //     window.location.href = "template.html";
+      // }
+      if (code && scannerActief) {
+
+        scannerActief = false;
+
+        if (window.handleQRCode) {
+            window.handleQRCode(code.data);
+        }
+
+        return;
+    }
     }
 
   }
