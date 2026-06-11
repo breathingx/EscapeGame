@@ -1,5 +1,6 @@
 import { movementLogic } from 'blockscript.js';
 
+// Simple assertion function for testing
 function assert(testName, actual, expected) {
     const isMatch = JSON.stringify(actual) === JSON.stringify(expected);
     if (isMatch) {
