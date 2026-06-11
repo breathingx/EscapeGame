@@ -79,6 +79,7 @@
   animation: bounce 0.6s ease-in-out forwards;
 }
 
+/* animation for "pressing" the button */
 @keyframes bounce {
   0% {
     transform: rotate(var(--rotation)) translateY(-50px);
