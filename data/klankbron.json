@@ -1,4 +1,28 @@
 {
+    "_COMMENT": "this is the general structure of file",
+    "_opdrachten": [
+        {
+            "_nummer": "the number of the exercise for the choosen team.",
+            "_naam": "the name of the exercise",
+            "_type": "either 'fysiek' if the game is played in the museum, or 'game' if a game is played in the app",
+            "_uitleg": "The explenation of the exercise",
+            "_antwoord": "the answer to the question",
+            "_hints": [
+                "the first hint",
+                "the second hint"
+            ],
+            "_tussenPagina": {
+                "_tekst": "the direction where the players need to go for the second exercise",
+                "_bonus": [
+                    {
+                        "_vraag": "the bonus question",
+                        "_antwoord": "answer to the bonus question"
+                    }
+                ]
+            }
+        }
+    ],
+
     "opdrachten": [
         {
             "nummer": "1",
@@ -17,12 +41,12 @@
             ],
 
             "tussenPagina": {
-                "tekst": "Zoek de toonladder?",
+                "tekst": "Zoek de toonladder",
 
                 "bonus": [
                     {
                         "vraag": "Hoeveel theepotten heb je geteld in de tentoonstelling?",
-                        "antwoord": "????"
+                        "antwoord": "++++++++++ANTWOORD\nPLACEHOLDER++++++++++"
                     }
                 ]
             }
@@ -45,7 +69,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "ga naar?????",
+                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 2++++++++++",
 
                 "bonus": [
                     {
@@ -68,12 +92,12 @@
             "antwoord": "KLA333",
 
             "hints": [
-                "?????",
-                "?????"
+                "++++++++++HINT 1\nPLACEHOLDER++++++++++",
+                "++++++++++HINT 2\nPLACEHOLDER++++++++++"
             ],
 
             "tussenPagina": {
-                "tekst": "ga naar?????",
+                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 3++++++++++",
 
                 "bonus": [
                     {
@@ -101,7 +125,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "ga naar?????",
+                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 4++++++++++",
 
                 "bonus": [
                     {
@@ -157,12 +181,12 @@
             ],
 
             "tussenPagina": {
-                "tekst": "ga naar?????",
+                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 6++++++++++",
 
                 "bonus": [
                     {
                         "vraag": "Hoeveel porcelaine borden zitten er in de piano van Jelle Mastenbroek?",
-                        "antwoord": "?????"
+                        "antwoord": "++++++++++ANTWOORD\nPLACEHOLDER++++++++++"
                     }
                 ]
             }
@@ -180,17 +204,17 @@
             "antwoord": "CDEFGAB",
 
             "hints": [
-                "????",
-                "????"
+                "++++++++++HINT 1\nPLACEHOLDER++++++++++",
+                "++++++++++HINT 2\nPLACEHOLDER++++++++++"
             ],
 
             "tussenPagina": {
-                "tekst": "ga naar?????",
+                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 7++++++++++",
 
                 "bonus": [
                     {
                         "vraag": "Hoeveel orgelpijpen heeft het grote kerkorgel in het museum?",
-                        "antwoord": "?????"
+                        "antwoord": "++++++++++ANTWOORD\nPLACEHOLDER++++++++++"
                     }
                 ]
             }
@@ -213,7 +237,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "ga naar?????",
+                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 8++++++++++",
 
                 "bonus": [
                     {
@@ -223,8 +247,5 @@
                 ]
             }
         }
-
-
-
     ]
 }
