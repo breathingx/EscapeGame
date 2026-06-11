@@ -1,5 +1,5 @@
 /* ======================================== */
-/* ============ PROGRAMMEREN ============== */
+/* ============== BLOCKLY ================= */
 /* ======================================== */
 
 .game-container {
@@ -28,6 +28,7 @@
     height: 500px; 
 }
 
+/* The game area is a square that scales with the width of the container. background image is a 10x10 grid */ 
 #gameArea {
     position: relative;
     overflow: hidden;
