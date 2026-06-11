@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html lang="nl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Video</title>
-  <link rel="stylesheet" href="../style.css">
-  <link rel="stylesheet" href="video.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Video</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="video.css">
 </head>
 
 <body>
+    <div class="main-content">
+        <div class="content-wrapper">
+        
+        <!-- team title -->
+        <h1 id="teamTitle" class="index-title"></h1>
 
-<div class="main-content">
-    <div class="content-wrapper">
+        <!-- video container -->
+        <div class="video-wrapper">
+            <iframe id="videoFrame" allowfullscreen></iframe>
+        </div>
 
-    <h1 id="teamTitle" class="index-title"></h1>
+        <!-- continue button -->
+        <div class="start-button-wrapper" id="continueBtnWrap">
+            <button id="continueBtn">Verder</button>
+        </div>
 
-    <div class="video-wrapper">
-        <iframe id="videoFrame" allowfullscreen></iframe>
+        </div>
     </div>
 
-    <div class="start-button-wrapper" id="continueBtnWrap">
-        <button id="continueBtn">Verder</button>
-    </div>
-
-    </div>
-</div>
-
-<img src="../M3L.png" alt="Logo" class="logo">
-<script src="video.js"></script>
+    <img src="../M3L.png" alt="Logo" class="logo">
+    <script src="video.js"></script>
 </body>
 </html>
