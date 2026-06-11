@@ -141,20 +141,10 @@ function gaNaarHome() {
     window.location.href = "home.html";
 }
 
-// function restartGame() {
-//     localStorage.clear();
-//     localStorage.removeItem("bonusVragen");
-//     window.location.href = "index.html";
-// }
-
 // =================================================
 // INDEX: VIDEO
 // =================================================
 
-// setTimeout(() => {
-//     document.getElementById("buttons").classList.add("show");
-//     document.getElementById("buttons").classList.remove("hidden");
-// }, 3000); // 60000
 if (document.getElementById("buttons")) {
 
     setTimeout(() => {
@@ -287,9 +277,6 @@ function laadOpdracht() {
 
     extraContent.innerHTML = "";
 
-    // console.log("team:", team);
-    // console.log("opdracht:", huidigeOpdracht);
-    // console.log("laadOpdracht uitgevoerd");
     antwoordIsCorrect = false;
     hintGebruiktPerVraag = 0;
     laatsteHintTijd = 0;
@@ -386,20 +373,6 @@ function inladenTruthLieElementen() {
 }
 
 function laadOpdrachtAandrijving() {
-    /* volgorde spellen:
-        naam                         fysiek/code?                       merged into main voor code?             af?
-    0) tandwielenpuzzel                 fysiek                                  -                               mostly, vraag/antwoord tekst aanpassen, op juiste plek zetten
-    1) rontgenfoto                      fysiek                                  -                               mostly, vraag/antwoord tekst aanpassen, op juiste plek zetten
-    2) automata bouw                    fysiek                                  -                               mostly, vraag/antwoord tekst aanpassen, op juiste plek zetten
-    3) gear sketch                      ??? idk wat we nu moeten doen
-    4) true or false                    code                                    ja                              ja
-    5) hefboom game                     ??? doen we dit?
-    6) match ontbrekende onderdeel      fysiek, maar MC
-    7) programmadrager                  fysiek                                  -                               mostly, vraag/antwoord tekst aanpassen, op juiste plek zetten    
-    8) draai en zie wat er gebeurt      fysiek                                  -                               nee, maak een vragenveld dat Multiple choice kan accepteren
-
-    todo, maybe simon says naar hier verplaatsen zodat er hier ook een game is
-    */
     switch (huidigeOpdracht) {
         case 1:
             inladenTruthLieElementen();
@@ -510,19 +483,6 @@ function blockly() {
 }
 
 function laadOpdrachtProgramma() {
-    /* volgorde spellen:
-        naam                         fysiek/code?                       merged into main voor code?             af?
-    0) QR code                          code                                    nee                             nee, mergen en ???
-    1) metalen plaat                    fysiek                                  -                               mostly, vraag/antwoord tekst aanpassen, op juiste plek zetten
-    2) orgelboek raadsel                fysiek                                  -                               mostly, vraag/antwoord tekst aanpassen, op juiste plek zetten
-    3) true false                       code                                    ja                              ja
-    4) blockly                          code                                    ja                              nee, ???
-    5) simon says                       code                                    ja                              nee, ???
-    6) musicon                          ???
-    7) bot or not                       ???
-    8) match de programmadrager         ???
-    */
-
     switch (huidigeOpdracht) {
 
         case 0:
@@ -573,7 +533,6 @@ function qrScannerOpdracht() {
         }
     });
 
-    // console.log("QR opdracht geladen");
     console.log("qrScannerOpdracht uitgevoerd");
 
     document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
@@ -660,22 +619,7 @@ window.handleQRCode = function(qrData) {
 };
 
 function laadopdrachtKlankbron() {
-    /* volgorde spellen:
-        naam                         fysiek/code?                       merged into main voor code?             af?
-    0) van laag naar hoog               fysiek                                  -                               mostly, vraag/antwoord tekst aanpassen, op juiste plek zetten
-    1) snarencode                       code                               nee, moet nog beginnen               nee, re-use code van toonladder? en probeer werkend te krijgen, met opt-out na x seconde?
-    2) geluidscontainers                fysiek                                  -                               mostly, vraag/antwoord tekst aanpassen, op juiste plek zetten
-    3) zing de toonladder               code                          staat in branch 'merge-toonladder'        maybe? als branch werkt alleen nog mergen into main
-    4) waveform alfabet                 fysiek                                  -                               mostly, laat embedded video zien, vraag/antwoord tekst aanpassen, op juiste plek zetten
-    5) match geluid met instr.          code                               nee, moet nog beginnen               nee, wacht op MC vragenveld, play sounds, etc
-    6) fruit en noten                   fysiek                                  -                               mostly, vraag/antwoord tekst aanpassen
-    7) carillon                         fysiek                                  -                               nee, maak MC veld, ???
-    8) boempats                         fysiek                                  -                               nee, ???
-
-    TODO in het overzicht van guusjes staat geen 'truth lie' maar heb eerder wel vragen gekregen, willen we dit erbij zetten?
-    */
     switch (huidigeOpdracht) {
-        
         default:
             document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
     }
@@ -685,7 +629,7 @@ function verwerkTruthLie(isCorrect) {
     if (isCorrect == truthLieAntwoordData[team][truthLieProgress]) {
         document.getElementById("feedback").textContent = "Goed gedaan!";
     } else {
-        document.getElementById("feedback").textContent = "Dat is onjuist..."; //TODO andere text?
+        document.getElementById("feedback").textContent = "Dat is onjuist...";
         foutPogingen += 1;
     }
 
@@ -1004,6 +948,7 @@ function gebruikHint() {
     hintGebruiktPerVraag++;
     laatsteHintTijd = huidigeTijd;
 
+    //TODO TIM
     // const hints = hintData[team][huidigeOpdracht];
 
     // let tekst = "";
