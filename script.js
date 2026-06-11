@@ -464,8 +464,8 @@ function simon_says() {
 
 function blockly() {
     // document.getElementById("uitlegBlok").style.display = "none";
-    // document.getElementById("codeInputContainer").style.display = "none";
-    // document.getElementById("actieBtn").style.display = "none";
+    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("actieBtn").style.display = "none";
     // document.getElementById("hintBtn").style.display = "none";
     // document.getElementById("hintBlocks").style.display = "none";
 

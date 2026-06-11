@@ -63,13 +63,14 @@
 
             "type": "game:blockly",
 
-            "uitleg": "Een programma is een stappenplan. Muziekmachines weten dankzij het programma wat ze moeten spelen.\nTijd om te leren hoe je zo’n stappenplan zelf maakt!\nBouw met blokken een programma en vind de juiste weg terug.",
+            "uitleg": "Een programma is een stappenplan. Muziekmachines weten dankzij het programma wat ze moeten spelen.\nTijd om te leren hoe je zo’n stappenplan zelf maakt!\nBouw met blokken een programma en pak zo veel mogelijk muzieknoten onderweg. Je mag het zo vaak proberen als je wilt, je laatste poging telt voor de punten.",
 
             "antwoord": "PRO333",
 
             "hints": [
-                "Kijk goed naar het doel van de route.",
-                "Soms moet je een stap herhalen."
+                "Welke muzieknoten zijn makkelijk te pakken met een simpel herhalend stappenplan?",
+                "Probeer eerst de buitenste rand te pakken.",
+                "Vind als tweede een herhalend patroon om diagonaal de noten te pakken."
             ],
 
             "tussenPagina": {
