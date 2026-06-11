@@ -129,10 +129,6 @@ const truthLieAntwoordData = {
     ]
 };
 
-
-
-
-
 // =================================================
 // NAVIGATIE
 // =================================================
@@ -223,7 +219,6 @@ if (window.location.pathname.includes("template.html")) {
     })();
 }
 
-
 function applyTeamTheme() {
 
     const team = localStorage.getItem("team");
@@ -242,7 +237,6 @@ function applyTeamTheme() {
 // =================================================
 // GAME LOGICA
 // =================================================
-
 
 function initHeader() {
     const team = localStorage.getItem("team");
@@ -362,6 +356,9 @@ function laadOpdracht() {
     updateProgressBar();
 }
 
+/**
+ * Loads the elements necessary for the Truth Lie minigame. Elements from the standard template will be hidden.
+ */
 function inladenTruthLieElementen() {
     document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
     document.getElementById("codeInputContainer").style.display = "none";
@@ -372,6 +369,9 @@ function inladenTruthLieElementen() {
     document.getElementById("truth-lie-nee").hidden = false;
 }
 
+/**
+ * Used to select the next game for the path "Aandrijving"
+ */
 function laadOpdrachtAandrijving() {
     switch (huidigeOpdracht) {
         case 1:
@@ -482,6 +482,9 @@ function blockly() {
         });
 }
 
+/**
+ * Used to select the next game for the path "Programma"
+ */
 function laadOpdrachtProgramma() {
     switch (huidigeOpdracht) {
 
@@ -497,6 +500,7 @@ function laadOpdrachtProgramma() {
             inladenTruthLieElementen();
             break;
 
+        //TODO TIM zet dit er weer in?
         // case 5:
         //     simon_says();
         //     break;
@@ -618,6 +622,9 @@ window.handleQRCode = function(qrData) {
     }
 };
 
+/**
+ * Used to select the next game for the path "Klankbron"
+ */
 function laadopdrachtKlankbron() {
     switch (huidigeOpdracht) {
         default:
@@ -625,6 +632,9 @@ function laadopdrachtKlankbron() {
     }
 }
 
+/**
+ * Determines if the user correctly answered the truth lie question.
+ */
 function verwerkTruthLie(isCorrect) {
     if (isCorrect == truthLieAntwoordData[team][truthLieProgress]) {
         document.getElementById("feedback").textContent = "Goed gedaan!";
@@ -639,6 +649,14 @@ function verwerkTruthLie(isCorrect) {
     document.getElementById("VolgendeTruthLie").hidden = false;
 }
 
+/**
+ * Updates progress within the truth lie minigame. 
+ * 
+ * If the end of the game is reached:
+ * - The user's score is updated
+ * - Truth lie elements are hidden
+ * - Template elements are reloaded
+ */
 function updateTruthLie() {
     truthLieProgress++;
     document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];

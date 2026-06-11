@@ -311,14 +311,6 @@ button.correct-state:hover {
     text-align: center;
 }
 
-.index-subtitle {
-    font-size: clamp(20px, 6vw, 40px);
-    margin-bottom: var(--scale);
-    text-align: center;
-    font-family: "Right Grotesk Light";
-}
-
-
 .video-wrapper {
     display: flex;
     justify-content: center;
