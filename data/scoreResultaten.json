@@ -1,0 +1,221 @@
+{
+    "_comment": "List of instruments with their component type and count, this is to compare and generate a leaderboard for the end score.",
+    "_instruments": [
+        {
+            "_naam": "name of the instrument or object",
+            "_onderdeel": "the part of the instrument",
+            "_aantal": "the amount of a specific part on the instrument"
+        }
+    ],
+
+    "instruments": [
+        {
+            "naam": "Fluit",
+            "onderdeel": "Gaten",
+            "aantal": 0
+        },
+        {
+            "naam": "Klarinet",
+            "onderdeel": "Kleppen",
+            "aantal": 5
+        },
+        {
+            "naam": "Saxofoon",
+            "onderdeel": "Kleppen",
+            "aantal": 10
+        },
+        {
+            "naam": "Accordeon",
+            "onderdeel": "Knoppen",
+            "aantal": 15
+        },
+        {
+            "naam": "Xylofoon",
+            "onderdeel": "Staven",
+            "aantal": 20
+        },
+        {
+            "naam": "Drumkit",
+            "onderdeel": "Onderdelen",
+            "aantal": 25
+        },
+        {
+            "naam": "Synthesizer",
+            "onderdeel": "Toetsen",
+            "aantal": 30
+        },
+        {
+            "naam": "Carillon",
+            "onderdeel": "Klokken",
+            "aantal": 35
+        },
+
+        {
+            "naam": "Piano",
+            "onderdeel": "Toetsen",
+            "aantal": 40
+        },
+        {
+            "naam": "Orgel",
+            "onderdeel": "Pijpen",
+            "aantal": 45
+        },
+        {
+            "naam": "Harp",
+            "onderdeel": "Snaren",
+            "aantal": 50
+        },
+        {
+            "naam": "Gitaar",
+            "onderdeel": "Snaren",
+            "aantal": 55
+        },
+        {
+            "naam": "Fluit",
+            "onderdeel": "Gaten",
+            "aantal": 60
+        },
+        {
+            "naam": "Klarinet",
+            "onderdeel": "Kleppen",
+            "aantal": 65
+        },
+        {
+            "naam": "Saxofoon",
+            "onderdeel": "Kleppen",
+            "aantal": 70
+        },
+        {
+            "naam": "Accordeon",
+            "onderdeel": "Knoppen",
+            "aantal": 75
+        },
+        {
+            "naam": "Xylofoon",
+            "onderdeel": "Staven",
+            "aantal": 80
+        },
+        {
+            "naam": "Drumkit",
+            "onderdeel": "Onderdelen",
+            "aantal": 85
+        },
+        {
+            "naam": "Synthesizer",
+            "onderdeel": "Toetsen",
+            "aantal": 90
+        },
+        {
+            "naam": "Carillon",
+            "onderdeel": "Klokken",
+            "aantal": 95
+        },
+
+        {
+            "naam": "Piano",
+            "onderdeel": "Snaren",
+            "aantal": 100
+        },
+        {
+            "naam": "Orgel",
+            "onderdeel": "Registers",
+            "aantal": 105
+        },
+        {
+            "naam": "Harp",
+            "onderdeel": "Snaren",
+            "aantal": 110
+        },
+        {
+            "naam": "Gitaar",
+            "onderdeel": "Snaren",
+            "aantal": 115
+        },
+        {
+            "naam": "Fluit",
+            "onderdeel": "Gaten",
+            "aantal": 120
+        },
+        {
+            "naam": "Klarinet",
+            "onderdeel": "Kleppen",
+            "aantal": 125
+        },
+        {
+            "naam": "Saxofoon",
+            "onderdeel": "Kleppen",
+            "aantal": 130
+        },
+        {
+            "naam": "Accordeon",
+            "onderdeel": "Knoppen",
+            "aantal": 135
+        },
+        {
+            "naam": "Xylofoon",
+            "onderdeel": "Staven",
+            "aantal": 140
+        },
+        {
+            "naam": "Drumkit",
+            "onderdeel": "Bevestigingen",
+            "aantal": 145
+        },
+        {
+            "naam": "Synthesizer",
+            "onderdeel": "Toetsen",
+            "aantal": 150
+        },
+        {
+            "naam": "Carillon",
+            "onderdeel": "Klokken",
+            "aantal": 155
+        },
+
+        {
+            "naam": "Piano",
+            "onderdeel": "Toetsen",
+            "aantal": 160
+        },
+        {
+            "naam": "Orgel",
+            "onderdeel": "Pijpen",
+            "aantal": 165
+        },
+        {
+            "naam": "Harp",
+            "onderdeel": "Snaren",
+            "aantal": 170
+        },
+        {
+            "naam": "Gitaar",
+            "onderdeel": "Snaren",
+            "aantal": 175
+        },
+        {
+            "naam": "Fluit",
+            "onderdeel": "Gaten",
+            "aantal": 180
+        },
+        {
+            "naam": "Klarinet",
+            "onderdeel": "Kleppen",
+            "aantal": 185
+        },
+        {
+            "naam": "Saxofoon",
+            "onderdeel": "Kleppen",
+            "aantal": 190
+        },
+        {
+            "naam": "Accordeon",
+            "onderdeel": "Knoppen",
+            "aantal": 195
+        },
+        {
+            "naam": "Xylofoon",
+            "onderdeel": "Staven",
+            "aantal": 200
+        }
+    ]
+}

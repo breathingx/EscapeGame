@@ -1,5 +1,11 @@
+
+// =================================================
+// SETUP
+// =================================================
+
 import { movementLogic } from 'blockscript.js';
 
+// Simple assertion function for testing
 function assert(testName, actual, expected) {
     const isMatch = JSON.stringify(actual) === JSON.stringify(expected);
     if (isMatch) {
@@ -8,6 +14,10 @@ function assert(testName, actual, expected) {
         console.error(`FAIL: ${testName} | Expected: ${JSON.stringify(expected)}, Got: ${JSON.stringify(actual)}`);
     }
 }
+
+// =================================================
+// TESTS FOR MOVEMENT LOGIC
+// =================================================
 
 console.log("programmeertests");
 

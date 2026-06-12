@@ -1,3 +1,20 @@
+/* ================================================= */
+/* =================== VIDEO PAGE ================== */
+/* ================================================= */
+
+
+
+/* team title at the top */
+
+#teamTitle {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+
+
+/* video wrapper */
+
 .video-wrapper {
     width: 100%;
     max-width: 900px;
@@ -13,6 +30,10 @@
     border: none;
 }
 
+
+
+/* start/continue button wrapper */
+
 .start-button-wrapper {
     margin-top: 2rem;
     display: flex;
@@ -25,9 +46,4 @@
 .start-button-wrapper.show {
     opacity: 1;
     visibility: visible;
-}
-
-#teamTitle {
-    text-align: center;
-    margin-bottom: 1rem;
 }

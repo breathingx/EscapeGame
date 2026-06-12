@@ -1,6 +1,9 @@
 (() => {
+    // =================================================
+    // VARIABLES & ELEMENTS
+    // =================================================
     const maxLevel = 10;
-    const winCode = "PRO000"; 
+    const winCode = "PRO000"; // unused
     let playing = false;
     let sequence = [];
     let playerSequence = [];
@@ -35,15 +38,25 @@
 
     startBtn.addEventListener('click', startGame);
     endBtn.addEventListener('click', nextGame);
+
+    // =================================================
+    // GAME LOGIC
+    // =================================================
+
+
+    // starts a new game, resets all variables and goes to the first level
     function startGame() {
         sequence = [];
         startBtn.style.display = 'none';
         nextLevel();
     }
+
+    // calls the function to go to the next game
     function nextGame() {
         if (typeof volgendeOpdracht === "function") volgendeOpdracht();
     }
 
+    // add event listeners to the buttons for player input
     btns.forEach(btn => {
         btn.addEventListener('pointerdown', (e) => {
             if (e.cancelable) e.preventDefault();
@@ -56,6 +69,7 @@
         }, { passive: false });
     });
 
+    // turns a button white for a short time to indicate it has been pressed
     function flashButton(index) {
         btns[index].classList.add('active');
         setTimeout(() => {
@@ -63,6 +77,7 @@
         }, 300);
     }
 
+    // animates the hand image to press the button at the given index
     function animateHand(index) {
     const btn = btns[index];
     const ro = [280, 80, 260, 100][index];
@@ -84,6 +99,7 @@
     pointerImg.classList.add('play-animation');
 }
 
+    // plays the sequence of buttons with a short delay in between, also animates the hand image to press the buttons
     function playSequence() {
     playing = true
     let i = 0;
@@ -105,6 +121,7 @@
     }, 600); 
 }
 
+    // advances to the next level, adds a new random button to the sequence and shows it
     function nextLevel() {
         playerSequence = [];
         level++;
@@ -125,6 +142,7 @@
         setTimeout(playSequence, 300); 
     }
 
+    // checks if the player's input is correct, handles retries and ends game if no retries left
     function checkSequence() {
         const currentMove = playerSequence.length - 1;
         
@@ -147,6 +165,7 @@
         }
     }
 
+    // overwrites scoring function with simon says score and ends the game
     function endGame() {
         startBtn.style.display = 'none';
         endBtn.style.display = 'block';

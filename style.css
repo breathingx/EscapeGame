@@ -45,10 +45,10 @@
 }
 
 
-/* Landscape (laptops / tablets liggend) */
+/* Landscape (laptops / tablets horizontal) */
 @media (orientation: landscape) {
     :root {
-        --page-margin: 7vw; /* bij landscape op breedte baseren */
+        --page-margin: 7vw; /* base landscape on width */
     }
 }
 
@@ -216,7 +216,6 @@ button {
     font-family: "Right Grotesk Medium";
     font-weight: 500;
     padding: 12px 24px;
-    /* margin: 20px; */
     margin: 10px 0;
     font-size: clamp(14px, 2.5vw, 20px);
     border: none;
@@ -251,6 +250,7 @@ button:hover {
     box-shadow: 0 15px 30px rgba(0,0,0,0.2);
 }
 
+/* team colors: aandrijving: #0091FF, programma: #00f280, klankbron: #ff6800 */
 .aandrijving {
     background-color: #0091FF;
     color: black;
@@ -310,14 +310,6 @@ button.correct-state:hover {
     font-size: clamp(32px, 7vw, 72px);
     text-align: center;
 }
-
-.index-subtitle {
-    font-size: clamp(20px, 6vw, 40px);
-    margin-bottom: var(--scale);
-    text-align: center;
-    font-family: "Right Grotesk Light";
-}
-
 
 .video-wrapper {
     display: flex;
@@ -382,18 +374,7 @@ button.correct-state:hover {
 /* ================== PROGRESS BAR ================= */
 /* ================================================= */
 
-.progress-bar.aandrijving {
-    background-color: #00f280;
-}
-
-.progress-bar.programma {
-    background-color: #0091FF;
-}
-
-.progress-bar.klankbron {
-    background-color: #ff6800;
-}
-
+/* grey background behind progress bar */
  .progress-container {
     position: relative;
     width: 100%;
@@ -402,23 +383,12 @@ button.correct-state:hover {
     overflow: hidden;
 }
 
-
+/* animated progress bar */
 .progress-bar {
+    background-color: #000000;
     height: 100%;
     width: 0%;
     transition: width 0.6s ease-in-out;
-}
-
-.progress-bar {
-    height: 100%;
-    width: 0%;
-    transition: width 0.6s ease-in-out;
-
-    background: linear-gradient(
-        to right,
-        #000000,
-        #333333
-    );
 
     box-shadow: 0 0 8px rgba(255,255,255,0.4);
 }
@@ -428,7 +398,7 @@ button.correct-state:hover {
 /* ================== HINT SYSTEM ================== */
 /* ================================================= */
 
-
+/* hint button and hint blocks container */
 #hintContainer {
     width: 100%;
     display: flex;
@@ -467,6 +437,7 @@ button.correct-state:hover {
     background-color: black;
 }
 
+/* lower opacity for used hints */
 .hintBlock.used {
     opacity: 0.2;
 }
@@ -520,7 +491,6 @@ button.correct-state:hover {
     justify-content: center;
 }
 
-
 #hintActions {
     display: flex;
     gap: 10px;
@@ -547,7 +517,7 @@ button.correct-state:hover {
 }
 
 /* ================================================= */
-/* ===================== BONUS ===================== */
+/* ================ BONUS SYSTEM =================== */
 /* ================================================= */
 
 #bonusBtn {
@@ -557,6 +527,9 @@ button.correct-state:hover {
     flex-shrink: 0;
 }
 
+/*================================================== */
+/*================= BONUS MODAL ==================== */
+/*================================================== */
 
 #bonusOverlay {
     position: fixed;
@@ -661,7 +634,7 @@ button.correct-state:hover {
 
 
 /* ================================================= */
-/* ================== CODES PAGINA ================= */
+/* ================== CODES PAGE =================== */
 /* ================================================= */
 
 #codesContainer h1,
@@ -734,7 +707,7 @@ button.correct-state:hover {
 
 
 /* ================================================= */
-/* ================== TEMPLATE ===================== */
+/* =============== PUZZLE TEMPLATE ================= */
 /* ================================================= */
 
 .header {
@@ -790,7 +763,6 @@ button.correct-state:hover {
     flex-direction: column;
     align-items: center;
     gap: 8px;
-    /* padding-top: calc(var(--max-content-width) / 4); */
     padding-top: 80px;
     z-index: 10;
 }
@@ -800,12 +772,20 @@ button.correct-state:hover {
     font-size: clamp(20px, 4vw, 28px);;
 }
 
+/* ================================================= */
+/* ================ TRUTH OR LIE =================== */
+/* ================================================= */
+
 #truth-lie-div {
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 60%;
 }
+
+/* ================================================= */
+/* =============== MULTIPLE CHOICE ================= */
+/* ================================================= */
 
 .mc-grid {
     display: grid;

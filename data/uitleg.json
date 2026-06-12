@@ -1,0 +1,51 @@
+{
+    "algemeen": {
+        "titel": "Jullie missie",
+
+        "tekst": [
+            "De muziekmachine is uit elkaar gehaald!",
+            "De dief had haast en nam alleen de buitenkant mee. Hij dacht dat dát het waardevolst was…",
+            "Maar zonder binnenwerk en onderdelen ontstaat er geen muziek en geen beweging.",
+            "Daar komt hij snel achter. En dan komt hij terug!",
+            "Maar gelukkig zijn jullie er.",
+            "De klankbron, programmadrager en aandrijving herken je alleen als je weet hoe een muziekmachine werkt.",
+            "Daarom moeten jullie experts worden."
+        ]
+    },
+
+    "teams": {
+        "aandrijving": {
+            "tekst": [
+                "Jullie zijn team Aandrijving.",
+                "Leer alles over techniek en machines voordat de dief terug is! Help de muziekmachine haar aandrijving terug te krijgen.",
+                "Zodra je op START drukt loopt de tijd. Zijn jullie klaar?"
+            ]
+        },
+
+        "programma": {
+            "tekst": [
+                "Jullie zijn team Programma.",
+                "Leer alles over programmeren en herken de echte programmadrager vóórdat de dief terug is.",
+                "Zodra je op START drukt loopt de tijd. Zijn jullie klaar?"
+            ]
+        },
+
+        "klankbron": {
+            "tekst": [
+                "Jullie zijn team Klankbron.",
+                "Zorg ervoor dat je straks alles weet over muziek en klank, zodat je de juiste klankbron herkent, voordat de dief terug is!",
+                "Zodra je op START drukt loopt de tijd. Zijn jullie klaar?"
+            ]
+        }
+    },
+
+    "einde": {
+        "titel": "COMBINEER DE CODES",
+        
+        "tekst": [
+            "Jullie hebben alle opdrachten voltooid!",
+            "Maar om te zien of jullie missie echt is geslaagd, moeten jullie aandrijving, programma en klankbron weer samenbrengen.",
+            "Elke groep heeft een geheime code verzameld. Tijd om te testen of jullie echte experts zijn."
+        ]
+    }
+}

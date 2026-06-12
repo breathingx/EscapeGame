@@ -1,5 +1,5 @@
 import { GAME_HEIGHT, GAME_WIDTH } from './config.js';
-
+//Vertex shader
 const vsSource = `
   attribute vec3 aPosition;
   uniform mat4 uMvp;
@@ -8,7 +8,7 @@ const vsSource = `
     gl_Position = uMvp * vec4(aPosition, 1.0);
   }
 `;
-
+//Fragment shader
 const fsSource = `
   precision mediump float;
   uniform vec4 uColor;
@@ -17,19 +17,19 @@ const fsSource = `
     gl_FragColor = uColor;
   }
 `;
-
+//Compiles a shader from source
 function createShader(gl, type, src) {
   const shader = gl.createShader(type);
   gl.shaderSource(shader, src);
   gl.compileShader(shader);
-
+  //Logs error message but still sends it through to let the caller handle it
   if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
     console.error(gl.getShaderInfoLog(shader));
   }
 
   return shader;
 }
-
+//Loads the vertex and fragment shaders into a webgl program
 function createProgram(gl, vs, fs) {
   const program = gl.createProgram();
   gl.attachShader(program, createShader(gl, gl.VERTEX_SHADER, vs));
@@ -42,7 +42,7 @@ function createProgram(gl, vs, fs) {
 
   return program;
 }
-
+//Initialises the WebGL canvas and returns the context and shader program
 export function initCanvasWebgl() {
   const canvas = document.getElementById('game');
   canvas.width = GAME_WIDTH;

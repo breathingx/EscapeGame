@@ -1,6 +1,10 @@
 /* ================================================= */
-/* ================== RESULTAAT PAGINA ============= */
+/* ================= RESULT PAGE =================== */
 /* ================================================= */
+
+
+
+/* Page layout */
 
 .resultaat-wrapper {
     max-width: 850px;
@@ -19,19 +23,23 @@
     opacity: 0.7;
 }
 
+
+
+/* Leaderboard sections */
+
 .leaderboard-blok {
-    margin-bottom: 60px;
     width: 100%;
+    margin-bottom: 60px;
 }
 
- .leaderboard-title {
-    font-size: 1.3rem;
-    margin-bottom: 20px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    text-align: center;
+.leaderboard-title {
     position: relative;
     padding-bottom: 12px;
+    font-size: 1.3rem;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 20px;
 }
 
 .leaderboard-title::after {
@@ -44,6 +52,10 @@
     height: 2px;
     background: black;
 }
+
+
+
+/* Leaderboard layout */
 
 .slotmachine {
     display: flex;
@@ -64,24 +76,6 @@
     transition: 0.3s ease;
 }
 
-.slot-row.active {
-    min-height: 120px;
-    font-size: clamp(24px, 4vw, 42px);
-    font-family: "Right Grotesk Compact";
-    border: 2px solid rgba(255,255,255,0.15);
-    box-shadow:
-        0 0 30px rgba(0,0,0,0.25),
-        0 0 12px rgba(255,255,255,0.08);
-}
-
-.slot-row.faded {
-    opacity: 0.28;
-    filter: blur(0.5px);
-    font-size: clamp(16px, 2vw, 24px);
-    transform: scale(0.94);
-}
-
-
 .slot-left,
 .slot-right {
     width: 44%;
@@ -94,14 +88,36 @@
     background: rgba(255,255,255,0.18);
 }
 
+
+
+/* Leaderboard states */
+
+.slot-row.active {
+    min-height: 120px;
+    font-size: clamp(24px, 4vw, 42px);
+    font-family: "Right Grotesk Compact";
+    font-weight: normal;
+    border: 2px solid rgba(255,255,255,0.15);
+    box-shadow:
+        0 0 30px rgba(0,0,0,0.25),
+        0 0 12px rgba(255,255,255,0.08);
+}
+
 .slot-row.active .slot-left,
 .slot-row.active .slot-right {
     text-shadow: 0 0 8px rgba(255,255,255,0.15);
 }
 
-.resultaat-wrapper button {
-    margin-top: 30px;
+.slot-row.faded {
+    opacity: 0.28;
+    filter: blur(0.5px);
+    font-size: clamp(16px, 2vw, 24px);
+    transform: scale(0.94);
 }
+
+
+
+/* Leaderboard content */
 
 .slot-title {
     font-size: 1.1em;
@@ -109,9 +125,9 @@
 }
 
 .slot-artist {
+    margin-top: 4px;
     font-size: 0.6em;
     opacity: 0.65;
-    margin-top: 4px;
     letter-spacing: 1px;
     text-transform: uppercase;
 }
@@ -130,6 +146,10 @@
     line-height: 1;
 }
 
-.slot-row.active {
-    font-weight: normal;
+
+
+/* Button spacing */
+
+.resultaat-wrapper button {
+    margin-top: 30px;
 }

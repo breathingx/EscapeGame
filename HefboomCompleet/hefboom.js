@@ -2,33 +2,32 @@ const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 const slider = document.getElementById("pivotSlider");
 
-let pivotPct = 35;
-let projectile = null;
-let launching = false;
+let pivotPct = 35; //position of pivot as percentage along the beam
+let projectile = null; //store the launched projectile object
+let launching = false; //prevent multiple simultaneous launches
 
-function resize () {
+function resize () { //resize the canvas to match the display size
   const rect = canvas.getBoundingClientRect();
   canvas.height = rect.height;
   canvas.width = rect.width;
   draw();
 }
 
-function layout() {
+function layout() { //calculate layout of the lever-system
   const H = canvas.height;
   const W = canvas.width;
-  const left = 50;
-  const right = 410;
+  const left = 70;
+  const right = 430;
   const beamY = H*0.55;
   const pivotX = left+(right-left)*(pivotPct/100);
 
-  return {
+  return { //return calculated coordinates
     W, H, left, right, beamY, pivotX
   };
 }
 
-
-function updateCode() {
-  const {left,right,pivotX} = layout();
+function updateCode() { //update the displayed code values that are shown on screen
+  const {left,right,pivotX} = layout(); //when adjusting the lever
   const arm1 = pivotX-left;
   const arm2 = right-pivotX;
   const ratio = arm1/arm2;
@@ -38,7 +37,7 @@ function updateCode() {
   document.getElementById("d3").textContent = Math.round(arm2/50);
 }
 
-function drawArrow(x1,y1,x2,y2,color) {
+function drawArrow(x1,y1,x2,y2,color) { //draw an arrow between two points
   ctx.strokeStyle = color;
   ctx.lineWidth = 3;
   ctx.beginPath();
@@ -56,43 +55,34 @@ function drawArrow(x1,y1,x2,y2,color) {
   ctx.fill();
 }
 
-function draw() {
-
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  const spaceWidth = 460;
+function draw() { //draw the complete canvas-simulation
+  const spaceWidth = 500; //size of canvas
   const spaceHeight = 260;
-  const scale = Math.min(
-    canvas.width/spaceWidth,
-    canvas.height/spaceHeight
-  );
-
-  const spaceX = (canvas.width-spaceWidth*scale)/2;
+  const scale = Math.min(canvas.width/spaceWidth, canvas.height/spaceHeight); //scale it
+  const spaceX = (canvas.width-spaceWidth*scale)/2; //center drawing area
   const spaceY = (canvas.height-spaceHeight*scale)/2;
-
-  ctx.setTransform(scale,0,0,scale,spaceX,spaceY);
+  ctx.setTransform(scale, 0, 0, scale, spaceX, spaceY);
 
   const {
     W,H,left,right,beamY,pivotX
   } = layout();
 
-  ctx.clearRect(0,0,W,H);
-  ctx.strokeStyle = "black";
+  ctx.clearRect(0,0,W,H); //draw everything that is required on canvas  
+  ctx.strokeStyle = "black"; //beginning with the beam in black
   ctx.lineWidth = 8;
   ctx.beginPath();
   ctx.moveTo(left, beamY);
   ctx.lineTo(right, beamY);
   ctx.stroke();
-  ctx.fillStyle = "#ffd700";
+  ctx.fillStyle = "#ff00ff"; //then the pivot as pink triangle
   ctx.beginPath();
   ctx.moveTo(pivotX, beamY-10);
   ctx.lineTo(pivotX+18, beamY+24);
   ctx.lineTo(pivotX-18, beamY+24);
   ctx.fill();
 
-  if(!projectile) {
-    ctx.fillStyle = "#0091FF";
+  if(!projectile) { //and the projectile, at starting position if not launched
+    ctx.fillStyle = "#ff6800";
     ctx.beginPath();
     ctx.arc(left, beamY-16,12,0,Math.PI*2);
     ctx.fill();
@@ -115,10 +105,10 @@ function draw() {
   drawArrow(right,beamY+5,right,beamY+60,"#ff6800"); //fspier
   ctx.fillStyle = "#ff6800";
   ctx.fillText("Fspier",right,beamY+88);
-
-  if(projectile) {
-    const age = (Date.now()-projectile.t0)/1000;
-    const x = projectile.x0+projectile.vx*age;
+ 
+  if(projectile) { //if the projectile is launched, draw it to be moving
+    const age = (Date.now()-projectile.t0)/1000; //from now on
+    const x = projectile.x0+projectile.vx*age; //these equations determine where the projectile is now
     const y = projectile.y0+projectile.vy*age+350*age*age;
     
     ctx.fillStyle = "#ff6800";
@@ -126,32 +116,32 @@ function draw() {
     ctx.arc(x,y,12,0,Math.PI*2);
     ctx.fill();
 
-    if(y > H+100) {
+    if(y > H+100) { //reset the projectile when it leaves the screen
       projectile = null;
       launching = false;
 
       document.getElementById("launchBtn").disabled = false;
     }
   }
-  updateCode();
+  updateCode(); //update the code
 
-  ctx.setTransform(1,0,0,1,0,0);
+  ctx.setTransform(1,0,0,1,0,0); //reset transformation
 }
 
-function launch() {
-  if (launching) return;
+function launch() { //launch the projectile
+  if (launching) return; //prevent duplicate launches
   launching = true;
 
   document.getElementById("launchBtn").disabled = true;
 
   const {left,beamY,pivotX,right} = layout();
-  const arm1 = pivotX-left;
+  const arm1 = pivotX-left; //calculate arm lengths
   const arm2 = right-pivotX;
-  const ratio = arm2/Math.max(arm1,1);
-  const speed=140+ratio*120;
+  const ratio = arm2/Math.max(arm1,1); 
+  const speed=140+ratio*120; //launch speed based on ratio
 
-  projectile = {x0:left, y0:beamY-16, vx:speed, vy:-speed*0.8, t0:Date.now()};
-  animate();
+  projectile = {x0:left, y0:beamY-16, vx:speed, vy:-speed*0.8, t0:Date.now()}; //create projectile
+  animate(); //animate all
 }
 
 function animate() {
@@ -162,17 +152,16 @@ function animate() {
   }
 }
 
-slider.addEventListener("input",()=>{
+slider.addEventListener("input",()=>{ //update pivot when slider changes
   pivotPct = slider.value;
   document.getElementById("pivotPct").textContent = pivotPct + "%";
   draw();
 });
 
-document.getElementById("launchBtn").addEventListener("click",launch);
-document.getElementById("resetBtn").addEventListener("click",()=>{
+document.getElementById("launchBtn").addEventListener("click",launch); //launch button
+document.getElementById("resetBtn").addEventListener("click",()=>{ //reset button
   projectile = null;
   launching = false;
-  document.getElementById("launchBtn").disabled = false;
   pivotPct = 35;
   slider.value = 35;
   document.getElementById("pivotPct").textContent = "35%";

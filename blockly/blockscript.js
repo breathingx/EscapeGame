@@ -1,7 +1,8 @@
 
 // =================================================
-// BLOK SOORTEN
+// BLOCK TYPES
 // =================================================
+
 Blockly.Blocks['start_block'] = {
   init: function() {
     this.appendDummyInput().appendField("Start");
@@ -57,12 +58,13 @@ Blockly.Blocks['repeat_n'] = {
 
 
 // =================================================
-// SCRIPT GENERATIE
+// SCRIPT GENERATION
 // =================================================
 
 javascript.javascriptGenerator.forBlock['start_block'] = function() {
   return ''; 
 };
+
 javascript.javascriptGenerator.forBlock['move_forward_n'] = function(block) {
   var steps = block.getFieldValue('STEPS');
   var code = '';
@@ -71,12 +73,15 @@ javascript.javascriptGenerator.forBlock['move_forward_n'] = function(block) {
   }
   return code;
 };
+
 javascript.javascriptGenerator.forBlock['turn_left'] = function() {
   return 'queueAction("left");\n';
 };
+
 javascript.javascriptGenerator.forBlock['turn_right'] = function() {
   return 'queueAction("right");\n';
 };
+
 javascript.javascriptGenerator.forBlock['repeat_n'] = function(block) {
   var repeats = block.getFieldValue('N');
   var branch = javascript.javascriptGenerator.statementToCode(block, 'DO');
@@ -98,21 +103,8 @@ const levelGrid = [
   [1, 0, 0, 1, 0, 1, 1, 1, 0, 1], 
   [1, 2, 0, 0, 2, 0, 0, 0, 2, 1], 
   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]  
-];
-// [
-//   [2,0,0,0,0,0,0,0,0,0],
-//   [0,1,1,1,0,2,0,2,0,0],
-//   [0,0,0,1,0,0,0,0,0,0],
-//   [0,0,0,1,1,0,1,0,1,1],
-//   [3,0,0,0,0,0,0,2,0,0],
-//   [0,0,0,0,0,0,0,0,0,0],
-//   [0,0,0,1,0,2,1,1,1,0],
-//   [0,0,0,1,0,0,0,0,0,0],
-//   [0,0,0,1,0,0,0,0,0,0],
-//   [2,0,0,0,0,2,0,2,0,0]
-// ];
-
-let workingGrid = []; // Used to track collected goals during a run
+]; // contains the maze, 0 = empty, 1 = wall, 2 = goal, 3 = start
+let workingGrid = []; // Used to track previously collected goals in a run
 let currentScore = 0;
 let actionQueue = [];
 let isPlaying = false;
@@ -123,10 +115,18 @@ let tileX = 0, tileY = 0;
 let startX = 0, startY = 0;
 let playerAngle = 0;
 
+let bestBlocklyScore = 0;
+
+// =================================================
+// GAME LOGIC
+// =================================================
+
+// Helper function to add actions to the queue. Called by the generated code from the blocks to schedule movements and turns.
 function queueAction(action) {
     actionQueue.push(action);
 }
 
+// called after every move to update the player's position and the visuals of the goals. Also ensures the game area stays square and scales everything based on the current size.
 function updatePlayerVisuals() {
   const area = document.getElementById('gameArea');
   const player = document.getElementById('player');
@@ -157,6 +157,7 @@ function updatePlayerVisuals() {
   });
 }
 
+// Adjusts the size and position of all walls based on the current size of the game area. Called on window resize and after drawing the level to ensure everything scales correctly.
 function renderLevel() {
   const area = document.getElementById('gameArea');
   const player = document.getElementById('player');
@@ -181,6 +182,8 @@ function renderLevel() {
     t.style.justifyContent = 'center';
   });
 }
+
+// Main function to draw the level based on the levelGrid. It creates wall and goal elements, sets the player's starting position, and renders everything visually. Also clears any previous elements to reset the board.
 function drawLevel() {
   const area = document.getElementById('gameArea');
   const elements = area.querySelectorAll('.wall, .goal');
@@ -199,6 +202,7 @@ function drawLevel() {
   updatePlayerVisuals();
 }
 
+// Helper function to create wall and goal tiles visually. Sets the appropriate classes, icons, and data attributes for positioning.
 function createTile(x, y, className, icon, id = null) {
   const div = document.createElement('div');
   div.className = className;
@@ -210,6 +214,7 @@ function createTile(x, y, className, icon, id = null) {
   document.getElementById('gameArea').appendChild(div);
 }
 
+// Recursive function for playing the queued actions. Moves the player, checks for collisions and scoring, and continues until all actions are done. Also handles ending the run when finished.
 function playNextMove() {
   if (!isPlaying || actionQueue.length === 0) {
     isPlaying = false;
@@ -252,29 +257,23 @@ function playNextMove() {
   moveTimer = setTimeout(playNextMove, 250);
 }
 
+// Main loop for running the player's code. Evaluates the Blockly code, queues up the actions, and starts the animation. Also handles resetting the game state for retries.
 function runGame() {
   let runBtn = document.getElementById('runBlocklyBtn');
   let advanceBtn = document.getElementById('advance-blockly');
-  
-  // Check if the button is currently in the "Retry" state
   let isRetry = runBtn && runBtn.innerText.includes("OPNIEUW");
 
   if (isRetry) {
-    // Switch the button back to Play mode and hide the Verder button
     runBtn.innerText = "▶ SPEEL PROGRAMMA";
     if (advanceBtn) advanceBtn.style.display = 'none';
   } else {
-    // Only check block limits if they are actually trying to run the code
     let count = workspace.getAllBlocks(false).length - 1;
     if (count > maxBlocks) {
       alert(`Te veel blokken! Gebruik maximaal ${maxBlocks}.`);
       return;
     }
-    // Hide advance button just in case they click play quickly
     if (advanceBtn) advanceBtn.style.display = 'none'; 
   }
-
-  // --- This block cleans the board and resets everything back to 0 ---
   clearTimeout(moveTimer);
   isPlaying = false;
   actionQueue = [];
@@ -290,12 +289,11 @@ function runGame() {
   player.offsetHeight; 
   player.style.transition = 'transform 0.4s ease';
 
-  // If they only clicked Retry, stop here so they can edit their blocks!
+
   if (isRetry) {
     return; 
   }
 
-  // --- Otherwise, read the blocks and run the new code! ---
   let code = javascript.javascriptGenerator.workspaceToCode(workspace);
   try { eval(code); } catch (e) { console.error(e); }
 
@@ -303,12 +301,11 @@ function runGame() {
     isPlaying = true;
     playNextMove();
   } else {
-    // If they click play with an empty workspace, instantly end the run
     setTimeout(endGameBlockly, 200);
   }
 }
 
-
+// initializes Blockly workspace and loads any saved blocks. Also sets up listeners for resizing and block changes to update the UI size if needed
 function initBlockly() {
   const toolboxElement = document.getElementById('toolbox');
   if (!toolboxElement) {
@@ -322,7 +319,8 @@ function initBlockly() {
     trashcan: true,
     horizontalLayout: true, 
     toolboxPosition: 'start',
-    scrollbars: true
+    scrollbars: true,
+    renderer: 'geras' 
   });
   const workspaceBlocksElement = document.getElementById('workspaceBlocks');
   if (workspaceBlocksElement) {
@@ -365,24 +363,32 @@ function initBlockly() {
   }, 250);
 }
 
-let bestBlocklyScore = 0;
-
+// Evaluates the player's code and updates the score and buttons accordingly. Called at the end of a run. Max points = no retry anymore
 function endGameBlockly(bestscore=bestBlocklyScore) {
     let runBtn = document.getElementById('runBlocklyBtn');
     let advanceBtn = document.getElementById('advance-blockly');
     
-    // Save their best attempt
+    // Save the best attempt
     if (currentScore > bestBlocklyScore) {
         bestBlocklyScore = currentScore;
     }
-
+    // max score: only show advance button
     if (currentScore >= 20) {
         if (runBtn) runBtn.style.display = 'none'; 
         if (advanceBtn) {
             advanceBtn.style.display = 'block';
             advanceBtn.innerText = "Verder (Max Score!)";
         }
-    } else {
+    } 
+    // no points: only show retry button
+    else if (currentScore === 0) {
+        if (runBtn) {
+            runBtn.style.display = 'block';
+            runBtn.innerText = "↻OPNIEUW PROBEREN";
+        }
+    } 
+    // some points but not max: show both buttons
+    else {
         if (runBtn) {
             runBtn.style.display = 'block';
             runBtn.innerText = "↻OPNIEUW PROBEREN";
@@ -402,6 +408,7 @@ function endGameBlockly(bestscore=bestBlocklyScore) {
     }
 }
 
+// overwrites scoring function with blockly score and moves to next screen.
 function submitBlocklyScore() {
     if (localStorage.getItem("blockly_done") !== "true") {
         localStorage.setItem("blockly_done", "true");
@@ -430,6 +437,8 @@ function submitBlocklyScore() {
         if (typeof volgendeOpdracht === "function") volgendeOpdracht();
     }
 }
+
+// Catches the case where the player has already completed the game and returns to the page, forcing the next page.
 if (localStorage.getItem("blockly_done") === "true") {
   if (typeof huidigeOpdracht !== 'undefined' && huidigeOpdracht < 5) {
       if (typeof toonTussenPagina === "function") toonTussenPagina();
