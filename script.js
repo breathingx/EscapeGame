@@ -20,7 +20,7 @@ let foutPogingen = 0;
 let antwoordIsCorrect = false;
 
 // scores for minigames
-let simon_punten = 0; //simon sais is not used at the moment, but is planned on being used
+let simon_punten = 0; //simon says is not used at the moment, but is planned on being used
 // const ENABLE_SIMON_SAYS = false;
 let blockly_punten = 0;
 
@@ -163,7 +163,7 @@ const truthLieAntwoordData = {
 };
 
 // =================================================
-// NAVIGATIE 
+// NAVIGATION
 // =================================================
 
 // function to go to the home page
@@ -186,7 +186,7 @@ if (document.getElementById("buttons")) {
 }
 
 // =================================================
-// GAME INITIALISATIE 
+// GAME INITIALISATION 
 // =================================================
 
 
@@ -269,7 +269,7 @@ function applyTeamTheme() {
 }
 
 // =================================================
-// GAME LOGICA 
+// GAME LOGIC 
 // =================================================
 
 
@@ -362,7 +362,7 @@ function laadOpdracht() {
 
 
     // =================================================
-    // MINI_GAME PAGINA'S
+    // MINIGAME PAGES
     // =================================================
 
     // loading mini-game content from pitch perfect
