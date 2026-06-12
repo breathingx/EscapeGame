@@ -1,7 +1,52 @@
 // =================================================
+// GAME STATE 
+// =================================================
+
+
+
+// global variables
+let team;
+let gameData = {};
+
+// tracking progress in the main game
+let huidigeOpdracht = 0;
+let correcteAntwoorden = 0;
+let score = 0;
+let totaal_opdrachten = 0;
+let zitOpTussenPagina = false;
+let correcteCodes = [false, false];
+
+let foutPogingen = 0;
+let antwoordIsCorrect = false;
+
+// scores for minigames
+let simon_punten = 0; //simon sais is not used at the moment, but is planned on being used
+// const ENABLE_SIMON_SAYS = false;
+let blockly_punten = 0;
+
+let truthLieProgress = 0;
+const truthLieMaxVragen = 6;
+
+// tracking hints usage
+let hintGebruiktPerVraag = 0;
+let laatsteHintTijd = 0;
+let gebruikteHints = [];
+const maxHints = 3;
+const hintCooldown = 180;
+let hintInterval = null;
+
+// bonus questions
+let verzameldeBonusVragen = JSON.parse(localStorage.getItem("bonusVragen")) || [];
+let pendingBonusVragen = [];
+
+
+
+// =================================================
 // TIMER 
 // =================================================
 
+
+//  timer in the game, counts down to give a sence of urgency
 if (
     document.getElementById("timer")
 ) {
@@ -12,6 +57,7 @@ if (
         localStorage.setItem("totalSeconds", 60 * 60);
     }
 
+    // counting down as time moves on
     function updateTimer() {
 
         let totalSeconds = parseInt(localStorage.getItem("totalSeconds"));
@@ -39,42 +85,28 @@ if (
 }
 
 
-// =================================================
-// GAME STATE
-// =================================================
-
-let team;
-let gameData = {};
-let huidigeOpdracht = 0;
-let correcteAntwoorden = 0;
-let score = 0;
-let foutPogingen = 0;
-let antwoordIsCorrect = false;
-let simon_punten = 0; 
-let blockly_punten = 0;
-let totaal_opdrachten = 0;
-
-let hintGebruiktPerVraag = 0;
-let laatsteHintTijd = 0;
-let gebruikteHints = [];
-const maxHints = 3;
-const hintCooldown = 180;
-let hintInterval = null;
-
-let verzameldeBonusVragen = JSON.parse(localStorage.getItem("bonusVragen")) || [];
-let pendingBonusVragen = [];
-let zitOpTussenPagina = false;
-
-// const ENABLE_SIMON_SAYS = false;
-
-let truthLieProgress = 0;
-const truthLieMaxVragen = 6;
 
 // =================================================
-// DATA
+// DATA 
 // =================================================
 
 
+// loading in data form the specific team data files
+async function laadGameData(team) {
+    const response = await fetch(`data/${team}.json`);
+    gameData = {};
+    gameData[team] = await response.json();
+}
+
+
+// The codes for each team to match at the end of the game
+const teamCodes = {
+    aandrijving: "AA00",
+    programma: "PR00",
+    klankbron: "KL00"
+};
+
+// the truth or lie questions
 const truthLieVragen = {
     aandrijving: [
         "Een krukas wordt gebruikt om energie in op te slaan.",
@@ -102,6 +134,7 @@ const truthLieVragen = {
     ]
 };
 
+// the truth or lie answers
 const truthLieAntwoordData = {
     aandrijving: [
         false,
@@ -130,9 +163,10 @@ const truthLieAntwoordData = {
 };
 
 // =================================================
-// NAVIGATIE
+// NAVIGATIE 
 // =================================================
 
+// function to go to the home page
 function gaNaarHome() {
     window.location.href = "home.html";
 }
@@ -141,6 +175,7 @@ function gaNaarHome() {
 // INDEX: VIDEO
 // =================================================
 
+// button for the first video is only shown after a certain amount of time
 if (document.getElementById("buttons")) {
 
     setTimeout(() => {
@@ -151,15 +186,12 @@ if (document.getElementById("buttons")) {
 }
 
 // =================================================
-// GAME INITIALISATIE
+// GAME INITIALISATIE 
 // =================================================
 
-async function laadGameData(team) {
-    const response = await fetch(`data/${team}.json`);
-    gameData = {};
-    gameData[team] = await response.json();
-}
 
+// starts a new game by resetting all the saved progress,
+// storing the selected team and redirecting to the intro video
 function startGame(gekozenTeam) {
 
     localStorage.setItem("team", gekozenTeam);
@@ -178,7 +210,8 @@ function startGame(gekozenTeam) {
     }, 300);
 }
 
-
+// initializes the game when the main template page is loaded
+// loads saved progress, game data and determines which screen should be shown next
 if (window.location.pathname.includes("template.html")) {
 
     (async () => {
@@ -219,6 +252,7 @@ if (window.location.pathname.includes("template.html")) {
     })();
 }
 
+// ensures the correct styling to the page based on the team
 function applyTeamTheme() {
 
     const team = localStorage.getItem("team");
@@ -235,9 +269,11 @@ function applyTeamTheme() {
 }
 
 // =================================================
-// GAME LOGICA
+// GAME LOGICA 
 // =================================================
 
+
+// updates the header information: team name, current exersise and score
 function initHeader() {
     const team = localStorage.getItem("team");
     const opdracht = parseInt(localStorage.getItem("opdracht")) || 0;
@@ -260,17 +296,25 @@ function initHeader() {
     }
 }
 
+// initializes header information once the page has loaded
 window.addEventListener("DOMContentLoaded", () => {
     initHeader();
 });
 
 
+// =================================================
+// BASIC EXERCISE LOGIC
+// =================================================
+
+
+// loads the current exercise and resets all temporary game state
+// also initializes any team-specific minigames linked to the exercise
 function laadOpdracht() {
 
     const extraContent = document.getElementById("extraContent");
 
+    // clear previous exercise content and reset temporary values
     extraContent.innerHTML = "";
-
     antwoordIsCorrect = false;
     hintGebruiktPerVraag = 0;
     laatsteHintTijd = 0;
@@ -278,9 +322,7 @@ function laadOpdracht() {
     blockly_punten = 0;
     gebruikteHints = [];
 
-    // document.getElementById("hintContainer").style.display = "flex";
-    // document.getElementById("codeInputContainer").style.display = "flex";
-
+    // restore the default template layout
     document.getElementById("uitlegBlok").style.display = "block";
     document.getElementById("codeInputContainer").style.display = "flex";
     document.getElementById("actieBtn").style.display = "block";
@@ -288,18 +330,20 @@ function laadOpdracht() {
     document.getElementById("hintBlocks").style.display = "flex";
     document.getElementById("hintContainer").style.display = "flex";
 
+    // reset action button state
     const actieBtn = document.getElementById("actieBtn");
     actieBtn.textContent = "Controleer";
     actieBtn.classList.remove("correct-state");
     actieBtn.classList.remove("aandrijving", "programma", "klankbron");
 
+    // reset answer input field
     const antwoordInput = document.getElementById("antwoordInput");
     if (antwoordInput) {
         antwoordInput.value = "";
         antwoordInput.disabled = false;
     }
 
-
+    // get teamspecific exercise content
     if (team == "aandrijving") {
         laadOpdrachtAandrijving();
     } else if (team == "programma") {
@@ -308,9 +352,11 @@ function laadOpdracht() {
         laadopdrachtKlankbron();
     }
 
+    // update header
     toonOpdrachtTitel();
 
-    document.getElementById("teamTitel").textContent = "Team: " + team.charAt(0).toUpperCase() + team.slice(1);
+    document.getElementById("teamTitel").textContent = 
+        "Team: " + team.charAt(0).toUpperCase() + team.slice(1);
     document.getElementById("opdrachtNummer").textContent =
         "Opdracht " + (huidigeOpdracht + 1) + " van " + (totaal_opdrachten);
 
@@ -319,10 +365,7 @@ function laadOpdracht() {
     // MINI_GAME PAGINA'S
     // =================================================
 
-    // const extraContent = document.getElementById("extraContent");
-
-    // extraContent.innerHTML = "";
-
+    // loading mini-game content from pitch perfect
     if (team === "klankbron" && huidigeOpdracht === 1) {
 
         fetch("perfect-pitch/toonladder.html")
@@ -330,13 +373,13 @@ function laadOpdracht() {
             .then(html => {
                 extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
 
-                // CSS laden
+                // loading css
                 const link = document.createElement("link");
                 link.rel = "stylesheet";
                 link.href = "perfect-pitch/toonladder.css";
                 document.head.appendChild(link);
 
-                // script laden
+                // loding js code
                 const script = document.createElement("script");
                 script.type = "module";
                 script.src = "perfect-pitch/toonladder.js";
@@ -344,6 +387,7 @@ function laadOpdracht() {
 })
     }
 
+    // update and reset hints and content
     document.getElementById("feedback").textContent = "";
     document.getElementById("scoreDisplay").textContent = "Score: " + score;
 
@@ -356,22 +400,200 @@ function laadOpdracht() {
     updateProgressBar();
 }
 
-/**
- * Loads the elements necessary for the Truth Lie minigame. Elements from the standard template will be hidden.
- */
-function inladenTruthLieElementen() {
-    document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
-    document.getElementById("codeInputContainer").style.display = "none";
-    document.getElementById("actieBtn").style.display = "none";
-    document.getElementById("hintContainer").style.display = "none";
-    document.getElementById("truth-lie-div").hidden = false;
-    document.getElementById("truth-lie-ja").hidden = false;
-    document.getElementById("truth-lie-nee").hidden = false;
+// updates exercise title
+function toonOpdrachtTitel() {
+    const opdracht = gameData[team].opdrachten[huidigeOpdracht];
+
+    const titelElement = document.getElementById("opdrachtTitel");
+
+    if (titelElement && opdracht.naam) {
+        titelElement.textContent = opdracht.naam;
+    }
 }
 
-/**
- * Used to select the next game for the path "Aandrijving"
- */
+// handles the main action button. Depending on the current state this checks answers,
+// continues after an exercise or exits a transition screen
+function verwerkActie() {
+
+    // check if in a page between exercises
+    if (zitOpTussenPagina) {
+
+        pendingBonusVragen.forEach(vraag => {
+            verzameldeBonusVragen.push({
+                vraag: vraag.vraag,
+                antwoord: vraag.antwoord,
+                gehaald: false
+            });
+        });
+
+        localStorage.setItem(
+            "bonusVragen",
+            JSON.stringify(verzameldeBonusVragen)
+        );
+
+        zitOpTussenPagina = false;
+        volgendeOpdracht();
+
+        return;
+    }
+
+    // if the exercise is already completed move to the next stage of the game
+    if (antwoordIsCorrect) {
+
+        if (zitOpTussenPagina) {
+
+            pendingBonusVragen.forEach(vraag => {
+                verzameldeBonusVragen.push({
+                    vraag: vraag.vraag,
+                    antwoord: vraag.antwoord,
+                    gehaald: false
+                });
+            });
+
+            localStorage.setItem(
+                "bonusVragen",
+                JSON.stringify(verzameldeBonusVragen)
+            );
+
+            zitOpTussenPagina = false;
+            volgendeOpdracht();
+
+            return;
+        }
+
+        if (huidigeOpdracht < 5) {
+            toonTussenPagina();
+        } else {
+            volgendeOpdracht();
+        }
+
+        return;
+    }   
+
+    // compare input with the correct answer
+    let invoer = document.getElementById("antwoordInput").value
+        .toUpperCase()
+        .trim();
+
+    let juistAntwoord = gameData[team].opdrachten[huidigeOpdracht].antwoord.toUpperCase();
+
+    // when the answer is correct
+    if (invoer === juistAntwoord) {
+
+        document.getElementById("feedback").textContent = "Goed gedaan!";
+
+        // calculate score for this exercise
+        let punten = 10 - foutPogingen;
+        if (team === "programma" && huidigeOpdracht === 5) {
+            punten = window.simon_punten
+        } else if (team === "programma" && huidigeOpdracht === 4) {
+            punten = window.blockly_punten || 0;
+        }
+        if (punten < 0) punten = 0;
+
+        // store updated score and progress
+        score += punten;
+        localStorage.setItem("score", score);
+        document.getElementById("scoreDisplay").textContent = "Score: " + score;
+
+        correcteAntwoorden++;
+        localStorage.setItem("correct", correcteAntwoorden);
+        updateProgressBar();
+
+        antwoordIsCorrect = true;
+
+        // update button state for continuing
+        const actieBtn = document.getElementById("actieBtn");
+
+        if (huidigeOpdracht === totaal_opdrachten - 1) {
+            actieBtn.textContent = "Ga verder";
+        } else {
+            actieBtn.textContent = "Naar volgende opdracht";
+        }
+
+        actieBtn.classList.add("correct-state");
+        actieBtn.classList.add(team);
+
+        document.getElementById("antwoordInput").disabled = true;
+
+    } else { // when the answer is wrong, show feedback and increase penalty
+        document.getElementById("feedback").textContent = "Onjuist, probeer opnieuw.";
+        foutPogingen++;
+    }
+}
+
+// moves the game to the next exercise
+// when all exercises are completed, it moves to the end
+function volgendeOpdracht() {
+
+    huidigeOpdracht++;
+
+    localStorage.setItem("opdracht", huidigeOpdracht);
+
+    if (huidigeOpdracht < totaal_opdrachten) {
+        laadOpdracht();
+    } else {
+        window.location.href =
+            "uitleg/uitleg.html?type=einde&team=" + team;
+    }
+}
+
+// shows the transition page between exercises with text and the bonus questions, 
+// depending on team and exercise
+function toonTussenPagina() {
+
+    const data = gameData[team].opdrachten[huidigeOpdracht].tussenPagina;
+    document.getElementById("opdrachtTitel").textContent = "Voor de volgende opdracht";
+
+    // skip transition page if none exists
+    if (!data) {
+        volgendeOpdracht();
+        return;
+    }
+
+    // store transition state and pending bonus questions
+    zitOpTussenPagina = true;
+    pendingBonusVragen = data.bonus;
+
+    document.getElementById("uitlegTekst").textContent = data.tekst;
+    document.getElementById("extraContent").innerHTML = `
+    <div class="tussenBonusBlok">
+        <h3 class="bonusTitel">Bonus vraag</h3>
+        ${data.bonus.map(vraag => `
+            <div class="bonusPreview">
+                <p>${vraag.vraag}</p>
+            </div>
+        `).join("")}
+
+    </div>
+`;
+
+    // adjust interface for transition screen
+    const actieBtn = document.getElementById("actieBtn");
+    actieBtn.classList.remove(
+        "aandrijving",
+        "programma",
+        "klankbron"
+    );
+    actieBtn.classList.add("correct-state");
+
+    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("feedback").textContent = "";
+    document.getElementById("actieBtn").style.display = "block";
+    document.getElementById("actieBtn").textContent = "Volgende opdracht";
+    document.getElementById("hintContainer").style.display = "none";
+}
+
+
+
+// =================================================
+// TEAM SPECIFIC LOGIC
+// =================================================
+// -----------------AANDRIJVING---------------------
+// =================================================
+
+
+// loads the correct minigame depending for this team
 function laadOpdrachtAandrijving() {
     switch (huidigeOpdracht) {
         case 1:
@@ -386,12 +608,16 @@ function laadOpdrachtAandrijving() {
 }
 
 
+// =========== AANDRIJVING MINI-GAMES ============== \\
+
+// loads the lever minigame and injects its HTML, CSS and JavaScript into the page
 function hefboomGame() {
 
     document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
 
     const extraContent = document.getElementById("extraContent");
 
+    // get the minigame
     fetch("HefboomCompleet/hefboom.html")
         .then(res => res.text())
         .then(html => {
@@ -399,73 +625,57 @@ function hefboomGame() {
             extraContent.innerHTML =
                 `<div class="fullscreen-content">${html}</div>`;
 
+            // get the css
             const link = document.createElement("link");
             link.rel = "stylesheet";
             link.href = "HefboomCompleet/hefboom.css";
             document.head.appendChild(link);
 
+            // get the script
             const script = document.createElement("script");
             script.src = "HefboomCompleet/hefboom.js";
             document.body.appendChild(script);
         });
 }
 
-
-function simon_says() {
-    document.getElementById("uitlegBlok").style.display = "none";
-    document.getElementById("codeInputContainer").style.display = "none";
-    document.getElementById("actieBtn").style.display = "none";
-    document.getElementById("hintBtn").style.display = "none";
-    document.getElementById("hintBlocks").style.display = "none";
-
-    fetch("simon-says/simon.html")
-            .then(res => res.text())
-            .then(html => {
-                extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
-
-                const link = document.createElement("link");
-                link.rel = "stylesheet";
-                link.href = "simon-says/simon.css";
-                document.head.appendChild(link);
-
-                const script = document.createElement("script");
-                //script.type = "module";
-                script.src = "simon-says/simon.js";
-                document.body.appendChild(script);
-            });
-}
-
+// loads the blockly programming minigame
+// the blockly libraries and custom game script are loaded in sequence.
 function blockly() {
-    // document.getElementById("uitlegBlok").style.display = "none";
+
+    // hide defult controls while the minigame is active
     document.getElementById("codeInputContainer").style.display = "none";
     document.getElementById("actieBtn").style.display = "none";
-    // document.getElementById("hintBtn").style.display = "none";
-    // document.getElementById("hintBlocks").style.display = "none";
 
     document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
 
+    // get blockly
     fetch("blockly/blockly.html")
         .then(res => res.text())
         .then(html => {
             extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
+            // get blockly styling
             const link = document.createElement("link");
             link.rel = "stylesheet";
             link.href = "blockly/blockly.css";
             document.head.appendChild(link);
 
+            // get blockly core library
             const blocklyScript = document.createElement("script");
             blocklyScript.src = "blockly/blockly.min.js";
 
             blocklyScript.onload = () => {
 
+                // load blockly JavaScript generator
                 const jsScript = document.createElement("script");
                 jsScript.src = "blockly/javascript_compressed.js";
 
                 jsScript.onload = () => {
 
+                    // load custom game logic
                     const gameScript = document.createElement("script");
                     gameScript.src = "blockly/blockscript.js";
 
+                    // start blockly after everything is loaded
                     gameScript.onload = () => {
                         if (typeof initBlockly === "function") {
                             initBlockly();
@@ -482,9 +692,44 @@ function blockly() {
         });
 }
 
-/**
- * Used to select the next game for the path "Programma"
- */
+// loads the SimonSays minigame and hides the standard exercise interface.
+function simon_says() {
+
+    // hide the standard interface
+    document.getElementById("uitlegBlok").style.display = "none";
+    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("actieBtn").style.display = "none";
+    document.getElementById("hintBtn").style.display = "none";
+    document.getElementById("hintBlocks").style.display = "none";
+
+    // get SimonSays
+    fetch("simon-says/simon.html")
+            .then(res => res.text())
+            .then(html => {
+                extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
+
+                // get the minigame css
+                const link = document.createElement("link");
+                link.rel = "stylesheet";
+                link.href = "simon-says/simon.css";
+                document.head.appendChild(link);
+
+                // get the minigame script
+                const script = document.createElement("script");
+                script.src = "simon-says/simon.js";
+                document.body.appendChild(script);
+            });
+}
+
+
+
+// =================================================
+// -------------------PROGRAMMA---------------------
+// =================================================
+
+
+// loads the correct minigame for this team, simonsays is currently not used 
+// but will be used in the future
 function laadOpdrachtProgramma() {
     switch (huidigeOpdracht) {
 
@@ -500,7 +745,6 @@ function laadOpdrachtProgramma() {
             inladenTruthLieElementen();
             break;
 
-        //TODO TIM zet dit er weer in?
         // case 5:
         //     simon_says();
         //     break;
@@ -510,6 +754,10 @@ function laadOpdrachtProgramma() {
     }
 }
 
+
+// ============ PROGRAMMA MINI-GAMES ============== \\
+
+// shows the qr-scanner exercise button to start scanning.
 function qrScannerOpdracht() {
     const origineleInnerHTML =
         Object.getOwnPropertyDescriptor(
@@ -517,32 +765,7 @@ function qrScannerOpdracht() {
             "innerHTML"
         );
 
-    Object.defineProperty(Element.prototype, "innerHTML", {
-        set(value) {
-
-            if (this.id === "extraContent") {
-                console.trace(
-                    "extraContent gewijzigd:",
-                    value
-                );
-            }
-
-            return origineleInnerHTML.set.call(
-                this,
-                value
-            );
-        },
-        get() {
-            return origineleInnerHTML.get.call(this);
-        }
-    });
-
-    console.log("qrScannerOpdracht uitgevoerd");
-
     document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
-
-    // document.getElementById("codeInputContainer").style.display = "none";
-    // document.getElementById("actieBtn").style.display = "none";
 
     const extraContent = document.getElementById("extraContent");
 
@@ -551,23 +774,17 @@ function qrScannerOpdracht() {
             Scan QR-code
         </button>
     `;
-    
-    console.log("na plaatsen:", extraContent.innerHTML);
-    setTimeout(() => {
-        console.log("1 sec later:", extraContent.innerHTML);
-    }, 1000);
-    setTimeout(() => {
-        console.log("3 sec later:", extraContent.innerHTML);
-    }, 3000);
 
     document.getElementById("startQRScanBtn")
         .addEventListener("click", startQRScanner);
 }
 
+// // loads the qr-scanner interface and required resources.
 function startQRScanner() {
 
     const extraContent = document.getElementById("extraContent");
 
+    // get qr-scanner
     fetch("QRScanner/qrScanner.html")
         .then(res => res.text())
         .then(html => {
@@ -575,17 +792,20 @@ function startQRScanner() {
             extraContent.innerHTML =
                 `<div class="fullscreen-content">${html}</div>`;
 
+            // get the css
             const link = document.createElement("link");
             link.rel = "stylesheet";
             link.href = "QRScanner/qrScanner.css";
             document.head.appendChild(link);
 
+            // get the script
             const script = document.createElement("script");
             script.src = "QRScanner/qrScanner.js";
             document.body.appendChild(script);
         });
 }
 
+// handles scanned qr-odes and checks if the scanned value is correct.
 window.handleQRCode = function(qrData) {
 
     const juisteCode =
@@ -593,11 +813,13 @@ window.handleQRCode = function(qrData) {
             .toLowerCase()
             .trim();
 
+    // if the correct code is scanned
     if (qrData === juisteCode) {
 
         document.getElementById("feedback").textContent =
             "QR-code correct gescand!";
 
+        // adds points
         score += 10;
         localStorage.setItem("score", score);
 
@@ -606,25 +828,27 @@ window.handleQRCode = function(qrData) {
 
         antwoordIsCorrect = true;
 
-        const actieBtn =
-            document.getElementById("actieBtn");
-
-        actieBtn.textContent =
-            "Naar volgende opdracht";
-
+        // button to move on
+        const actieBtn =document.getElementById("actieBtn");
+        actieBtn.textContent = "Naar volgende opdracht";
         actieBtn.classList.add("correct-state");
         actieBtn.classList.add(team);
 
     } else {
-
+        // when the qr-code is wrong
         document.getElementById("feedback").textContent =
             "Verkeerde QR-code.";
     }
 };
 
-/**
- * Used to select the next game for the path "Klankbron"
- */
+
+
+// =================================================
+// -------------------KLANKBRON---------------------
+// =================================================
+
+
+// loads the correct minigame for this team
 function laadopdrachtKlankbron() {
     switch (huidigeOpdracht) {
         default:
@@ -632,9 +856,23 @@ function laadopdrachtKlankbron() {
     }
 }
 
-/**
- * Determines if the user correctly answered the truth lie question.
- */
+
+// ============ KLANKBRON MINI-GAMES ============== \\
+
+
+// Loads the elements necessary for the Truth Lie minigame. Elements from the standard template will be hidden.
+function inladenTruthLieElementen() {
+    document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
+    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("actieBtn").style.display = "none";
+    document.getElementById("hintContainer").style.display = "none";
+    document.getElementById("truth-lie-div").hidden = false;
+    document.getElementById("truth-lie-ja").hidden = false;
+    document.getElementById("truth-lie-nee").hidden = false;
+}
+
+
+// Determines if the user correctly answered the truth lie question.
 function verwerkTruthLie(isCorrect) {
     if (isCorrect == truthLieAntwoordData[team][truthLieProgress]) {
         document.getElementById("feedback").textContent = "Goed gedaan!";
@@ -649,14 +887,12 @@ function verwerkTruthLie(isCorrect) {
     document.getElementById("VolgendeTruthLie").hidden = false;
 }
 
-/**
- * Updates progress within the truth lie minigame. 
- * 
- * If the end of the game is reached:
- * - The user's score is updated
- * - Truth lie elements are hidden
- * - Template elements are reloaded
- */
+
+// Updates progress within the truth lie minigame.
+// If the end of the game is reached: 
+// - The user's score is updated, 
+// - Truth lie elements are hidden, 
+// - Template elements are reloaded
 function updateTruthLie() {
     truthLieProgress++;
     document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
@@ -690,171 +926,17 @@ function updateTruthLie() {
     }
 }
 
-function verwerkActie() {
-
-    if (zitOpTussenPagina) {
-
-        pendingBonusVragen.forEach(vraag => {
-            verzameldeBonusVragen.push({
-                vraag: vraag.vraag,
-                antwoord: vraag.antwoord,
-                gehaald: false
-            });
-        });
-
-        localStorage.setItem(
-            "bonusVragen",
-            JSON.stringify(verzameldeBonusVragen)
-        );
-
-        zitOpTussenPagina = false;
-        volgendeOpdracht();
-
-        return;
-    }
-
-    if (antwoordIsCorrect) {
-
-        if (zitOpTussenPagina) {
-
-            pendingBonusVragen.forEach(vraag => {
-                verzameldeBonusVragen.push({
-                    vraag: vraag.vraag,
-                    antwoord: vraag.antwoord,
-                    gehaald: false
-                });
-            });
-
-            localStorage.setItem(
-                "bonusVragen",
-                JSON.stringify(verzameldeBonusVragen)
-            );
-
-            zitOpTussenPagina = false;
-            volgendeOpdracht();
-
-            return;
-        }
-
-        if (huidigeOpdracht < 5) {
-            toonTussenPagina();
-        } else {
-            volgendeOpdracht();
-        }
-
-        return;
-    }   
-
-    let invoer = document.getElementById("antwoordInput").value
-        .toUpperCase()
-        .trim();
-
-    let juistAntwoord = gameData[team].opdrachten[huidigeOpdracht].antwoord.toUpperCase();
-
-    if (invoer === juistAntwoord) {
-
-        document.getElementById("feedback").textContent = "Goed gedaan!";
-
-        let punten = 10 - foutPogingen;
-        if (team === "programma" && huidigeOpdracht === 5) {
-            punten = window.simon_punten
-        } else if (team === "programma" && huidigeOpdracht === 4) {
-            punten = window.blockly_punten || 0;
-        }
-        if (punten < 0) punten = 0;
-
-        score += punten;
-        localStorage.setItem("score", score);
-        document.getElementById("scoreDisplay").textContent = "Score: " + score;
-
-        correcteAntwoorden++;
-        localStorage.setItem("correct", correcteAntwoorden);
-        updateProgressBar();
-
-        antwoordIsCorrect = true;
-
-        const actieBtn = document.getElementById("actieBtn");
-
-        if (huidigeOpdracht === totaal_opdrachten - 1) {
-            actieBtn.textContent = "Ga verder";
-        } else {
-            actieBtn.textContent = "Naar volgende opdracht";
-        }
-
-        actieBtn.classList.add("correct-state");
-        actieBtn.classList.add(team);
-
-        document.getElementById("antwoordInput").disabled = true;
-
-    } else {
-        document.getElementById("feedback").textContent = "Onjuist, probeer opnieuw.";
-        foutPogingen++;
-    }
-}
-
-
-function toonTussenPagina() {
-
-    const data = gameData[team].opdrachten[huidigeOpdracht].tussenPagina;
-    document.getElementById("opdrachtTitel").textContent = "Voor de volgende opdracht";
-
-    if (!data) {
-        volgendeOpdracht();
-        return;
-    }
-
-    zitOpTussenPagina = true;
-    pendingBonusVragen = data.bonus;
-
-    document.getElementById("uitlegTekst").textContent = data.tekst;
-
-    document.getElementById("extraContent").innerHTML = `
-    <div class="tussenBonusBlok">
-        <h3 class="bonusTitel">Bonus vraag</h3>
-        ${data.bonus.map(vraag => `
-            <div class="bonusPreview">
-                <p>${vraag.vraag}</p>
-            </div>
-        `).join("")}
-
-    </div>
-`;
-
-    const actieBtn = document.getElementById("actieBtn");
-    actieBtn.classList.remove(
-        "aandrijving",
-        "programma",
-        "klankbron"
-    );
-    actieBtn.classList.add("correct-state");
-
-    document.getElementById("codeInputContainer").style.display = "none";
-    document.getElementById("feedback").textContent = "";
-    document.getElementById("actieBtn").style.display = "block";
-    document.getElementById("actieBtn").textContent = "Volgende opdracht";
-    document.getElementById("hintContainer").style.display = "none";
-}
-
-
-function volgendeOpdracht() {
-
-    huidigeOpdracht++;
-
-    localStorage.setItem("opdracht", huidigeOpdracht);
-
-    if (huidigeOpdracht < totaal_opdrachten) {
-        laadOpdracht();
-    } else {
-        window.location.href =
-            "uitleg/uitleg.html?type=einde&team=" + team;
-    }
-}
 
 
 // =================================================
-// PROGRESS BAR
+// UI SYSTEMS
+// =================================================
+// ----------------PROGRESS BAR---------------------
 // =================================================
 
+
+
+// updates the progresbar based on the exercise
 function updateProgressBar() {
     const percentage = (correcteAntwoorden / totaal_opdrachten) * 100;
     document.getElementById("progressBar").style.width = percentage + "%";
@@ -862,9 +944,11 @@ function updateProgressBar() {
 
 
 // =================================================
-// HINT SYSTEEM
+// ----------------HINTS SYSTEM---------------------
 // =================================================
 
+// opens the hint popup and handles hint availability, cooldowns 
+// and confirmation before using a hint
 function geefHint() {
 
     const overlay = document.getElementById("hintOverlay");
@@ -877,6 +961,7 @@ function geefHint() {
 
     const huidigeTijd = Math.floor(Date.now() / 1000);
 
+    // check whether the player is still in the cooldown period
     if (laatsteHintTijd !== 0) {
     let verschil = huidigeTijd - laatsteHintTijd;
 
@@ -886,8 +971,10 @@ function geefHint() {
         actions.style.display = "none";
         modalText.innerHTML = "";
 
+        // prevent multiple countdown timers from running
         if (hintInterval) clearInterval(hintInterval);
 
+        // update the remaining cooldown time every second
         hintInterval = setInterval(() => {
 
             let nu = Math.floor(Date.now() / 1000);
@@ -899,6 +986,7 @@ function geefHint() {
 
             let vorigeHintsHTML = "";
 
+            // show previously used hints while waiting
             if (gebruikteHints.length > 0) {
                 vorigeHintsHTML = "<br><br><strong>Vorige hints:</strong><ul>";
                 gebruikteHints.forEach((hint) => {
@@ -907,12 +995,14 @@ function geefHint() {
                 vorigeHintsHTML += "</ul>";
             }
 
+            // stop the countdown when the cooldown has expired
             if (resterend <= 0) {
                 modalText.innerHTML = "Je kunt nu weer een hint gebruiken." + vorigeHintsHTML;
                 clearInterval(hintInterval);
                 return;
             }
 
+            // how long to wait for a new hint
             modalText.innerHTML =
                 `Wacht nog <strong>${minuten}:${seconden}</strong> voor een nieuwe hint.` +
                 vorigeHintsHTML;
@@ -923,12 +1013,14 @@ function geefHint() {
     }
 }
 
+    // prevent using more than the maximum number of hint
     if (hintGebruiktPerVraag >= maxHints) {
         modalText.textContent = "Je hebt alle hints gebruikt.";
         overlay.style.display = "flex";
         return;
     }
 
+    // confirm hint usage
     modalText.textContent = "Weet je zeker dat je een hint wilt gebruiken?";
     actions.style.display = "flex";
     overlay.style.display = "flex";
@@ -944,6 +1036,7 @@ function geefHint() {
     };
 }
 
+// updates the UI hint indicators to show how many hints have been used
 function updateHintBlocks() {
     const blocks = document.querySelectorAll("#hintBlocks .hintBlock");
 
@@ -956,6 +1049,8 @@ function updateHintBlocks() {
     });
 }
 
+// uses a hint, retrieves the correct hint text,
+// updates cooldown data and applies the score penalty
 function gebruikHint() {
 
     const overlay = document.getElementById("hintOverlay");
@@ -963,23 +1058,13 @@ function gebruikHint() {
 
     const huidigeTijd = Math.floor(Date.now() / 1000);
 
+    // register the hint usage and start the cooldown timer
     hintGebruiktPerVraag++;
     laatsteHintTijd = huidigeTijd;
 
-    //TODO TIM
-    // const hints = hintData[team][huidigeOpdracht];
-
-    // let tekst = "";
-
-    // if (hintGebruiktPerVraag === 1) {
-    //     tekst = hints[0];
-    // } else if (hintGebruiktPerVraag === 2) {
-    //     tekst = hints[1];
-    // } else if (hintGebruiktPerVraag === 3) {
-    //     tekst = "Code: " + hints[2];
-    // }
     const opdracht = gameData[team].opdrachten[huidigeOpdracht];
 
+    // select the right hint
     if (hintGebruiktPerVraag === 1) {
         tekst = opdracht.hints[0];
     }
@@ -990,6 +1075,7 @@ function gebruikHint() {
         tekst = "Code: " + opdracht.antwoord;
     }
 
+    // store the hint to show later and reduce total achievable points
     gebruikteHints.push(tekst);
 
     modalText.innerHTML = `<ul><li>${tekst}</li></ul>`;
@@ -999,6 +1085,7 @@ function gebruikHint() {
     updateHintBlocks();
 }
 
+// the functionality for closing the hint popup
 document.addEventListener("DOMContentLoaded", function() {
 
     const closeBtn = document.getElementById("closeHint");
@@ -1017,10 +1104,12 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
+
 // =================================================
-// BONUS POPUP
+// ------------BONUS QUESTION SYSTEM----------------
 // =================================================
 
+// opens the bonus question popup and displays all unlocked bonus questions
 function toonBonusPopup() {
 
     const overlay = document.getElementById("bonusOverlay");
@@ -1028,6 +1117,7 @@ function toonBonusPopup() {
 
     lijst.innerHTML = "";
 
+    // show an explanation when no bonus questions have been unlocked yet
     if (verzameldeBonusVragen.length === 0) {
         lijst.innerHTML = `
             <div class="bonusLeeg">
@@ -1039,6 +1129,7 @@ function toonBonusPopup() {
         return;
     }
 
+    // generate a block for each collected bonus question
     verzameldeBonusVragen.forEach((bonus, index) => {
 
         lijst.innerHTML += `
@@ -1080,6 +1171,8 @@ function toonBonusPopup() {
     overlay.style.display = "flex";
 }
 
+// Checks whether the answer to a bonus question is correct
+// and awards bonus points when successful
 function controleerBonus(index) {
 
     const bonus = verzameldeBonusVragen[index];
@@ -1092,6 +1185,7 @@ function controleerBonus(index) {
         .trim()
         .toUpperCase();
 
+    // mark the question as completed and award points
     if (invoer === bonus.antwoord.trim().toUpperCase()) {
 
         bonus.gehaald = true;
@@ -1105,6 +1199,7 @@ function controleerBonus(index) {
         const bonusBlok = input.parentElement;
         const knop = bonusBlok.querySelector("button");
 
+        // replace the input field with the correct answer display
         bonusBlok.innerHTML = `
             <p>${bonus.vraag}</p>
 
@@ -1126,12 +1221,13 @@ function controleerBonus(index) {
         );
 
     } else {
-
+        // when the answer is wrong
         document.getElementById(`bonusFeedback${index}`).textContent =
             "Onjuist";
     }
 }
 
+// the functionality for closing the bonus question popup
 document.addEventListener("DOMContentLoaded", function() {
 
     const closeBonus = document.getElementById("closeBonus");
@@ -1152,17 +1248,13 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+
 // =================================================
 // TEAM CODES
 // =================================================
 
-const teamCodes = {
-    aandrijving: "AA00",
-    programma: "PR00",
-    klankbron: "KL00"
-};
 
-
+// initializes the team code page and displays the player's own code and the other team slots
 if (window.location.pathname.includes("codes.html")) {
 
     const team = localStorage.getItem("team");
@@ -1197,8 +1289,8 @@ if (window.location.pathname.includes("codes.html")) {
     });
 }
 
-let correcteCodes = [false, false];
-
+// checks whether a submitted team code is correct
+// when both codes are found, the game is completed
 function controleerCode(index) {
 
 
@@ -1219,6 +1311,7 @@ function controleerCode(index) {
 
     const juisteCode = teamCodes[andereTeams[index]];
 
+    // if both team codes are known save the final score and remaining time
     if (invoer === juisteCode) {
 
         correcteCodes[index] = true;
@@ -1270,18 +1363,11 @@ function controleerCode(index) {
 // TEMPLATE
 // =================================================
 
-function toonOpdrachtTitel() {
-    const opdracht = gameData[team].opdrachten[huidigeOpdracht];
 
-    const titelElement = document.getElementById("opdrachtTitel");
-
-    if (titelElement && opdracht.naam) {
-        titelElement.textContent = opdracht.naam;
-    }
-}
-
+// performs page-specific setup when the DOM has loaded
 window.addEventListener("DOMContentLoaded", () => {
     
+    // show the continue button when a saved game exists
     const continueBtn = document.getElementById("continueBtn");
     if (continueBtn && localStorage.getItem("team") && localStorage.getItem("totalSeconds") && localStorage.getItem("score") > 0) {
         continueBtn.style.display = "block";
@@ -1291,6 +1377,8 @@ window.addEventListener("DOMContentLoaded", () => {
             window.location.href = "template.html";
         });
     }
+
+    // automatically focus and capitalize answer input
     const antwoordInput = document.getElementById("antwoordInput");
     if (antwoordInput) {
         antwoordInput.focus();
@@ -1300,6 +1388,7 @@ window.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // use team-specific styling on the game page
     const path = window.location.pathname;
 
     if (
