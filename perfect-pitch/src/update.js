@@ -10,7 +10,7 @@ import {
   PITCH_MIN,
 } from './config.js';
 import { pitchToHeight } from './rescale.js';
-
+//Update the ball's position based on detected pitch
 function updateBallY(ball, pitch) {
   const normalizedPitch = Math.min(PITCH_MAX, Math.max(PITCH_MIN, pitch));
   const newHeight = pitchToHeight(normalizedPitch);
@@ -19,12 +19,12 @@ function updateBallY(ball, pitch) {
 
   ball.position[1] = ball.position[1] * (1 - factor) + newHeight * factor;
 }
-
+//Update ball's speed
 function updateBallZ(ball, dt) {
   ball.speed = Math.min(BALL_MAX_SPEED, ball.speed + BALL_ACCELERATION * dt);
   ball.position[2] += ball.speed * dt;
 }
-
+//Checks if the ball collides with the gate
 function checkBallGateCollision(state) {
   const { ball, currentGate, gates } = state;
 
@@ -39,13 +39,14 @@ function checkBallGateCollision(state) {
 
   const doesBallFitInHole =
     y >= gate.holeY && y + BALL_DIAMETER <= gate.holeY + GATE_HOLE_SIZE;
-
+  //If the ball fits, update the game state
   if (doesBallFitInHole || CHEATING_ENABLED) {
     state.currentGate++;
-
+  //If no gates are left, finish the game
     if (state.currentGate >= gates.length) {
       state.gameOverTimer = 0;
     }
+    //If it doesn't fit, bounce the ball back
   } else {
     ball.position[2] = gateZ;
     ball.speed *= -1;
@@ -58,14 +59,14 @@ function handleGameOver(state, dt) {
     state.gameOverTimer += dt;
   }
 }
-
+//Updates Y and Z positions of the ball
 export function update(state, detectedPitch, dt) {
   updateBallY(state.ball, detectedPitch);
   updateBallZ(state.ball, dt);
-
+//While timer is -1 the game is running
   if (state.gameOverTimer === -1) {
     checkBallGateCollision(state);
-  } else {
+  } else { //start the game end sequence
     handleGameOver(state, dt);
   }
 }
