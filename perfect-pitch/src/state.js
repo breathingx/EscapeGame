@@ -8,7 +8,7 @@ import {
   GATE_HOLE_SIZE,
 } from './config.js';
 import { pitchToHeight } from './rescale.js';
-
+//Keep track of the state of the game
 export const INITIAL_STATE = {
   gameOverTimer: -1,
   currentGate: 0,
