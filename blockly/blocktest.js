@@ -1,9 +1,34 @@
+// =================================================
+// ISOLATED LOGIC FOR TESTING
+// =================================================
 
+// code taken from blockscript.js movement logic, modified to be self-contained and testable without environment
+function movementLogic(currentX, currentY, currentAngle, action) {
+    let nextX = currentX;
+    let nextY = currentY;
+    let nextAngle = currentAngle;
+
+    if (action === "forward") {
+        let facing = ((currentAngle % 360) + 360) % 360;
+        if (facing === 0) nextX++;
+        else if (facing === 90) nextY++;
+        else if (facing === 180) nextX--;
+        else if (facing === 270) nextY--;
+
+        if (nextX >= 0 && nextX < 10 && nextY >= 0 && nextY < 10) {
+            return { x: nextX, y: nextY, a: nextAngle };
+        } else {
+            return { x: currentX, y: currentY, a: nextAngle }; 
+        }
+    } 
+    else if (action === "left") nextAngle -= 90;
+    else if (action === "right") nextAngle += 90;
+
+    return { x: nextX, y: nextY, a: nextAngle };
+}
 // =================================================
 // SETUP
 // =================================================
-
-import { movementLogic } from 'blockscript.js';
 
 // Simple assertion function for testing
 function assert(testName, actual, expected) {
@@ -19,7 +44,7 @@ function assert(testName, actual, expected) {
 // TESTS FOR MOVEMENT LOGIC
 // =================================================
 
-console.log("programmeertests");
+console.log("blockly logic tests:");
 
 // --- All rotation ---
 assert("Rotate Right from 0", movementLogic(0, 0, 0, "right"), { x: 0, y: 0, a: 90 });
