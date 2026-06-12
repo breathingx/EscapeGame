@@ -26,28 +26,35 @@ export async function initGameLoop() {
   const { gl, program } = initCanvasWebgl();
   const view = new View(gl, program, state);
 
+  //Becomes visible after everything is initialized
   document.getElementById('container').style.visibility = 'visible';
-
+  //Request for microphone access
   const { sampleRate, analyser, timeBuffer, frequencyBuffer } =
     await initAudioInput();
 
+  //Computes delta time
   let previousTime = performance.now();
-
+  
   function loop(currentTime) {
+    //Computes the delta time in seconds. It is capped to prevent weird behaviour after pausing
     const dt = Math.min((currentTime - previousTime) / 1000, MAX_DT);
     previousTime = currentTime;
 
+    //Pull latest audio samples into the buffer
     analyser.getFloatTimeDomainData(timeBuffer);
+    //Pulls the frequency when the audio graphs are visible
     if (SHOW_AUDIO_GRAPHS) {
       analyser.getFloatFrequencyData(frequencyBuffer);
     }
-
+    //Detect the pitch using Yin
     const pitch = detectPitchYin(timeBuffer, sampleRate);
     console.log(pitch);
 
+    //Updates the game state based on the pitch and time. Also renders it.
     update(state, pitch, dt);
     view.render(state);
 
+    //Visualize the waveform and spectrum-frequency graphs
     if (SHOW_AUDIO_GRAPHS) {
       drawWaveform(contextWaveform, timeBuffer);
       drawSpectrum(
@@ -57,9 +64,9 @@ export async function initGameLoop() {
         analyser.maxDecibels
       );
     }
-
+    //Next frame
     requestAnimationFrame(loop);
   }
-
+  //Starts the loop
   requestAnimationFrame(loop);
 }
