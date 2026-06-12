@@ -1,3 +1,8 @@
+
+// =================================================
+// SETUP
+// =================================================
+
 import { movementLogic } from 'blockscript.js';
 
 // Simple assertion function for testing
@@ -9,6 +14,10 @@ function assert(testName, actual, expected) {
         console.error(`FAIL: ${testName} | Expected: ${JSON.stringify(expected)}, Got: ${JSON.stringify(actual)}`);
     }
 }
+
+// =================================================
+// TESTS FOR MOVEMENT LOGIC
+// =================================================
 
 console.log("programmeertests");
 

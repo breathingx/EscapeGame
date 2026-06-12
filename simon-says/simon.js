@@ -1,4 +1,7 @@
 (() => {
+    // =================================================
+    // VARIABLES & ELEMENTS
+    // =================================================
     const maxLevel = 10;
     const winCode = "PRO000"; // unused
     let playing = false;
@@ -35,6 +38,11 @@
 
     startBtn.addEventListener('click', startGame);
     endBtn.addEventListener('click', nextGame);
+
+    // =================================================
+    // GAME LOGIC
+    // =================================================
+
 
     // starts a new game, resets all variables and goes to the first level
     function startGame() {
