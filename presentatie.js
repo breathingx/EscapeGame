@@ -30,7 +30,8 @@ function startPresentatieRoute() {
     document.getElementById("timer").style.display = "none";
     document.getElementById("hintContainer").style.display = "none";
     document.getElementById("feedback").style.display = "none";
-
+    document.getElementById("progressBar").parentElement.style.display = "none";
+    // document.getElementById("progressContainer").style.display = "none";
     laadPresentatieGame();
 }
 
@@ -109,10 +110,17 @@ function voegVolgendeKnopToe() {
 
         knop = document.createElement("button");
 
+
+
         knop.id = "presentatieVolgende";
         knop.textContent = "Volgende minigame";
 
-        document.body.appendChild(knop);
+        const logo = document.getElementById("logo");
+        const footer = document.querySelector(".hud-footer");
+
+        if (footer) {
+            footer.parentNode.insertBefore(knop, footer);
+        }
 
         knop.addEventListener("click", () => {
 
