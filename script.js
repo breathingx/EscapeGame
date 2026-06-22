@@ -212,7 +212,9 @@ function startGame(gekozenTeam) {
 
 // initializes the game when the main template page is loaded
 // loads saved progress, game data and determines which screen should be shown next
-if (window.location.pathname.includes("template.html")) {
+if (window.location.pathname.includes("template.html") &&
+    localStorage.getItem("team") !== "presentatie"
+) {
 
     (async () => {
 
@@ -613,7 +615,9 @@ function laadOpdrachtAandrijving() {
 // loads the lever minigame and injects its HTML, CSS and JavaScript into the page
 function hefboomGame() {
 
-    document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+    if (team !== "presentatie") {
+        document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+    }
 
     const extraContent = document.getElementById("extraContent");
 
@@ -646,7 +650,13 @@ function blockly() {
     document.getElementById("codeInputContainer").style.display = "none";
     document.getElementById("actieBtn").style.display = "none";
 
-    document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+    if (
+        team !== "presentatie" &&
+        gameData[team]
+    ) {
+        document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+    }
+    // document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
 
     // get blockly
     fetch("blockly/blockly.html")
