@@ -308,6 +308,55 @@ window.addEventListener("DOMContentLoaded", () => {
 // BASIC EXERCISE LOGIC
 // =================================================
 
+function laadAntwoordInvoer(opdracht) {
+    const container = document.getElementById("codeInputContainer");
+
+    // Maak de huidige invoer leeg
+    container.innerHTML = "";
+
+    // Standaard: normale tekstinvoer
+    if (opdracht.invoerType !== "blokken") {
+        const input = document.createElement("input");
+
+        input.type = "text";
+        input.id = "antwoordInput";
+        input.placeholder = "Voer antwoord in";
+        input.autocomplete = "off";
+
+        container.appendChild(input);
+
+        input.addEventListener("input", (e) => {
+            e.target.value = e.target.value.toUpperCase();
+        });
+
+        return;
+    }
+
+    // Blokken-invoer
+    const aantalBlokken = opdracht.aantalBlokken || 1;
+
+    for (let i = 0; i < aantalBlokken; i++) {
+        const input = document.createElement("input");
+
+        input.type = "text";
+        input.classList.add("antwoordBlok");
+        input.maxLength = 1;
+        input.autocomplete = "off";
+
+        input.addEventListener("input", (e) => {
+            e.target.value = e.target.value.toUpperCase();
+
+            // Ga automatisch naar het volgende blokje
+            if (e.target.value && i < aantalBlokken - 1) {
+                const volgendeInput = container.children[i + 1];
+                volgendeInput.focus();
+            }
+        });
+
+        container.appendChild(input);
+    }
+}
+
 
 // loads the current exercise and resets all temporary game state
 // also initializes any team-specific minigames linked to the exercise
@@ -318,6 +367,10 @@ function laadOpdracht() {
     // clear previous exercise content and reset temporary values
     extraContent.innerHTML = "";
     antwoordIsCorrect = false;
+
+    const huidigeOpdrachtData = gameData[team].opdrachten[huidigeOpdracht];
+    laadAntwoordInvoer(huidigeOpdrachtData);
+
     hintGebruiktPerVraag = 0;
     laatsteHintTijd = 0;
     simon_punten = 0;
@@ -473,11 +526,27 @@ function verwerkActie() {
     }   
 
     // compare input with the correct answer
-    let invoer = document.getElementById("antwoordInput").value
-        .toUpperCase()
-        .trim();
+    const huidigeOpdrachtData = gameData[team].opdrachten[huidigeOpdracht];
 
-    let juistAntwoord = gameData[team].opdrachten[huidigeOpdracht].antwoord.toUpperCase();
+    let invoer;
+
+    if (huidigeOpdrachtData.invoerType === "blokken") {
+        // Verzamel de inhoud van alle blokken
+        const blokken = document.querySelectorAll(".antwoordBlok");
+
+        invoer = Array.from(blokken)
+            .map(blok => blok.value)
+            .join("")
+            .toUpperCase()
+            .trim();
+    } else {
+        // Standaard tekstinvoer
+        invoer = document.getElementById("antwoordInput").value
+            .toUpperCase()
+            .trim();
+    }
+
+    let juistAntwoord = huidigeOpdrachtData.antwoord.toUpperCase();
 
     // when the answer is correct
     if (invoer === juistAntwoord) {
@@ -516,9 +585,17 @@ function verwerkActie() {
         actieBtn.classList.add("correct-state");
         actieBtn.classList.add(team);
 
-        document.getElementById("antwoordInput").disabled = true;
+        // Disable the answer input after a correct answer
+        if (huidigeOpdrachtData.invoerType === "blokken") {
+            document.querySelectorAll(".antwoordBlok").forEach(blok => {
+                blok.disabled = true;
+            });
+        } else {
+            document.getElementById("antwoordInput").disabled = true;
+        }
 
-    } else { // when the answer is wrong, show feedback and increase penalty
+    } else {
+        // when the answer is wrong, show feedback and increase penalty
         document.getElementById("feedback").textContent = "Onjuist, probeer opnieuw.";
         foutPogingen++;
     }

@@ -61,6 +61,10 @@
 
             "uitleg": "Orgelboeken vertellen aan het orgel welke noten ze wanneer moeten spelen.\n Je kunt de gaten in een orgelboek vergelijken met de 1-en en 0-en van een computer\nOm een deel van de code van de verdwenen programmadrager te achterhalen, heb je een orgelboek nodig.\nKijk in de koffer.\nPak de juiste pagina van het orgelboek en probeer te achterhalen!",
 
+            "invoerType": "blokken",
+
+            "aantalBlokken": 4,
+
             "antwoord": "1948",
 
             "hints": [
