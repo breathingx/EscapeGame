@@ -89,6 +89,10 @@
 
             "uitleg": "Je hebt al gezien dat tandwielen beweging kunnen overbrengen, maar wist je ook dat de grootte van een tandwiel invloed heeft op hoe snel die beweging wordt doorgegeven?\nKijk in de koffer.\nKun jij voorspellen hoe de tandwielen zullen draaien?",
 
+            "invoerType": "blokken",
+
+            "aantalBlokken": 6,
+
             "antwoord": "AAN333",
 
             "hints": [
@@ -116,6 +120,10 @@
             "type": "fysiek",
 
             "uitleg": "Machines bestaan uit verschillende onderdelen. Het ene onderdeel geeft de beweging door aan het volgende onderdeel. Kunnen jullie zien in welke volgorde dit gebeurt? En welke onderdelen worden gebruikt om de beweging door te geven?\nZoek naar de juiste onderdelen voor...",
+
+            "invoerType": "blokken",
+
+            "aantalBlokken": 6,
 
             "antwoord": "AAN444",
 
@@ -172,6 +180,10 @@
             "type": "fysiek",
 
             "uitleg": "In dit museum zie je vooral de mooie buitenkant van een muziekmachine. De dief dacht ook dat die het belangrijkst was. Maar het binnenwerk zit verstopt en is misschien wel belangrijker, want zonder dat werkt de muziekmachine niet.\nKijk in de koffer\nDe code om verder te gaan zit verstopt in de collectiestukken.\nKun jij de code vinden?",
+
+            "invoerType": "blokken",
+
+            "aantalBlokken": 6,
 
             "antwoord": "AAN666",
 

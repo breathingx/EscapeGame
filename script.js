@@ -335,6 +335,9 @@ function laadAntwoordInvoer(opdracht) {
     // Blokken-invoer
     const aantalBlokken = opdracht.aantalBlokken || 1;
 
+    // Geef het aantal blokken door aan de CSS
+    container.style.setProperty("--aantal-blokken", aantalBlokken);
+
     for (let i = 0; i < aantalBlokken; i++) {
         const input = document.createElement("input");
 

@@ -33,6 +33,10 @@
 
             "uitleg": "Om de klankbron van de muziekmachine terug te vinden hebben jullie eerst wat muzikale kennis nodig.\nWe beginnen bij de basis...\nZoek in de ruimte naar een ladder en open de koffer\nKun jij dit omzetten in cijfers?\nTIFALASO",
 
+            "invoerType": "blokken",
+
+            "aantalBlokken": 6,
+
             "antwoord": "KLA111",
 
             "hints": [
@@ -144,6 +148,10 @@
             "type": "fysiek",
 
             "uitleg": "Geluid kun je niet alleen horen, maar ook zien als golfvorm.\nDe dief heeft een geheime aanwijzing verstopt in een muziekstuk hier uit het museum.\nKijk in de koffer\nKun jij ontrafelen welke geheime aanwijzingen verborgen zit in de waveforms?",
+
+            "invoerType": "blokken",
+
+            "aantalBlokken": 8,
 
             "antwoord": "PATSBOEM",
 

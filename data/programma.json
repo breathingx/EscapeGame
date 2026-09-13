@@ -122,6 +122,10 @@
 
             "uitleg": "Je hebt net geleerd hoe een stappenplan werkt: de basis van programmeren.\nNu ga je zelf een echte muziekmachine programmeren!\nMet pinnetjes bepaal je geluid of stilte.\nVind de code in de koffer en zet de pinnetjes op zes rijen precies hetzelfde omhoog of omlaag.\nKraak jij de code?",
 
+            "invoerType": "blokken",
+
+            "aantalBlokken": 6,
+
             "antwoord": "PRO444",
 
             "hints": [
@@ -178,6 +182,10 @@
 
             "uitleg": "Je weet nu hoe een orgelboek werkt en dat een programma een stappenplan is.\nMaar... Er zijn meer programmadragers.\nKijk in de koffer\nDe code van de verdwenen muziekmachine is nog steeds niet compleet.\nDraai de schijven tot een woord verschijnt en kraak de code.",
 
+            "invoerType": "blokken",
+
+            "aantalBlokken": 4,
+    
             "antwoord": "9205",
 
             "hints": [
