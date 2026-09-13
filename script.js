@@ -356,6 +356,15 @@ function laadAntwoordInvoer(opdracht) {
             }
         });
 
+        // Ga met Backspace terug naar het vorige blokje
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Backspace" && !e.target.value && i > 0) {
+                const vorigeInput = container.children[i - 1];
+                vorigeInput.focus();
+                vorigeInput.value = "";
+            }
+        });
+
         container.appendChild(input);
     }
 }
