@@ -162,6 +162,8 @@ const truthLieAntwoordData = {
     ]
 };
 
+var truthLieCorrect = [false, false, false, false, false, false];
+
 // =================================================
 // NAVIGATION
 // =================================================
@@ -879,24 +881,43 @@ function inladenTruthLieElementen() {
     document.getElementById("truth-lie-div").hidden = false;
     document.getElementById("truth-lie-ja").hidden = false;
     document.getElementById("truth-lie-nee").hidden = false;
+    document.getElementById("truth-lie-answer-container").style.display = "flex";
 }
 
 
 // Determines if the user correctly answered the truth lie question.
 function verwerkTruthLie(isCorrect) {
+
+    updateTruthLieChip(isCorrect);
     if (isCorrect == truthLieAntwoordData[team][truthLieProgress]) {
-        document.getElementById("feedback").textContent = "Goed gedaan!";
-    } else {
-        document.getElementById("feedback").textContent = "Dat is onjuist...";
+        truthLieCorrect[truthLieProgress] = true;
+    } 
+    else {
+        truthLieCorrect[truthLieProgress] = false;
         foutPogingen += 1;
     }
 
     document.getElementById("truth-lie-ja").disabled = true;
+    document.getElementById("truth-lie-ja").style.opacity = 0.5;
     document.getElementById("truth-lie-nee").disabled = true;
+    document.getElementById("truth-lie-nee").style.opacity = 0.5;
 
-    document.getElementById("VolgendeTruthLie").hidden = false;
+    updateTruthLie();
 }
 
+function updateTruthLieChip(isCorrect) {
+    const truthLieChips = [
+        document.getElementById("truth-lie-Q1"),
+        document.getElementById("truth-lie-Q2"),
+        document.getElementById("truth-lie-Q3"),
+        document.getElementById("truth-lie-Q4"),
+        document.getElementById("truth-lie-Q5"),
+        document.getElementById("truth-lie-Q6")
+    ];
+
+    truthLieChips[truthLieProgress].textContent = isCorrect ? "1" : "0";
+    truthLieChips[truthLieProgress].classList.add("filling");
+}
 
 // Updates progress within the truth lie minigame.
 // If the end of the game is reached: 
@@ -906,34 +927,94 @@ function verwerkTruthLie(isCorrect) {
 function updateTruthLie() {
     truthLieProgress++;
     document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
-    document.getElementById("feedback").textContent = "";
-    document.getElementById("VolgendeTruthLie").hidden = true;
-    document.getElementById("truth-lie-ja").disabled = false;
-    document.getElementById("truth-lie-nee").disabled = false;
 
     if (truthLieProgress == truthLieMaxVragen) {
-        //restore original template
-        document.getElementById("codeInputContainer").style.display = "";
-        document.getElementById("hintContainer").style.display = "";
-        document.getElementById("actieBtn").style.display = "block";
-        document.getElementById("truth-lie-div").style.display = "none";
+        document.getElementById("uitlegTekst").textContent = "Je hebt alle vragen beantwoord! Je hebt 0 goed!";
+        document.getElementById("truth-lie-next").disabled = true;
+        document.getElementById("truth-lie-next").style.opacity = 0.5;
+        document.getElementById("truth-lie-next").hidden = false
 
-        //aantal fouten {0, 1, 2, 3, 4, 5, 6} geeft zoveel punten: {10, 9, 8, 6, 4, 2, 0}
-        let punten = 10;
-        if (foutPogingen == 0 || foutPogingen == 1) {
-            punten = punten - foutPogingen;
-        } else {
-            punten = punten - (foutPogingen-1) * 2;
-        }
+        document.getElementById("truth-lie-ja").style.display = "none";
+        document.getElementById("truth-lie-nee").style.display = "none";
+        showTruthLieScore();
 
-        if (punten < 0) {
-            punten = 0;
-        }
-        score += punten;
-
-        antwoordIsCorrect = true;
-        verwerkActie();
     }
+    else {
+        setTimeout(() => {
+        document.getElementById("truth-lie-ja").disabled = false;
+        document.getElementById("truth-lie-ja").style.opacity = 1;
+        document.getElementById("truth-lie-nee").disabled = false;
+        document.getElementById("truth-lie-nee").style.opacity = 1;
+        }, 2000);
+    }
+}
+
+function showTruthLieScore() {
+    const truthLieChips = [
+        document.getElementById("truth-lie-Q1"),
+        document.getElementById("truth-lie-Q2"),
+        document.getElementById("truth-lie-Q3"),
+        document.getElementById("truth-lie-Q4"),
+        document.getElementById("truth-lie-Q5"),
+        document.getElementById("truth-lie-Q6")
+    ];
+    var correct = 0
+    for (let i = 0; i < truthLieMaxVragen; i++) {
+        setTimeout(() => {
+            
+            if (truthLieCorrect[i]) {
+                correct++;
+                correctAnswer(truthLieChips[i]);
+                document.getElementById("uitlegTekst").textContent = "Je hebt alle vragen beantwoord! Je hebt " + correct + " goed!";
+            } else {
+                truthLieChips[i].classList.add('filling-red');
+            }
+        }, 1000 + 1000 * i);
+    }
+    setTimeout(() => {
+        document.getElementById("truth-lie-next").style.opacity = 1;
+        document.getElementById("truth-lie-next").disabled = false;
+    }, 7500);
+}
+
+function correctAnswer(chipElement) {
+  chipElement.classList.add('filling-green');
+  const rect = chipElement.getBoundingClientRect();
+  const xPos = (rect.left + (rect.width / 2)) / window.innerWidth;
+  const yPos = (rect.top + (rect.height / 2)) / window.innerHeight;
+
+  confetti({
+    particleCount: 20,
+    spread: 70,
+    startVelocity: 15,
+    origin: { x: xPos, y: yPos },
+    colors: ['#4caf50', '#ffffff', '#000000'],
+    zIndex: 100
+  });
+}
+
+function endTruthLie() { //restore original template
+    document.getElementById("codeInputContainer").style.display = "";
+    document.getElementById("hintContainer").style.display = "";
+    document.getElementById("actieBtn").style.display = "block";
+    document.getElementById("truth-lie-div").style.display = "none";
+    document.getElementById("truth-lie-answer-container").style.display = "none";
+
+    //aantal fouten {0, 1, 2, 3, 4, 5, 6} geeft zoveel punten: {10, 9, 8, 6, 4, 2, 0}
+    let punten = 10;
+    if (foutPogingen == 0 || foutPogingen == 1) {
+        punten = punten - foutPogingen;
+    } else {
+        punten = punten - (foutPogingen-1) * 2;
+    }
+
+    if (punten < 0) {
+        punten = 0;
+    }
+    score += punten;
+
+    antwoordIsCorrect = true;
+    verwerkActie();
 }
 
 

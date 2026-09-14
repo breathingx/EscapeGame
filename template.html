@@ -16,6 +16,9 @@
   }
 }
 </script>
+
+<!-- voor leuke confetti! Copyright (c) 2020, Kiril Vatev, added by TeamTim on 2026-09-14-->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
 <!-- ---------------------------- -->
 
 <div class="header">
@@ -33,9 +36,10 @@
     <div id="vraagContainer">
 
     <h2 id="opdrachtTitel"></h2>
-
-    <div id="uitlegBlok">
-        <p id="uitlegTekst"></p>
+    <div id="uitlegWrapper">
+        <div id="uitlegBlok">
+            <p id="uitlegTekst"></p>
+        </div>
     </div>
 
     <div id="extraContent"></div>
@@ -44,10 +48,18 @@
         <input type="text" id="antwoordInput" placeholder="Voer antwoord in" autocomplete="off">
     </div>
 
+    <div id="truth-lie-answer-container" hidden>
+        <div class="truth-lie-answer-chip" id="truth-lie-Q1" hidden="true"></span></div>
+        <div class="truth-lie-answer-chip" id="truth-lie-Q2" hidden="true"></span></div>
+        <div class="truth-lie-answer-chip" id="truth-lie-Q3" hidden="true"></span></div>
+        <div class="truth-lie-answer-chip" id="truth-lie-Q4" hidden="true"></span></div>
+        <div class="truth-lie-answer-chip" id="truth-lie-Q5" hidden="true"></span></div>
+        <div class="truth-lie-answer-chip" id="truth-lie-Q6" hidden="true"></span></div>
+    </div>
     <div id="truth-lie-div" hidden>
-        <button id="truth-lie-ja" onclick="verwerkTruthLie(true)" hidden ="true">Waar</button>
-        <button id="truth-lie-nee" onclick="verwerkTruthLie(false)" hidden="true">Niet waar</button>
-        <button id="VolgendeTruthLie" onclick="updateTruthLie()" hidden="true">Volgende</button>
+        <button id="truth-lie-nee" onclick="verwerkTruthLie(false)" hidden ="true">Niet Waar</button>
+        <button id="truth-lie-ja" onclick="verwerkTruthLie(true)" hidden="true">Waar</button>
+        <button id="truth-lie-next" onclick="endTruthLie()" hidden="true">Volgende</button>
     </div>
     <div id="MC-vragen" hidden="true">
         <div class="mc-grid">
