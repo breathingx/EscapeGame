@@ -31,7 +31,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Open de koffer. In de koffer vind je drie tandwielen. Hiermee kun je een geheime boodschap ontcijferen en kom je dichterbij het verdwenen mechaniek van het gestolen collectiestuk.\n\nHeb jij de boodschap al ontcijfert? Vul in: ",
+            "uitleg": "Open de koffer. In de koffer vind je drie tandwielen. Hiermee kun je een geheime boodschap ontcijferen en kom je dichterbij het verdwenen mechaniek van het gestolen collectiestuk.\n\nHeb jij de boodschap al ontcijfert? Vul in:",
 
             "antwoord": "AAN111",
 
@@ -59,7 +59,7 @@
 
             "type": "game",
 
-            "uitleg": "Stellingen swipen met pijltjes met daaronder 'true' or 'false' er verschijnt een kleur in het vakje per antwoord\n\nZonder het te weten gebruik je dagelijks best veel techniek! Maar... weet je ook hoe het werkt?\n\nZijn deze stellingen 'true or false'?",
+            "uitleg": "Zonder het te weten gebruik je dagelijks best veel techniek! Maar... weet je ook hoe het werkt?\n\nZijn deze stellingen 'true or false'?",
 
             "antwoord": "AAN222",
 
@@ -74,7 +74,7 @@
                 "bonus": [
                     {
                         "vraag": "Hoeveel collectiestukken kun jij vinden waarin een krukas zit?",
-                        "antwoord": "5"
+                        "antwoord": "6"
                     }
                 ]
             }
@@ -87,7 +87,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Je hebt al gezien dat tandwielen beweging kunnen overbrengen, maar wist je ook dat de grootte van een tandwiel invloed heeft op hoe snel die beweging wordt doorgegeven?\n\nKijk in de koffer. Kun jij voorspellen hoe de tandwielen zullen draaien?",
+            "uitleg": "Je hebt al gezien dat tandwielen beweging kunnen overbrengen, maar wist je ook dat de grootte van een tandwiel invloed heeft op hoe snel die beweging wordt doorgegeven?\n\nKijk in de koffer.\n\nKun jij voorspellen hoe de tandwielen zullen draaien?",
 
             "invoerType": "blokken",
 
@@ -179,7 +179,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "In dit museum zie je vooral de mooie buitenkant van een muziekmachine. De dief dacht ook dat die het belangrijkst was. Maar het binnenwerk zit verstopt en is misschien wel belangrijker, want zonder dat werkt de muziekmachine niet.\n\nKijk in de koffer\\nnDe code om verder te gaan zit verstopt in de collectiestukken. Kun jij de code vinden?",
+            "uitleg": "In dit museum zie je vooral de mooie buitenkant van een muziekmachine. De dief dacht ook dat die het belangrijkst was. Maar het binnenwerk zit verstopt en is misschien wel belangrijker, want zonder dat werkt de muziekmachine niet.\n\nKijk in de koffer\n\nDe code om verder te gaan zit verstopt in de collectiestukken.\n\nKun jij de code vinden?",
 
             "invoerType": "blokken",
 
