@@ -230,36 +230,7 @@
                     }
                 ]
             }
-        },
-
-        {
-            "nummer": "8",
-
-            "naam": "Mechanische muzikant",
-
-            "type": "game",
-
-            "uitleg": "Een muziekmachine kan worden gezien als een gemechaniseerde muzikant: de machine bootst eigenlijk de bewegingen na die een muzikant normaal gesproken maakt.\n\nIn dit spel hoor je vier muzikanten die opgesloten zitten in machines.\n\nKlik op de play knop om een hint te horen en raad zo snel mogelijk in welke muziekmachine ze opgesloten zitten. Hoe minder hints, hoe beter, elke hint kost punten en kun je maar één keer horen.",
-
-            "antwoord": "AAN888",
-
-            "hints": [
-                "++++++++++HINT 1\nPLACEHOLDER++++++++++",
-                "++++++++++HINT 2\nPLACEHOLDER++++++++++"
-            ],
-
-            "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 8++++++++++",
-
-                "bonus": [
-                    {
-                        "vraag": "Welke kunstenaar maakt grote mechanische beesten?",
-                        "antwoord": "Theo Jansen"
-                    }
-                ]
-            }
         }
-
 
     ]
 }

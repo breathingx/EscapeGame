@@ -21,7 +21,7 @@ let antwoordIsCorrect = false;
 
 // scores for minigames
 let simon_punten = 0; //simon says is not used at the moment, but is planned on being used
-// const ENABLE_SIMON_SAYS = false;
+const ENABLE_SIMON_SAYS = false;
 let blockly_punten = 0;
 
 let truthLieProgress = 0;
@@ -528,7 +528,12 @@ function verwerkActie() {
             return;
         }
 
-        if (huidigeOpdracht < 5) {
+        // if (huidigeOpdracht < 5) {
+        //     toonTussenPagina();
+        // } else {
+        //     volgendeOpdracht();
+        // }
+        if (huidigeOpdracht < totaal_opdrachten - 1) {
             toonTussenPagina();
         } else {
             volgendeOpdracht();
@@ -567,7 +572,7 @@ function verwerkActie() {
 
         // calculate score for this exercise
         let punten = 10 - foutPogingen;
-        if (team === "programma" && huidigeOpdracht === 5) {
+        if (team === "programma" && huidigeOpdracht === 6) {
             punten = window.simon_punten
         } else if (team === "programma" && huidigeOpdracht === 4) {
             punten = window.blockly_punten || 0;
@@ -844,9 +849,9 @@ function laadOpdrachtProgramma() {
             inladenTruthLieElementen();
             break;
 
-        // case 5:
-        //     simon_says();
-        //     break;
+        case 6:
+            simon_says();
+            break;
 
         default:
             document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;

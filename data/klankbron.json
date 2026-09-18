@@ -203,34 +203,6 @@
         {
             "nummer": "7",
 
-            "naam": "Goed gestemd",
-
-            "type": "game",
-
-            "uitleg": "Ook zelfspelende muziekmachines moeten gestemd worden. Tijd om te leren hoe dat werkt!\n\nStem het instrument in de koffer met hulp van de app.\n\nStem de snaren door te draaien aan de knoppen.",
-
-            "antwoord": "CDEFGAB",
-
-            "hints": [
-                "++++++++++HINT 1\nPLACEHOLDER++++++++++",
-                "++++++++++HINT 2\nPLACEHOLDER++++++++++"
-            ],
-
-            "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 7++++++++++",
-
-                "bonus": [
-                    {
-                        "vraag": "Hoeveel orgelpijpen heeft het grote kerkorgel in het museum?",
-                        "antwoord": "++++++++++ANTWOORD\nPLACEHOLDER++++++++++"
-                    }
-                ]
-            }
-        },
-
-        {
-            "nummer": "8",
-
             "naam": "Kleuren Carillon",
 
             "type": "fysiek",

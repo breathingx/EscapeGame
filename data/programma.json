@@ -208,39 +208,11 @@
         {
             "nummer": "7",
 
-            "naam": "Mens of Machine?",
+            "naam": "Simon Says",
 
-            "type": "fysiek",
+            "type": "game:simonSays",
 
-            "uitleg": "Druk op een knop om te starten.\n\nNoteer de fragmenten\n\nMACHINE = 1\n\nMENS = 2",
-
-            "antwoord": "112121",
-
-            "hints": [
-                "Elektronische muziek hoeft niet altijd door een machine gemaakt te zijn.",
-                "AI maakt muziek zonder menselijke muzikant."
-            ],
-
-            "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 7++++++++++",
-
-                "bonus": [
-                    {
-                        "vraag": "Wie was de eerste vrouwelijke programmeur?",
-                        "antwoord": "Ada Lovelace"
-                    }
-                ]
-            }
-        },
-
-        {
-            "nummer": "8",
-
-            "naam": "Perfect match",
-
-            "type": "fysiek",
-
-            "uitleg": "Je kent nu de verschillende programmadragers.\n\nBelangrijk is dat je weet welk instrument erbij hoort. Zo kun jij bepalen welke programmadrager de verdwenen muziekmachine weer compleet maakt.\n\nKijk in de koffer.\n\nKoppel de juiste programmadrager aan het juiste instrument.\n\nLeg ze in dezelfde volgorde als de instrumenten.\n\nKlopt alles? Dan vormt het een woord.",
+            "uitleg": "Uitleg\n\nSimon Says",
 
             "antwoord": "PRO888",
 
