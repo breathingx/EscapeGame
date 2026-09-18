@@ -721,12 +721,22 @@ button.correct-state:hover {
 
 
 #uitlegBlok {
-    width: 90%;
+    width: var(--content-width);
     border: 3px solid black;
-    padding: 15px;
+    padding: 20px;
     margin-bottom: 50px;
+    box-sizing: border-box;
+
     font-family: "Montserrat";
     font-size: clamp(16px, 3vw, 20px);
+
+    text-align: center;
+    line-height: 1.5;
+}
+
+#uitlegTekst {
+    white-space: pre-line;
+    margin: 0;
 }
 
 #codeInputContainer {

@@ -31,7 +31,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Om de klankbron van de muziekmachine terug te vinden hebben jullie eerst wat muzikale kennis nodig.\nWe beginnen bij de basis...\nZoek in de ruimte naar een ladder en open de koffer\nKun jij dit omzetten in cijfers?\nTIFALASO",
+            "uitleg": "Om de klankbron van de muziekmachine terug te vinden hebben jullie eerst wat muzikale kennis nodig.\n\nWe beginnen bij de basis...\n\nZoek in de ruimte naar een ladder en open de koffer\n\nKun jij dit omzetten in cijfers?\n\nTIFALASO",
 
             "invoerType": "blokken",
 
@@ -63,7 +63,7 @@
 
             "type": "game",
 
-            "uitleg": "Nu je snapt hoe de westerse toonladder werkt kun je hem gaan zingen!\nRaak de juiste tonen met je stem  zodat je door kan naar de volgende opdracht.",
+            "uitleg": "Nu je snapt hoe de westerse toonladder werkt kun je hem gaan zingen!\n\nRaak de juiste tonen met je stem  zodat je door kan naar de volgende opdracht.",
 
             "antwoord": "KLA222",
 
@@ -91,7 +91,7 @@
 
             "type": "game",
 
-            "uitleg": "Naast echte instrumenten zitten er ook klanken verstopt in objecten waarvan je het niet verwacht.\nLuister goed en zoek in de tentoonstelling waar elk geluid vandaan komt.",
+            "uitleg": "Naast echte instrumenten zitten er ook klanken verstopt in objecten waarvan je het niet verwacht.\n\nLuister goed en zoek in de tentoonstelling waar elk geluid vandaan komt.",
 
             "antwoord": "KLA333",
 
@@ -119,7 +119,7 @@
 
             "type": "game",
 
-            "uitleg": "De dief heeft de melodie uit de machine gehaald en ergens in het museum verstopt.\nEr gaat een gerucht dat de melodie is opgebroken en verscholen ligt in... stukken fruit!\nZoek het fruit in het museum én in de koffer.\nLuister naar de fragmenten en ontrafel per stuk een driecijferige code. Los daarna deze som op:",
+            "uitleg": "De dief heeft de melodie uit de machine gehaald en ergens in het museum verstopt.\n\nEr gaat een gerucht dat de melodie is opgebroken en verscholen ligt in... stukken fruit!\n\nZoek het fruit in het museum én in de koffer.\n\nLuister naar de fragmenten en ontrafel per stuk een driecijferige code. Los daarna deze som op:",
 
             "antwoord": "684",
 
@@ -147,7 +147,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Geluid kun je niet alleen horen, maar ook zien als golfvorm.\nDe dief heeft een geheime aanwijzing verstopt in een muziekstuk hier uit het museum.\nKijk in de koffer\nKun jij ontrafelen welke geheime aanwijzingen verborgen zit in de waveforms?",
+            "uitleg": "Geluid kun je niet alleen horen, maar ook zien als golfvorm.\n\nDe dief heeft een geheime aanwijzing verstopt in een muziekstuk hier uit het museum.\n\nKijk in de koffer\n\nKun jij ontrafelen welke geheime aanwijzingen verborgen zit in de waveforms?",
 
             "invoerType": "blokken",
 
@@ -179,7 +179,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Een muziekmachine heeft meer dan alleen een melodie…\nZonder ritme valt alles stil.\nOp de console staan 3 rode knoppen\n(links → rechts).\nElke knop hoort bij een voorbeeld fragment.\nLuister goed en tel:",
+            "uitleg": "Een muziekmachine heeft meer dan alleen een melodie…\n\nZonder ritme valt alles stil.\n\nOp de console staan 3 rode knoppen\n\n(links → rechts).\n\nElke knop hoort bij een voorbeeld fragment.\n\nLuister goed en tel:",
 
             "antwoord": "365",
 
@@ -207,7 +207,7 @@
 
             "type": "game",
 
-            "uitleg": "Ook zelfspelende muziekmachines moeten gestemd worden. Tijd om te leren hoe dat werkt!\nStem het instrument in de koffer met hulp van de app.\nStem de snaren door te draaien aan de knoppen.",
+            "uitleg": "Ook zelfspelende muziekmachines moeten gestemd worden. Tijd om te leren hoe dat werkt!\n\nStem het instrument in de koffer met hulp van de app.\n\nStem de snaren door te draaien aan de knoppen.",
 
             "antwoord": "CDEFGAB",
 
@@ -235,7 +235,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Hier in MUSIC kun je verschillende klankbronnen vinden.\nEén daarvan laat het carillon tot leven komen… maar welke?\nGebruik de kleurcode en speel het lied:",
+            "uitleg": "Hier in MUSIC kun je verschillende klankbronnen vinden.\n\nEén daarvan laat het carillon tot leven komen… maar welke?\n\nGebruik de kleurcode en speel het lied:",
 
             "antwoord": "Wilhelmus",
 

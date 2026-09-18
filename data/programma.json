@@ -31,7 +31,7 @@
 
             "type": "scan",
 
-            "uitleg": "De programmadrager vertelt de machine wat hij moet spelen.\nMuziek wordt omgezet in een code die op een drager staat geprogrammeerd.\nWelke programmadragers kun je vinden in de tentoonstelling?\nGebruik de kubussen uit de koffer en bouw 1 grote kubus.\nAan elke kant staat een manier om code op te slaan.\nAlleen de juiste bouw opent de volgende opdracht.",
+            "uitleg": "De programmadrager vertelt de machine wat hij moet spelen. Muziek wordt omgezet in een code die op een drager staat geprogrammeerd.\n\nWelke programmadragers kun je vinden in de tentoonstelling? Gebruik de kubussen uit de koffer en bouw 1 grote kubus. Aan elke kant staat een manier om code op te slaan. Alleen de juiste bouw opent de volgende opdracht.",
 
             "antwoord": "PRO111",
 
@@ -59,7 +59,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Orgelboeken vertellen aan het orgel welke noten ze wanneer moeten spelen.\n Je kunt de gaten in een orgelboek vergelijken met de 1-en en 0-en van een computer\nOm een deel van de code van de verdwenen programmadrager te achterhalen, heb je een orgelboek nodig.\nKijk in de koffer.\nPak de juiste pagina van het orgelboek en probeer te achterhalen!",
+            "uitleg": "Orgelboeken vertellen aan het orgel welke noten ze wanneer moeten spelen.\n\nJe kunt de gaten in een orgelboek vergelijken met de 1-en en 0-en van een computer\n\nOm een deel van de code van de verdwenen programmadrager te achterhalen, heb je een orgelboek nodig.\n\nKijk in de koffer.\nPak de juiste pagina van het orgelboek en probeer te achterhalen!",
 
             "invoerType": "blokken",
 
@@ -91,7 +91,7 @@
 
             "type": "game:blockly",
 
-            "uitleg": "Een programma is een stappenplan. Muziekmachines weten dankzij het programma wat ze moeten spelen.\nTijd om te leren hoe je zo’n stappenplan zelf maakt!\nBouw met blokken een programma en pak zo veel mogelijk muzieknoten onderweg. \nJe mag het zo vaak proberen als je wilt, alleen je laatste poging telt voor de punten.",
+            "uitleg": "Een programma is een stappenplan. Muziekmachines weten dankzij het programma wat ze moeten spelen.\n\nTijd om te leren hoe je zo’n stappenplan zelf maakt!\n\nBouw met blokken een programma en pak zo veel mogelijk muzieknoten onderweg. Je mag het zo vaak proberen als je wilt, alleen je laatste poging telt voor de punten.",
 
             "antwoord": "PRO333",
 
@@ -120,7 +120,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Je hebt net geleerd hoe een stappenplan werkt: de basis van programmeren.\nNu ga je zelf een echte muziekmachine programmeren!\nMet pinnetjes bepaal je geluid of stilte.\nVind de code in de koffer en zet de pinnetjes op zes rijen precies hetzelfde omhoog of omlaag.\nKraak jij de code?",
+            "uitleg": "Je hebt net geleerd hoe een stappenplan werkt: de basis van programmeren.\n\nNu ga je zelf een echte muziekmachine programmeren!\n\nMet pinnetjes bepaal je geluid of stilte.\n\nVind de code in de koffer en zet de pinnetjes op zes rijen precies hetzelfde omhoog of omlaag. Kraak jij de code?",
 
             "invoerType": "blokken",
 
@@ -152,7 +152,7 @@
 
             "type": "game:truefals",
 
-            "uitleg": "Jullie weten al veel over programmeren. Tijd om die kennis te testen!\nBeantwoord de vragen met waar of niet waar. Elke keuze levert een 1 of 0 op. Samen vormen de antwoorden een geheime code.",
+            "uitleg": "Jullie weten al veel over programmeren. Tijd om die kennis te testen!\n\nBeantwoord de vragen met waar of niet waar. Elke keuze levert een 1 of 0 op. Samen vormen de antwoorden een geheime code.",
 
             "antwoord": "PRO555",
 
@@ -180,7 +180,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Je weet nu hoe een orgelboek werkt en dat een programma een stappenplan is.\nMaar... Er zijn meer programmadragers.\nKijk in de koffer\nDe code van de verdwenen muziekmachine is nog steeds niet compleet.\nDraai de schijven tot een woord verschijnt en kraak de code.",
+            "uitleg": "Je weet nu hoe een orgelboek werkt en dat een programma een stappenplan is.\n\nMaar... Er zijn meer programmadragers.\n\nKijk in de koffer\n\nDe code van de verdwenen muziekmachine is nog steeds niet compleet.\n\nDraai de schijven tot een woord verschijnt en kraak de code.",
 
             "invoerType": "blokken",
 
@@ -212,7 +212,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Druk op een knop om te starten.\nNoteer de fragmenten\nMACHINE = 1\nMENS = 2",
+            "uitleg": "Druk op een knop om te starten.\n\nNoteer de fragmenten\n\nMACHINE = 1\n\nMENS = 2",
 
             "antwoord": "112121",
 
@@ -240,7 +240,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Je kent nu de verschillende programmadragers.\nBelangrijk is dat je weet welk instrument erbij hoort. Zo kun jij bepalen welke programmadrager de verdwenen muziekmachine weer compleet maakt.\nKijk in de koffer.\nKoppel de juiste programmadrager aan het juiste instrument.\nLeg ze in dezelfde volgorde als de instrumenten.\nKlopt alles? Dan vormt het een woord.",
+            "uitleg": "Je kent nu de verschillende programmadragers.\n\nBelangrijk is dat je weet welk instrument erbij hoort. Zo kun jij bepalen welke programmadrager de verdwenen muziekmachine weer compleet maakt.\n\nKijk in de koffer.\n\nKoppel de juiste programmadrager aan het juiste instrument.\n\nLeg ze in dezelfde volgorde als de instrumenten.\n\nKlopt alles? Dan vormt het een woord.",
 
             "antwoord": "PRO888",
 
