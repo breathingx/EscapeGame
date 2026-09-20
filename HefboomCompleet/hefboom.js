@@ -37,7 +37,7 @@ const LADDER_TOP = 26;
 const RUNG_Y0 = 232;        // y of the lowest rung (Do)
 const RUNG_GAP = 42;        // vertical distance between rungs
 const NOTE_LIFT = 9;        // a note "sits" this far above the rung's centre line
-const TOL = 15;             // how close (in pixels) the note must be to a rung to hit it
+const TOL = 15;             // how close (in pixels) the note must be to a rung to hit it, tolarance
 
 
 // ---- Catapult geometry and strength ----------------------------------------

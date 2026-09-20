@@ -598,10 +598,10 @@ function toonTussenPagina() {
 // loads the correct minigame depending for this team
 function laadOpdrachtAandrijving() {
     switch (huidigeOpdracht) {
-        case 4:
+        case 1:
             inladenTruthLieElementen();
             break;
-        case 1:
+        case 4:
             hefboomGame();
             break;
         default:
