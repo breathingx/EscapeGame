@@ -44,7 +44,7 @@ let launching = false;
 let targetX = 0;
 
 // Score van de speler.
-let score = 0;
+// let score = 0;
 
 
 // Resize the canvas to match its displayed size.
