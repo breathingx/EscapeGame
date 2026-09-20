@@ -1,29 +1,37 @@
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hefboom - Muzieknoot Spel</title>
-<!-- <link rel="stylesheet" href="hefboom.css"> -->
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hefboom - Muzieknoot Spel</title>
+  <!-- <link rel="stylesheet" href="katapult.css"> -->
+</head>
+<body>
 
-<div class="page hefboom-wrapper">
+<div class="page katapult-wrapper">
   <h1>Hefboom spel</h1>
   <div class="opdracht">
-    Verschuif het draaipunt en lanceer de muzieknoot in het doel!
+    Stel de kracht van de katapult in en schiet de noot op de juiste sport van de ladder!
   </div>
 
   <div class="arena">
-    <canvas id="gameCanvas"></canvas>
+    <canvas id="gameCanvas" role="img"
+      aria-label="Een katapult schiet een muzieknoot naar een ladder met vijf sporten: Do, Re, Mi, Fa en So."></canvas>
   </div>
 
   <div class="status-row">
     <span>Score: <span id="score">0</span></span>
-    <span id="message" class="message"></span>
+    <span>Jouw noot: <strong id="targetName">-</strong></span>
+    <span id="message" class="message" role="status" aria-live="polite"></span>
   </div>
 
   <div class="slider-section">
-    <span>Draaipunt</span>
-    <input type="range" id="pivotSlider" min="10" max="88" value="35">
-    <span id="pivotPct">35%</span>
+    <label for="strengthSlider">Kracht</label>
+    <input type="range" id="strengthSlider" min="0" max="100" value="30">
+    <span id="strengthPct">30%</span>
   </div>
 
+  <!-- Hidden code (white text on white background) -->
   <div class="code-row">
     <span class="code-label">Code:</span>
     <span class="digit" id="d1">-</span>
@@ -38,3 +46,5 @@
 </div>
 
 <script src="hefboom.js"></script>
+</body>
+</html>
