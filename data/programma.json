@@ -31,7 +31,7 @@
 
             "type": "scan",
 
-            "uitleg": "De programmadrager vertelt de machine wat hij moet spelen.\nMuziek wordt omgezet in een code die op een drager staat geprogrammeerd.\nWelke programmadragers kun je vinden in de tentoonstelling?\nGebruik de kubussen uit de koffer en bouw 1 grote kubus.\nAan elke kant staat een manier om code op te slaan.\nAlleen de juiste bouw opent de volgende opdracht.",
+            "uitleg": "Elke muziekmachine heeft een programmadrager nodig. Op een programmadrager staat de muziek opgeslagen als een code.\n\nDankzij deze code weet de muziekmachine welke muziek hij moet spelen.\n\nIn de tentoonstelling kom je vijf verschillende soorten programmadragers tegen. Kun jij ze allemaal vinden?\n\nGebruik de blokken uit de koffer.\n\nMaak er ée'n grote kubus van en zorg ervoor dat alle plaatje van de programmadragers uit de tnetoonstelling aan de buitenkannt zichtbaar zijn.\n\nHeb je de juiste QR-code gevonden?\n\nScan dan de code.",
 
             "antwoord": "PRO111",
 
@@ -59,7 +59,11 @@
 
             "type": "fysiek",
 
-            "uitleg": "Orgelboeken vertellen aan het orgel welke noten ze wanneer moeten spelen.\n Je kunt de gaten in een orgelboek vergelijken met de 1-en en 0-en van een computer\nOm een deel van de code van de verdwenen programmadrager te achterhalen, heb je een orgelboek nodig.\nKijk in de koffer.\nPak de juiste pagina van het orgelboek en probeer te achterhalen!",
+            "uitleg": "Een orgelboek is een programmadraer. De gaatjes bepalen welke orgelpijpen gespeeld worden.\n\nKijk in de koffer en pak de pagina's van het orgelboek\n\nLeg de juiste pagina over de tekst. Er verschijnt een verborgen boodschap.\n\nKun jij de viercijferige code vinden?",
+
+            "invoerType": "blokken",
+
+            "aantalBlokken": 4,
 
             "antwoord": "1948",
 
@@ -87,7 +91,7 @@
 
             "type": "game:blockly",
 
-            "uitleg": "Een programma is een stappenplan. Muziekmachines weten dankzij het programma wat ze moeten spelen.\nTijd om te leren hoe je zo’n stappenplan zelf maakt!\nBouw met blokken een programma en pak zo veel mogelijk muzieknoten onderweg. \nJe mag het zo vaak proberen als je wilt, alleen je laatste poging telt voor de punten.",
+            "uitleg": "Een muziekmachine volgt een programma als een soort stappenplan.\n\nKun jij een stappenplan maken waarmee je onderweg muzieknoten verzamelt?\n\nBouw de juiste route met de beschikbare blokken.\n\nElk blok heeft een eigen functie. Sleep de blokken in de juiste volgorde om een stappenplan te maken. Klik daarna op 'Start' en controleer of het stappenplan werkt!",
 
             "antwoord": "PRO333",
 
@@ -98,7 +102,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "Ga naar de programmeerbare muziekmachine.",
+                "tekst": "Loop naar de Musicon, de programmeerbare muziekmachine.",
 
                 "bonus": [
                     {
@@ -116,7 +120,11 @@
 
             "type": "fysiek",
 
-            "uitleg": "Je hebt net geleerd hoe een stappenplan werkt: de basis van programmeren.\nNu ga je zelf een echte muziekmachine programmeren!\nMet pinnetjes bepaal je geluid of stilte.\nVind de code in de koffer en zet de pinnetjes op zes rijen precies hetzelfde omhoog of omlaag.\nKraak jij de code?",
+            "uitleg": "Nu ga je zelf een muziekmachine programeren.\n\nZet de pinnetjes precies zoals op de codekaart die je in de koffer vindt. Lukt het jou om de code te kraken?",
+
+            "invoerType": "blokken",
+
+            "aantalBlokken": 6,
 
             "antwoord": "PRO444",
 
@@ -144,7 +152,7 @@
 
             "type": "game:truefals",
 
-            "uitleg": "Jullie weten al veel over programmeren. Tijd om die kennis te testen!\nBeantwoord de vragen met waar of niet waar. Elke keuze levert een 1 of 0 op. Samen vormen de antwoorden een geheime code.",
+            "uitleg": "Tijd voor een quiz!\n\nKies steeds WAAR (1) of NIET WAAR (0).\n\nSamen vormen de antwoorden een code.",
 
             "antwoord": "PRO555",
 
@@ -172,8 +180,12 @@
 
             "type": "fysiek",
 
-            "uitleg": "Je weet nu hoe een orgelboek werkt en dat een programma een stappenplan is.\nMaar... Er zijn meer programmadragers.\nKijk in de koffer\nDe code van de verdwenen muziekmachine is nog steeds niet compleet.\nDraai de schijven tot een woord verschijnt en kraak de code.",
+            "uitleg": "Je hebt al verschillende programmadragers ontdekt: een boek, een rol, een cilinder...\n\nMaar er is er nóg één!\n\nZoek de drie draaischijven in de koffer.\n\nDraai de schijven tot ze same een woord vormen.\n\nDat woord geeft ook een geheime code.",
 
+            "invoerType": "blokken",
+
+            "aantalBlokken": 4,
+    
             "antwoord": "9205",
 
             "hints": [
@@ -196,39 +208,11 @@
         {
             "nummer": "7",
 
-            "naam": "Mens of Machine?",
+            "naam": "Simon Says",
 
-            "type": "fysiek",
+            "type": "game:simonSays",
 
-            "uitleg": "Druk op een knop om te starten.\nNoteer de fragmenten\nMACHINE = 1\nMENS = 2",
-
-            "antwoord": "112121",
-
-            "hints": [
-                "Elektronische muziek hoeft niet altijd door een machine gemaakt te zijn.",
-                "AI maakt muziek zonder menselijke muzikant."
-            ],
-
-            "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 7++++++++++",
-
-                "bonus": [
-                    {
-                        "vraag": "Wie was de eerste vrouwelijke programmeur?",
-                        "antwoord": "Ada Lovelace"
-                    }
-                ]
-            }
-        },
-
-        {
-            "nummer": "8",
-
-            "naam": "Perfect match",
-
-            "type": "fysiek",
-
-            "uitleg": "Je kent nu de verschillende programmadragers.\nBelangrijk is dat je weet welk instrument erbij hoort. Zo kun jij bepalen welke programmadrager de verdwenen muziekmachine weer compleet maakt.\nKijk in de koffer.\nKoppel de juiste programmadrager aan het juiste instrument.\nLeg ze in dezelfde volgorde als de instrumenten.\nKlopt alles? Dan vormt het een woord.",
+            "uitleg": "Uitleg\n\nSimon Says",
 
             "antwoord": "PRO888",
 
