@@ -901,6 +901,16 @@ function laadopdrachtKlankbron() {
 
 // Loads the elements necessary for the Truth Lie minigame. Elements from the standard template will be hidden.
 function inladenTruthLieElementen() {
+
+    truthLieProgress = parseInt(localStorage.getItem("truthLieProgress")) || 0;
+    foutPogingen = parseInt(localStorage.getItem("truthLieFouten")) || 0;
+
+    let savedCorrect = localStorage.getItem("truthLieCorrect");
+    if (savedCorrect) {
+        truthLieCorrect = JSON.parse(savedCorrect);
+    }
+
+
     document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
     document.getElementById("codeInputContainer").style.display = "none";
     document.getElementById("actieBtn").style.display = "none";
@@ -909,6 +919,32 @@ function inladenTruthLieElementen() {
     document.getElementById("truth-lie-ja").hidden = false;
     document.getElementById("truth-lie-nee").hidden = false;
     document.getElementById("truth-lie-answer-container").style.display = "flex";
+
+    const truthLieChips = [
+        document.getElementById("truth-lie-Q1"), document.getElementById("truth-lie-Q2"),
+        document.getElementById("truth-lie-Q3"), document.getElementById("truth-lie-Q4"),
+        document.getElementById("truth-lie-Q5"), document.getElementById("truth-lie-Q6")
+    ];
+
+    for (let i = 0; i < truthLieProgress; i++) {
+        truthLieChips[i].classList.add("filling");
+        let juistAntwoord = truthLieAntwoordData[team][i];
+        let gekozenAntwoord = truthLieCorrect[i] ? juistAntwoord : !juistAntwoord;
+        truthLieChips[i].textContent = gekozenAntwoord ? "1" : "0";
+    }
+
+    if (truthLieProgress >= truthLieMaxVragen) {
+        document.getElementById("uitlegTekst").textContent = "Je hebt alle vragen beantwoord! Je hebt 0 goed...";
+        document.getElementById("truth-lie-next").disabled = true;
+        document.getElementById("truth-lie-next").style.opacity = 0.5;
+        document.getElementById("truth-lie-next").hidden = false
+
+        document.getElementById("truth-lie-ja").style.display = "none";
+        document.getElementById("truth-lie-nee").style.display = "none";
+        showTruthLieScore();
+    } else {
+        document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
+    }
 }
 
 
@@ -929,6 +965,9 @@ function verwerkTruthLie(isCorrect) {
         truthLieCorrect[truthLieProgress] = false;
         foutPogingen += 1;
     }
+
+    localStorage.setItem("truthLieFouten", foutPogingen);
+    localStorage.setItem("truthLieCorrect", JSON.stringify(truthLieCorrect));
 
     document.getElementById("truth-lie-ja").disabled = true;
     document.getElementById("truth-lie-ja").style.opacity = 0.5;
@@ -959,10 +998,12 @@ function updateTruthLieChip(isCorrect) {
 // - Template elements are reloaded
 function updateTruthLie() {
     truthLieProgress++;
+    localStorage.setItem("truthLieProgress", truthLieProgress);
+
     document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
 
     if (truthLieProgress == truthLieMaxVragen) {
-        document.getElementById("uitlegTekst").textContent = "Je hebt alle vragen beantwoord! Je hebt 0 goed!";
+        document.getElementById("uitlegTekst").textContent = "Je hebt alle vragen beantwoord! Je hebt 0 goed...";
         document.getElementById("truth-lie-next").disabled = true;
         document.getElementById("truth-lie-next").style.opacity = 0.5;
         document.getElementById("truth-lie-next").hidden = false
@@ -1032,6 +1073,12 @@ function endTruthLie() { //restore original template
     document.getElementById("actieBtn").style.display = "block";
     document.getElementById("truth-lie-div").style.display = "none";
     document.getElementById("truth-lie-answer-container").style.display = "none";
+    foutPogingen = 0
+    for (let i = 0; i < truthLieMaxVragen; i++) {
+        if (!truthLieCorrect[i]){
+            foutPogingen++;
+        }
+    }
 
     //aantal fouten {0, 1, 2, 3, 4, 5, 6} geeft zoveel punten: {10, 9, 8, 6, 4, 2, 0}
     let punten = 10;
@@ -1045,6 +1092,12 @@ function endTruthLie() { //restore original template
         punten = 0;
     }
     score += punten;
+    localStorage.setItem("score", score);
+    correcteAntwoorden++;
+    localStorage.setItem("correct", correcteAntwoorden);
+    localStorage.removeItem("truthLieProgress");
+    localStorage.removeItem("truthLieFouten");
+    localStorage.removeItem("truthLieCorrect");
 
     antwoordIsCorrect = true;
     verwerkActie();
