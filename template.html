@@ -22,21 +22,33 @@
 <!-- ---------------------------- -->
 
 <div class="header">
-    <div id="timer"></div>
-    <div id="scoreDisplay">Score: 0</div>
+    <div id="header_column_left">
+        <div id="timerTitle">tijd over</div>
+        <div id="timer"></div>
+    </div>
+
+    <div id="header_column_center">
+        <h3>Team</h3>
+        <h3 id="teamTitel"></h3>
+        <h4 id="opdrachtNummer"></h4>
+    </div>
+
+    <div id="header_column_right">
+                <div id="scoreTitle">score</div>
+        <div id="scoreDisplay">00000</div>
+    </div>
+    
 </div>
 
-<div class="subheader">
-    <h2 id="teamTitel"></h2>
-    <h3 id="opdrachtNummer"></h3>
-</div>
+
 
 <div class="main-content">
 
     <div id="vraagContainer">
 
-    <h2 id="opdrachtTitel"></h2>
+    
     <div id="uitlegWrapper">
+        <h2 id="opdrachtTitel"></h2>
         <div id="uitlegBlok">
             <p id="uitlegTekst"></p>
         </div>
