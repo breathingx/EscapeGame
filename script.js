@@ -895,16 +895,33 @@ function laadOpdrachtProgramma() {
 // ============ PROGRAMMA MINI-GAMES ============== \\
 
 // shows the qr-scanner exercise button to start scanning.
+// function qrScannerOpdracht() {
+//     const origineleInnerHTML =
+//         Object.getOwnPropertyDescriptor(
+//             Element.prototype,
+//             "innerHTML"
+//         );
+
+//     document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+
+//     const extraContent = document.getElementById("extraContent");
+
+//     extraContent.innerHTML = `
+//         <button id="startQRScanBtn">
+//             Scan QR-code
+//         </button>
+//     `;
+
+//     document.getElementById("startQRScanBtn")
+//         .addEventListener("click", startQRScanner);
+// }
 function qrScannerOpdracht() {
-    const origineleInnerHTML =
-        Object.getOwnPropertyDescriptor(
-            Element.prototype,
-            "innerHTML"
-        );
 
-    document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+    document.getElementById("uitlegTekst").textContent =
+        gameData[team].opdrachten[huidigeOpdracht].uitleg;
 
-    const extraContent = document.getElementById("extraContent");
+    const extraContent =
+        document.getElementById("extraContent");
 
     extraContent.innerHTML = `
         <button id="startQRScanBtn">
@@ -912,34 +929,215 @@ function qrScannerOpdracht() {
         </button>
     `;
 
-    document.getElementById("startQRScanBtn")
-        .addEventListener("click", startQRScanner);
+    document
+        .getElementById("startQRScanBtn")
+        .addEventListener("click", laadQRScanner);
 }
 
 // // loads the qr-scanner interface and required resources.
-function startQRScanner() {
+// function startQRScanner() {
 
-    const extraContent = document.getElementById("extraContent");
+//     const extraContent = document.getElementById("extraContent");
 
-    // get qr-scanner
-    fetch("QRScanner/qrScanner.html")
+//     // get qr-scanner
+//     fetch("QRScanner/qrScanner.html")
+//         .then(res => res.text())
+//         .then(html => {
+
+//             extraContent.innerHTML =
+//                 `<div class="fullscreen-content">${html}</div>`;
+
+//             // get the css
+//             const link = document.createElement("link");
+//             link.rel = "stylesheet";
+//             link.href = "QRScanner/qrScanner.css";
+//             document.head.appendChild(link);
+
+//             // get the script
+//             const script = document.createElement("script");
+//             script.src = "QRScanner/qrScanner.js";
+//             document.body.appendChild(script);
+//         });
+// }
+function laadQRScanner() {
+
+    const extraContent =
+        document.getElementById("extraContent");
+
+    // =================================================
+    // SCANNER HTML LADEN
+    // =================================================
+
+    fetch("QRScanner/qrScannerFragment.html")
         .then(res => res.text())
         .then(html => {
 
-            extraContent.innerHTML =
-                `<div class="fullscreen-content">${html}</div>`;
+            extraContent.innerHTML = `
+                <div class="fullscreen-content">
+                    ${html}
+                </div>
+            `;
 
-            // get the css
-            const link = document.createElement("link");
-            link.rel = "stylesheet";
-            link.href = "QRScanner/qrScanner.css";
-            document.head.appendChild(link);
 
-            // get the script
-            const script = document.createElement("script");
-            script.src = "QRScanner/qrScanner.js";
-            document.body.appendChild(script);
+            // =================================================
+            // QR SCANNER CSS LADEN
+            // =================================================
+
+            if (!document.getElementById("qrScannerCSS")) {
+
+                const link = document.createElement("link");
+
+                link.id = "qrScannerCSS";
+                link.rel = "stylesheet";
+                link.href = "QRScanner/qrScanner.css";
+
+                document.head.appendChild(link);
+            }
+
+
+            // =================================================
+            // jsQR LADEN
+            // =================================================
+
+            function laadQrLibrary() {
+
+                return new Promise((resolve, reject) => {
+
+                    // jsQR is al geladen
+                    if (typeof jsQR !== "undefined") {
+
+                        resolve();
+                        return;
+                    }
+
+
+                    // jsQR script aanmaken
+                    const script =
+                        document.createElement("script");
+
+                    script.src =
+                        "https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js";
+
+                    script.onload = () => {
+
+                        console.log(
+                            "QR: jsQR library geladen"
+                        );
+
+                        resolve();
+
+                    };
+
+                    script.onerror = () => {
+
+                        reject(
+                            new Error(
+                                "jsQR kon niet worden geladen."
+                            )
+                        );
+
+                    };
+
+                    document.body.appendChild(script);
+
+                });
+
+            }
+
+
+            // =================================================
+            // QR SCANNER JS LADEN
+            // =================================================
+
+            function laadQrScannerScript() {
+
+                return new Promise((resolve, reject) => {
+
+                    // qrScanner.js is al geladen
+                    if (document.getElementById("qrScannerJS")) {
+
+                        resolve();
+                        return;
+                    }
+
+
+                    const script =
+                        document.createElement("script");
+
+                    script.id = "qrScannerJS";
+
+                    script.src =
+                        "QRScanner/qrScanner.js";
+
+                    script.onload = () => {
+
+                        console.log(
+                            "QR: qrScanner.js geladen"
+                        );
+
+                        resolve();
+
+                    };
+
+                    script.onerror = () => {
+
+                        reject(
+                            new Error(
+                                "qrScanner.js kon niet worden geladen."
+                            )
+                        );
+
+                    };
+
+                    document.body.appendChild(script);
+
+                });
+
+            }
+
+
+            // =================================================
+            // ALLES IN DE JUISTE VOLGORDE STARTEN
+            // =================================================
+
+            laadQrLibrary()
+
+                .then(() => {
+
+                    return laadQrScannerScript();
+
+                })
+
+                .then(() => {
+
+                    console.log(
+                        "QR: scanner starten in opdracht-modus"
+                    );
+
+                    startQRScanner("opdracht");
+
+                })
+
+                .catch(error => {
+
+                    console.error(
+                        "QR-scanner kon niet worden gestart:",
+                        error
+                    );
+
+                });
+
+        })
+
+        .catch(error => {
+
+            console.error(
+                "QR-scanner HTML kon niet worden geladen:",
+                error
+            );
+
         });
+
 }
 
 // handles scanned qr-odes and checks if the scanned value is correct.
@@ -962,6 +1160,7 @@ window.handleQRCode = function(qrData) {
 
         correcteAntwoorden++;
         localStorage.setItem("correct", correcteAntwoorden);
+        updateProgressBar();
 
         antwoordIsCorrect = true;
 
