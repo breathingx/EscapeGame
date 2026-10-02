@@ -386,6 +386,11 @@ function laadMinigameUitleg() {
     // Hide the overlay when they click start
     document.getElementById("closeMinigameOverlay").onclick = () => {
         overlay.style.display = "none";
+        document.getElementById("openMinigameOverlay").style.display = "block";
+        document.getElementById("openMinigameOverlay").onclick = () => {
+            document.getElementById("openMinigameOverlay").style.display = "none";
+            laadMinigameUitleg();
+        };
     };
 }
 
@@ -415,6 +420,7 @@ function laadOpdracht() {
     document.getElementById("hintBtn").style.display = "block";
     document.getElementById("hintBlocks").style.display = "flex";
     document.getElementById("hintContainer").style.display = "flex";
+    document.getElementById("openMinigameOverlay").style.display = "none";
 
     // reset action button state
     const actieBtn = document.getElementById("actieBtn");

@@ -255,17 +255,20 @@ body.team-klankbron {
 }
 
 #minigameUitlegBlok {
-    width: var(--content-width);
+    width: 80%;
     border: 3px solid black;
-    padding: 1vh 2vw;
+    padding: 50px 2vw 1vh 2vw; 
+    display: flex;
+    flex-direction: column;
     font-family: "Montserrat";
     font-size: clamp(16px, 3vw, 20px);
-
     text-align: center;
     background: #fff;
-    overflow-y: auto;
     position: relative;
     z-index: 100;
+}
+#minigameUitlegTekst {
+    margin: 10px 0 10px 0;
 }
 
 /* ================================================= */
@@ -314,8 +317,39 @@ button {
     padding: 18px 24px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+#openMinigameOverlay {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    height: 40px;
+    width: auto; /* Allows the word 'Uitleg' to fit naturally */
+    padding: 0 15px; 
+    background-color: black;
+    color: white;
+    font-size: clamp(14px, 2.5vw, 20px);
+    font-family: "Right Grotesk Medium";
+    z-index: 90; /* Ensures it sits BEHIND the overlay */
+    border: none;
+    cursor: pointer;
+}
 
-
+.minigame-overlay-button{
+    position: absolute;
+    top: 0px;
+    left: 5px; 
+    height: 40px;
+    width: 40px;
+    background-color: black;
+    color: white;
+    font-size: clamp(28px, 5vw, 40px);
+    padding: 0;
+    z-index: 101;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /* team colors: aandrijving: #0091FF, programma: #00f280, klankbron: #ff6800 */
 .aandrijving {
@@ -901,6 +935,7 @@ button.feedback-incorrect {
 #extraContent {
     width: 100%;
     margin-bottom: 20px;
+    margin-top: 0;
 }
 
 .hud-footer {
