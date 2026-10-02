@@ -53,8 +53,17 @@
             <p id="uitlegTekst"></p>
         </div>
     </div>
+    
 
-    <div id="extraContent"></div>
+    <div id="minigameWrapper" style="position: relative; width: 100%; height: 100%;">
+        <div id="extraContent"></div>
+        <div id="minigameOverlay" class="minigame-overlay" style="display: none;">
+            <div id="minigameUitlegBlok">
+                <p id="minigameUitlegTekst"></p>
+                <button id="closeMinigameOverlay" class="actieBtn">Start</button>
+            </div>
+        </div>
+    </div>
 
     <div id="codeInputContainer">
         <input type="text" id="antwoordInput" placeholder="Voer antwoord in" autocomplete="off">
