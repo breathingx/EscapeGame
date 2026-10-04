@@ -165,8 +165,11 @@ function updateCode() {
   const pivotPct = CODE_PIVOT_MAX - (CODE_PIVOT_MAX - CODE_PIVOT_MIN) * (state.power / 100);
   const pivotX = CODE_LEFT + (CODE_RIGHT - CODE_LEFT) * (pivotPct / 100);
 
-  const arm1 = pivotX - CODE_LEFT;
-  const arm2 = CODE_RIGHT - pivotX;
+  // const arm1 = pivotX - CODE_LEFT;
+  // const arm2 = CODE_RIGHT - pivotX;
+  // const ratio = arm1 / arm2;
+  const arm1 = 1;
+  const arm2 = 2;
   const ratio = arm1 / arm2;
 
   document.getElementById("d1").textContent =
