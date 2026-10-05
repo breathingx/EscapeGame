@@ -1154,21 +1154,26 @@ window.handleQRCode = function(qrData) {
         document.getElementById("feedback").textContent =
             "QR-code correct gescand!";
 
-        // adds points
+        // Punten toevoegen
         score += 10;
         localStorage.setItem("score", score);
 
         correcteAntwoorden++;
         localStorage.setItem("correct", correcteAntwoorden);
-        updateProgressBar();
 
         antwoordIsCorrect = true;
 
-        // button to move on
-        const actieBtn =document.getElementById("actieBtn");
-        actieBtn.textContent = "Naar volgende opdracht";
+        // Toon kort dat de QR-code correct was
+        const actieBtn = document.getElementById("actieBtn");
+
+        actieBtn.textContent = "Correct!";
         actieBtn.classList.add("correct-state");
         actieBtn.classList.add(team);
+
+        // Automatisch naar de volgende opdracht
+        setTimeout(() => {
+            volgendeOpdracht();
+        }, 1000);
 
     } else {
         // when the qr-code is wrong

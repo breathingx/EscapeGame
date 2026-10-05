@@ -174,23 +174,26 @@ function startQRScanner(mode = "team") {
 
                 else if (mode === "opdracht") {
 
-                  if (typeof window.handleQRCode === "function") {
+                    if (typeof window.handleQRCode === "function") {
 
-                      stopCamera();
+                        console.log("QR opdracht gevonden:", qrData);
 
-                      window.handleQRCode(qrData);
+                        scannerActief = false;
 
-                      return;
+                        stopCamera();
 
-                  } else {
+                        window.handleQRCode(qrData);
 
-                      console.error(
-                          "window.handleQRCode is niet beschikbaar."
-                      );
+                        return;
 
-                  }
+                    } else {
 
-              }
+                        console.error(
+                            "window.handleQRCode is niet beschikbaar."
+                        );
+
+                    }
+                }
 
             }
         }
