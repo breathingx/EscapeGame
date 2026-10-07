@@ -9,7 +9,7 @@ export const SPECTRUM_HEIGHT = 60;
 export const MAX_DT = 0.1;
 //Dimensions of the gates
 export const GATE_HEIGHT = 5.3;
-export const GATE_DEPTH = 0.05;
+export const GATE_DEPTH = 0.05; // was 0.05
 export const GATE_DISTANCE = 4;
 //Dimensions of ground platform
 export const PLATFORM_Z = -5;
@@ -25,7 +25,7 @@ export const BALL_INIT_SPEED = 1;
 export const BALL_ACCELERATION = 1.5;
 export const BALL_GAME_OVER_Z = PLATFORM_DEPTH + PLATFORM_Z - BALL_DIAMETER * 2;
 //Size of holes in the walls
-export const GATE_HOLE_TOLERANCE = 0.8; // originally 0.4
+export const GATE_HOLE_TOLERANCE = 1.0; // originally 0.4 // then 0.8
 export const GATE_HOLE_SIZE = (1 + GATE_HOLE_TOLERANCE) * BALL_DIAMETER;
 //Pitch range for the gates
 export const PITCH_MIN = NOTES_FIRST / 1.15;

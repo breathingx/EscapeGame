@@ -52,7 +52,8 @@ export async function initGameLoop() {
 
     //Updates the game state based on the pitch and time. Also renders it.
     update(state, pitch, dt);
-    view.render(state);
+    // view.render(state); // disabled for testing enable later
+    view.render(state, pitch); // for testing
 
     //Visualize the waveform and spectrum-frequency graphs
     if (SHOW_AUDIO_GRAPHS) {
@@ -70,3 +71,4 @@ export async function initGameLoop() {
   //Starts the loop
   requestAnimationFrame(loop);
 }
+
