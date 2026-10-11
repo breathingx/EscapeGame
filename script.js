@@ -594,6 +594,26 @@ function toonTussenPagina() {
 // -----------------AANDRIJVING---------------------
 // =================================================
 
+window.hefboomKlaar = function(punten) {
+    score += punten;
+    localStorage.setItem("score", score);
+    document.getElementById("scoreDisplay").textContent = "Score: " + score;
+
+    correcteAntwoorden++;
+    localStorage.setItem("correct", correcteAntwoorden);
+    updateProgressBar();
+
+    antwoordIsCorrect = true;
+    verwerkActie();
+};
+
+document.addEventListener("keydown", function(event) {
+    if (document.getElementById("actieBtn").style.display === "none") return;
+    if (event.key === "Enter") {
+        verwerkActie();
+    }
+});
+
 
 // loads the correct minigame depending for this team
 function laadOpdrachtAandrijving() {
@@ -618,6 +638,10 @@ function hefboomGame() {
     if (team !== "presentatie") {
         document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
     }
+
+    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("actieBtn").style.display = "none";
+    document.getElementById("hintContainer").style.display = "none";
 
     const extraContent = document.getElementById("extraContent");
 

@@ -1,3 +1,4 @@
+(() => {
 "use strict";
 
 // ---- DOM references --------------------------------------------------------
@@ -6,8 +7,9 @@ const ctx = canvas.getContext("2d");
 const slider = document.getElementById("strengthSlider");
 const strengthPctEl = document.getElementById("strengthPct");
 const launchBtn = document.getElementById("launchBtn");
-const resetBtn = document.getElementById("resetBtn");
+const verderBtn = document.getElementById("hefboomVerderBtn");
 const scoreEl = document.getElementById("score");
+const scoreMaxEl = document.getElementById("scoreMax");
 const targetNameEl = document.getElementById("targetName");
 const msgEl = document.getElementById("message");
 
@@ -37,7 +39,7 @@ const LADDER_TOP = 26;
 const RUNG_Y0 = 232;        // y of the lowest rung (Do)
 const RUNG_GAP = 42;        // vertical distance between rungs
 const NOTE_LIFT = 9;        // a note "sits" this far above the rung's centre line
-const TOL = 15;             // how close (in pixels) the note must be to a rung to hit it, tolarance
+const TOL = 15;             // how close (in pixels) the note must be to a rung to hit it, tolerance
 
 
 // ---- Catapult geometry and strength ----------------------------------------
@@ -59,17 +61,10 @@ const FLIGHT_MS = 1100;
 const HIT_HOLD_MS = 1600;
 const MISS_HOLD_MS = 1100;
 
-// Values that map the strength onto the original lever "code" digits.
-// 0% strength = pivot at 88%, 100% strength = pivot at 10%.
-const CODE_LEFT = 70;
-const CODE_RIGHT = 380;
-const CODE_PIVOT_MIN = 10;
-const CODE_PIVOT_MAX = 88;
-
 
 // ---- Game state ------------------------------------------------------------
 const state = {
-  phase: "idle",   // idle -> swing -> flight -> settle -> idle
+  phase: "idle",   // idle -> swing -> flight -> settle -> idle (or "done" when every note is hit)
   t0: 0,
   power: Number(slider.value),
   armAngle: 0,
@@ -80,7 +75,9 @@ const state = {
   target: -1,      // index in NOTES of the note the player has to place
   landedIndex: -1, // index of the rung the note landed on (-1 = between rungs)
   hit: false,
-  score: 0
+  hitNotes: NOTES.map(() => false), // which notes have been hit so far
+  score: 0,        // 1 point per note hit; never decreases
+  finished: false  // true once the player has pressed Verder
 };
 state.armAngle = cockedAngle(state.power);
 
@@ -145,37 +142,28 @@ function setMessage(text, kind) {
   msgEl.className = kind ? "message " + kind : "message";
 }
 
-function setControlsLocked(locked) {
-  slider.disabled = locked;
-  launchBtn.disabled = locked;
+// Enables/disables the buttons depending on the phase and the score.
+// - Launch and slider only work while idle.
+// - Verder works once at least 1 point is scored, but not while a note is in the air.
+function updateControls() {
+  const busy = state.phase !== "idle";
+  const done = state.phase === "done";
+
+  slider.disabled = busy;
+  launchBtn.disabled = busy;
+  verderBtn.disabled = state.finished || state.score < 1 || (busy && !done);
 }
 
+// Pick a random note out of the notes that have not been hit yet.
 function nextNote() {
-  let i;
-  do {
-    i = Math.floor(Math.random() * NOTES.length);
-  } while (i === state.target && NOTES.length > 1);
-  state.target = i;
-  targetNameEl.textContent = NOTES[i].name;
-}
+  const open = [];
+  NOTES.forEach((n, i) => {
+    if (!state.hitNotes[i]) open.push(i);
+  });
+  if (open.length === 0) return;
 
-// Update the (hidden) code values from the strength, using the same formulas
-// as the original lever game so the codes stay compatible.
-function updateCode() {
-  const pivotPct = CODE_PIVOT_MAX - (CODE_PIVOT_MAX - CODE_PIVOT_MIN) * (state.power / 100);
-  const pivotX = CODE_LEFT + (CODE_RIGHT - CODE_LEFT) * (pivotPct / 100);
-
-  // const arm1 = pivotX - CODE_LEFT;
-  // const arm2 = CODE_RIGHT - pivotX;
-  // const ratio = arm1 / arm2;
-  const arm1 = 1;
-  const arm2 = 2;
-  const ratio = arm1 / arm2;
-
-  document.getElementById("d1").textContent =
-    Math.max(1, Math.min(9, Math.round(ratio * 3)));
-  document.getElementById("d2").textContent = Math.round(arm1 / 50);
-  document.getElementById("d3").textContent = Math.round(arm2 / 50);
+  state.target = open[Math.floor(Math.random() * open.length)];
+  targetNameEl.textContent = NOTES[state.target].name;
 }
 
 
@@ -226,12 +214,13 @@ function launch() {
   if (state.phase !== "idle") return;
 
   ensureAudio();
-  setControlsLocked(true);
+  disarmVerder();
   setMessage("", "");
 
   state.phase = "swing";
   state.t0 = performance.now();
   state.swingFrom = state.armAngle;
+  updateControls();
 }
 
 function startFlight(now) {
@@ -255,6 +244,8 @@ function land(now) {
   state.t0 = now;
 
   if (state.hit) {
+    // +1 point for every note hit. Misses never take points away.
+    state.hitNotes[state.target] = true;
     state.score++;
     scoreEl.textContent = state.score;
     setMessage("Raak! Dat is " + target.name + ".", "hit");
@@ -272,25 +263,60 @@ function land(now) {
       setMessage("Mis! Geef " + needs + " kracht.", "miss");
     }
   }
+
+  updateControls();
 }
 
 function endSettle() {
-  if (state.hit) nextNote();
+  if (state.hit) {
+    if (state.hitNotes.every(Boolean)) {
+      finishGame();
+      return;
+    }
+    nextNote();
+  }
   state.phase = "idle";
-  setControlsLocked(false);
+  updateControls();
 }
 
-function resetGame() {
-  state.phase = "idle";
-  state.power = 30;
-  slider.value = 30;
-  strengthPctEl.textContent = "30%";
-  state.score = 0;
-  scoreEl.textContent = "0";
-  setMessage("", "");
-  setControlsLocked(false);
-  nextNote();
-  updateCode();
+// Every note has been hit: lock the game, only Verder remains.
+function finishGame() {
+  state.phase = "done";
+  targetNameEl.textContent = "-";
+  setMessage("Alle noten geraakt! Ga verder.", "hit");
+  updateControls();
+}
+
+let verderArmed = false;
+let verderTimer = null;
+
+// Back to the normal "Verder" state.
+function disarmVerder() {
+  verderArmed = false;
+  clearTimeout(verderTimer);
+  verderBtn.textContent = "Verder";
+  verderBtn.classList.remove("armed");
+}
+
+// First click asks for confirmation, second click really continues.
+function verder() {
+  if (state.finished || state.score < 1) return;
+
+  if (!verderArmed) {
+    verderArmed = true;
+    verderBtn.textContent = "Weet je het zeker?";
+    verderBtn.classList.add("armed");
+    verderTimer = setTimeout(disarmVerder, 4000); // undo if they hesitate
+    return;
+  }
+
+  disarmVerder();
+  state.finished = true;
+  updateControls();
+
+  if (typeof window.hefboomKlaar === "function") {
+    window.hefboomKlaar(state.score * 2);
+  }
 }
 
 
@@ -368,7 +394,14 @@ function drawGround() {
 function drawLadder(now) {
   ctx.save();
 
-  // Light up the rung that was hit.
+  // Keep a faint glow on the rungs that were already hit.
+  NOTES.forEach((n, i) => {
+    if (!state.hitNotes[i]) return;
+    ctx.fillStyle = n.color + "30";
+    ctx.fillRect(LADDER_X - LADDER_HALF - 10, rungY(i) - 20, LADDER_HALF * 2 + 20, 40);
+  });
+
+  // Light up the rung that was just hit.
   if (state.phase === "settle" && state.hit && state.landedIndex >= 0) {
     const y = rungY(state.landedIndex);
     ctx.fillStyle = NOTES[state.landedIndex].color + "40";
@@ -516,7 +549,7 @@ function drawFlyingNote(now) {
 // Card in the corner that shows which note the player has to place.
 function drawBadge() {
   const note = NOTES[state.target];
-  if (!note) return;
+  if (!note || state.phase === "done") return;
 
   ctx.save();
   ctx.fillStyle = "#fff";
@@ -562,6 +595,12 @@ function draw(now) {
 
 // ---- Main loop and events --------------------------------------------------
 function frame(now) {
+  // Stop the loop once the game has been removed from the page.
+  if (!canvas.isConnected) {
+    window.removeEventListener("resize", resize);
+    return;
+  }
+
   const dt = Math.min(64, now - lastNow);
   lastNow = now;
   update(now, dt);
@@ -581,16 +620,18 @@ function resize() {
 slider.addEventListener("input", () => {
   state.power = Number(slider.value);
   strengthPctEl.textContent = state.power + "%";
-  updateCode();
 });
 
 launchBtn.addEventListener("click", launch);
-resetBtn.addEventListener("click", resetGame);
+verderBtn.addEventListener("click", verder);
 window.addEventListener("resize", resize);
 
 
 // ---- Start -----------------------------------------------------------------
+scoreMaxEl.textContent = NOTES.length;
 nextNote();
-updateCode();
+updateControls();
 resize();
 requestAnimationFrame(frame);
+
+})();

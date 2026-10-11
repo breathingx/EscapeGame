@@ -9,10 +9,11 @@
 <body>
 
 <div class="page katapult-wrapper">
-  <h1>Hefboom spel</h1>
+  <!-- <h1>Hefboom spel</h1>
   <div class="opdracht">
     Stel de kracht van de katapult in en schiet de noot op de juiste sport van de ladder!
-  </div>
+    Raak alle noten, of ga verder zodra je minstens 1 punt hebt.
+  </div> -->
 
   <div class="arena">
     <canvas id="gameCanvas" role="img"
@@ -20,7 +21,7 @@
   </div>
 
   <div class="status-row">
-    <span>Score: <span id="score">0</span></span>
+    <span>Score: <span id="score">0</span> / <span id="scoreMax">5</span></span>
     <span>Jouw noot: <strong id="targetName">-</strong></span>
     <span id="message" class="message" role="status" aria-live="polite"></span>
   </div>
@@ -31,17 +32,9 @@
     <span id="strengthPct">30%</span>
   </div>
 
-  <!-- Hidden code (white text on white background) -->
-  <div class="code-row">
-    <span class="code-label">Code:</span>
-    <span class="digit" id="d1">-</span>
-    <span class="digit" id="d2">-</span>
-    <span class="digit" id="d3">-</span>
-  </div>
-
   <div class="btn-row">
     <button class="btn-launch" id="launchBtn">Lanceer muzieknoot</button>
-    <button id="resetBtn">Reset</button>
+    <button id="hefboomVerderBtn" disabled>Verder</button>
   </div>
 </div>
 
