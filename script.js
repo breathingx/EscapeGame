@@ -248,9 +248,13 @@ if (window.location.pathname.includes("template.html") &&
         }
         
         document.addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                verwerkActie();
-            }
+            if (event.key !== "Enter") return;
+
+            const actieBtn = document.getElementById("actieBtn");
+            // ignore Enter while a minigame has hidden the button, or during the 1.5s feedback
+            if (actieBtn.style.display === "none" || actieBtn.disabled) return;
+
+            verwerkActie();
         });
 
     })();
@@ -606,7 +610,7 @@ function verwerkActie() {
         updateProgressBar();
 
         antwoordIsCorrect = true;
-        document.getElementById("antwoordInput").disabled = true;
+        // document.getElementById("antwoordInput").disabled = true;
         // update button state for continuing
         
         setTimeout(() => {
@@ -724,7 +728,7 @@ function toonTussenPagina() {
 window.hefboomKlaar = function(punten) {
     score += punten;
     localStorage.setItem("score", score);
-    document.getElementById("scoreDisplay").textContent = "Score: " + score;
+    document.getElementById("scoreDisplay").textContent = String(score).padStart(5, '0');
 
     correcteAntwoorden++;
     localStorage.setItem("correct", correcteAntwoorden);
@@ -734,12 +738,6 @@ window.hefboomKlaar = function(punten) {
     verwerkActie();
 };
 
-document.addEventListener("keydown", function(event) {
-    if (document.getElementById("actieBtn").style.display === "none") return;
-    if (event.key === "Enter") {
-        verwerkActie();
-    }
-});
 
 
 // loads the correct minigame depending for this team
