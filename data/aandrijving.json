@@ -32,8 +32,10 @@
             "type": "fysiek",
 
             "uitleg": "Open de koffer. In de koffer vind je drie tandwielen. Hiermee kun je een geheime boodschap ontcijferen en kom je dichterbij het verdwenen mechaniek van het gestolen collectiestuk.\n\nHeb jij de boodschap al ontcijfert? Vul in:",
+            
+            "invoerType": "triple",
 
-            "antwoord": "AAN111",
+            "antwoord": "AAN111-AAN111-AAN111",
 
             "hints": [
                 "De startcode is de volgorde waarin je de tandwielen moet plaatsen.",
