@@ -214,14 +214,6 @@ body.team-klankbron {
     margin: 20px 0;
 }
 
-#antwoordInput {
-    font-family: "Montserrat";
-    font-size: clamp(16px, 3vw, 22px);
-    width: var(--content-width);;
-    height: clamp(38px, 5vh, 52px);
-    padding: 0 12px;
-    box-sizing: border-box;
-}
 
 #feedback {
     font-family: "Montserrat";
@@ -241,6 +233,35 @@ body.team-klankbron {
     margin: 40px auto;
 }
 
+.minigame-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85); 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100; 
+}
+
+#minigameUitlegBlok {
+    width: 80%;
+    border: 3px solid black;
+    padding: 50px 2vw 1vh 2vw; 
+    display: flex;
+    flex-direction: column;
+    font-family: "Montserrat";
+    font-size: clamp(16px, 3vw, 20px);
+    text-align: center;
+    background: #fff;
+    position: relative;
+    z-index: 100;
+}
+#minigameUitlegTekst {
+    margin: 10px 0 10px 0;
+}
 
 /* ================================================= */
 /* ================== BUTTONS ====================== */
@@ -288,8 +309,39 @@ button {
     padding: 18px 24px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+#openMinigameOverlay {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    height: 40px;
+    width: auto; /* Allows the word 'Uitleg' to fit naturally */
+    padding: 0 15px; 
+    background-color: black;
+    color: white;
+    font-size: clamp(14px, 2.5vw, 20px);
+    font-family: "Right Grotesk Medium";
+    z-index: 90; /* Ensures it sits BEHIND the overlay */
+    border: none;
+    cursor: pointer;
+}
 
-
+.minigame-overlay-button{
+    position: absolute;
+    top: 0px;
+    left: 5px; 
+    height: 40px;
+    width: 40px;
+    background-color: black;
+    color: white;
+    font-size: clamp(28px, 5vw, 40px);
+    padding: 0;
+    z-index: 101;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 /* team colors: aandrijving: #0091FF, programma: #00f280, klankbron: #ff6800 */
 .aandrijving {
@@ -817,17 +869,17 @@ button.feedback-incorrect {
     width: 100%;
 }
 
-#codeInputContainer {
+.codeInputContainer {
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
     gap: clamp(4px, 1.5vw, 10px);
-    margin-bottom: 20px;
+    margin-bottom: 10px;
     box-sizing: border-box;
 }
 
-#antwoordInput {
+#antwoordInput1, #antwoordInput2, #antwoordInput3 {
     width: 100%;
     height: clamp(50px, 7vh, 70px);
     padding: 0 20px;

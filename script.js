@@ -315,21 +315,50 @@ window.addEventListener("DOMContentLoaded", () => {
 // =================================================
 
 function laadAntwoordInvoer(opdracht) {
-    const container = document.getElementById("codeInputContainer");
+    const container1 = document.getElementById("codeInputContainer1");
+    const container2 = document.getElementById("codeInputContainer2");
+    const container3 = document.getElementById("codeInputContainer3");
 
     // Maak de huidige invoer leeg
-    container.innerHTML = "";
+    container1.innerHTML = "";
+    if(container2) container2.innerHTML = "";
+    if(container3) container3.innerHTML = "";
+
+    container1.classList.add("codeInputContainer");
+
+    // ADDED: Logic for the 3 entry fields (GearCode)
+    if (opdracht.invoerType === "triple") {
+
+        container2.style.display = "flex";
+        container3.style.display = "flex";
+        
+        function createInput(id) {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.id = id;
+            input.placeholder = "Voer code in";
+            input.autocomplete = "off";
+            input.addEventListener("input", (e) => {
+                e.target.value = e.target.value.toUpperCase();
+            });
+            return input;
+        }
+
+        container1.appendChild(createInput("antwoordInput1"));
+        container2.appendChild(createInput("antwoordInput2"));
+        container3.appendChild(createInput("antwoordInput3"));
+        return;
+    }
 
     // Standaard: normale tekstinvoer
     if (opdracht.invoerType !== "blokken") {
         const input = document.createElement("input");
-
         input.type = "text";
-        input.id = "antwoordInput";
+        input.id = "antwoordInput1";
         input.placeholder = "Voer antwoord in";
         input.autocomplete = "off";
 
-        container.appendChild(input);
+        container1.appendChild(input);
 
         input.addEventListener("input", (e) => {
             e.target.value = e.target.value.toUpperCase();
@@ -342,11 +371,10 @@ function laadAntwoordInvoer(opdracht) {
     const aantalBlokken = opdracht.aantalBlokken || 1;
 
     // Geef het aantal blokken door aan de CSS
-    container.style.setProperty("--aantal-blokken", aantalBlokken);
+    container1.style.setProperty("--aantal-blokken", aantalBlokken);
 
     for (let i = 0; i < aantalBlokken; i++) {
         const input = document.createElement("input");
-
         input.type = "text";
         input.classList.add("antwoordBlok");
         input.maxLength = 1;
@@ -354,24 +382,21 @@ function laadAntwoordInvoer(opdracht) {
 
         input.addEventListener("input", (e) => {
             e.target.value = e.target.value.toUpperCase();
-
-            // Ga automatisch naar het volgende blokje
             if (e.target.value && i < aantalBlokken - 1) {
-                const volgendeInput = container.children[i + 1];
+                const volgendeInput = container1.children[i + 1];
                 volgendeInput.focus();
             }
         });
 
-        // Ga met Backspace terug naar het vorige blokje
         input.addEventListener("keydown", (e) => {
             if (e.key === "Backspace" && !e.target.value && i > 0) {
-                const vorigeInput = container.children[i - 1];
+                const vorigeInput = container1.children[i - 1];
                 vorigeInput.focus();
                 vorigeInput.value = "";
             }
         });
 
-        container.appendChild(input);
+        container1.appendChild(input);
     }
 }
 
@@ -386,9 +411,6 @@ function laadOpdracht() {
     extraContent.innerHTML = "";
     antwoordIsCorrect = false;
 
-    const huidigeOpdrachtData = gameData[team].opdrachten[huidigeOpdracht];
-    laadAntwoordInvoer(huidigeOpdrachtData);
-
     hintGebruiktPerVraag = 0;
     laatsteHintTijd = 0;
     simon_punten = 0;
@@ -397,11 +419,16 @@ function laadOpdracht() {
 
     // restore the default template layout
     document.getElementById("uitlegBlok").style.display = "block";
-    document.getElementById("codeInputContainer").style.display = "flex";
+    document.getElementById("codeInputContainer1").style.display = "flex";
+    document.getElementById("codeInputContainer2").style.display = "none";
+    document.getElementById("codeInputContainer3").style.display = "none";
     document.getElementById("actieBtn").style.display = "block";
     document.getElementById("hintBtn").style.display = "block";
     document.getElementById("hintBlocks").style.display = "flex";
     document.getElementById("hintContainer").style.display = "flex";
+
+    const huidigeOpdrachtData = gameData[team].opdrachten[huidigeOpdracht];
+    laadAntwoordInvoer(huidigeOpdrachtData);
 
     // reset action button state
     const actieBtn = document.getElementById("actieBtn");
@@ -410,10 +437,10 @@ function laadOpdracht() {
     actieBtn.classList.remove("aandrijving", "programma", "klankbron");
 
     // reset answer input field
-    const antwoordInput = document.getElementById("antwoordInput");
-    if (antwoordInput) {
-        antwoordInput.value = "";
-        antwoordInput.disabled = false;
+    const antwoordInput1 = document.getElementById("antwoordInput1");
+    if (antwoordInput1) {
+        antwoordInput1.value = "";
+        antwoordInput1.disabled = false;
     }
 
     // get teamspecific exercise content
@@ -562,9 +589,17 @@ function verwerkActie() {
             .join("")
             .toUpperCase()
             .trim();
+    } else if (huidigeOpdrachtData.invoerType === "triple") {
+        // Verzamel de inhoud van alle drie de invoervelden
+        const invoer1 = document.getElementById("antwoordInput1").value.toUpperCase().trim();
+        const invoer2 = document.getElementById("antwoordInput2").value.toUpperCase().trim();
+        const invoer3 = document.getElementById("antwoordInput3").value.toUpperCase().trim();
+
+        // antwoord moet structuur hebben van "ANTW1-ANTW2-ANTW3"
+        invoer = `${invoer1}-${invoer2}-${invoer3}`;
     } else {
         // Standaard tekstinvoer
-        invoer = document.getElementById("antwoordInput").value
+        invoer = document.getElementById("antwoordInput1").value
             .toUpperCase()
             .trim();
     }
@@ -610,7 +645,7 @@ function verwerkActie() {
         updateProgressBar();
 
         antwoordIsCorrect = true;
-        // document.getElementById("antwoordInput").disabled = true;
+        // document.getElementById("antwoordInput1").disabled = true;
         // update button state for continuing
         
         setTimeout(() => {
@@ -633,8 +668,13 @@ function verwerkActie() {
             document.querySelectorAll(".antwoordBlok").forEach(blok => {
                 blok.disabled = true;
             });
+        } else if (huidigeOpdrachtData.invoerType === "triple") {
+            // ADDED: Disable all 3 GearCode inputs
+            document.getElementById("antwoordInput1").disabled = true;
+            document.getElementById("antwoordInput2").disabled = true;
+            document.getElementById("antwoordInput3").disabled = true;
         } else {
-            document.getElementById("antwoordInput").disabled = true;
+            document.getElementById("antwoordInput1").disabled = true;
         }
     }
      else { 
@@ -710,7 +750,9 @@ function toonTussenPagina() {
     );
     actieBtn.classList.add("correct-state");
 
-    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("codeInputContainer1").style.display = "none";
+    document.getElementById("codeInputContainer2").style.display = "none";
+    document.getElementById("codeInputContainer3").style.display = "none";
     document.getElementById("feedback").textContent = "";
     document.getElementById("actieBtn").style.display = "block";
     document.getElementById("actieBtn").textContent = "Volgende opdracht";
@@ -796,7 +838,7 @@ function hefboomGame() {
 function blockly() {
 
     // hide defult controls while the minigame is active
-    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("codeInputContainer1").style.display = "none";
     document.getElementById("actieBtn").style.display = "none";
 
     if (
@@ -856,7 +898,7 @@ function simon_says() {
 
     // hide the standard interface
     document.getElementById("uitlegBlok").style.display = "none";
-    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("codeInputContainer1").style.display = "none";
     document.getElementById("actieBtn").style.display = "none";
     document.getElementById("hintBtn").style.display = "none";
     document.getElementById("hintBlocks").style.display = "none";
@@ -1236,7 +1278,7 @@ function inladenTruthLieElementen() {
 
 
     document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
-    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("codeInputContainer1").style.display = "none";
     document.getElementById("actieBtn").style.display = "none";
     document.getElementById("hintContainer").style.display = "none";
     document.getElementById("truth-lie-div").hidden = false;
@@ -1392,7 +1434,7 @@ function correctAnswer(chipElement) {
 }
 
 function endTruthLie() { //restore original template
-    document.getElementById("codeInputContainer").style.display = "";
+    document.getElementById("codeInputContainer1").style.display = "";
     document.getElementById("hintContainer").style.display = "";
     document.getElementById("actieBtn").style.display = "block";
     document.getElementById("truth-lie-div").style.display = "none";
@@ -1880,11 +1922,11 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     // automatically focus and capitalize answer input
-    const antwoordInput = document.getElementById("antwoordInput");
-    if (antwoordInput) {
-        antwoordInput.focus();
+    const antwoordInput1 = document.getElementById("antwoordInput1");
+    if (antwoordInput1) {
+        antwoordInput1.focus();
 
-        antwoordInput.addEventListener("input", (e) => {
+        antwoordInput1.addEventListener("input", (e) => {
             e.target.value = e.target.value.toUpperCase();
         });
     }
