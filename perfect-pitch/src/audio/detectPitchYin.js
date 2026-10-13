@@ -59,5 +59,5 @@ export function detectPitchYin(
   const betterTau = tauEstimate + (s2 - s0) / (2 * (2 * s1 - s2 - s0));
 
   // Step 5: Convert lag to frequency
-  return sampleRate / betterTau;
+  return (sampleRate / betterTau) * 1.5;
 }

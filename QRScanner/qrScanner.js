@@ -1,41 +1,220 @@
-const video =  document.getElementById('video');
-const canvas = document.getElementById('canvas');
-const ctx = canvas.getContext('2d');
-const msg =  document.getElementById('msg');
+// const video =  document.getElementById('video');
+// const canvas = document.getElementById('canvas');
+// const ctx = canvas.getContext('2d');
+// const msg =  document.getElementById('msg');
 
-navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}}) //request camera access
-  .then(stream => {
-    video.srcObject = stream; //connect camera stream to video
-    msg.textContent = 'Richt de camera op een QR-code!'; //instruct user
-    requestAnimationFrame(tick); //start continuously scanning frames
-  })
-  .catch(() => {
-    msg.textContent = 'Toegang tot camera geweigerd.'; //access denied
-  });
+// navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}}) //request camera access
+//   .then(stream => {
+//     video.srcObject = stream; //connect camera stream to video
+//     msg.textContent = 'Richt de camera op een QR-code!'; //instruct user
+//     requestAnimationFrame(tick); //start continuously scanning frames
+//   })
+//   .catch(() => {
+//     msg.textContent = 'Toegang tot camera geweigerd.'; //access denied
+//   });
 
-function tick () {
-  if (video.readyState === video.HAVE_ENOUGH_DATA) { //is there enough data available
-    canvas.width = video.videoWidth; //match canvas dimensions to video dimensions
-    canvas.height = video.videoHeight;
-    ctx.drawImage(video, 0, 0); //draw current video frame onto canvas
-    const data = ctx.getImageData(0, 0, canvas.width, canvas.height); //extract each pixel from canvas
-    const code = jsQR(data.data, data.width, data.height); //try to detect the QR-code
+// function tick () {
+//   if (video.readyState === video.HAVE_ENOUGH_DATA) { //is there enough data available
+//     canvas.width = video.videoWidth; //match canvas dimensions to video dimensions
+//     canvas.height = video.videoHeight;
+//     ctx.drawImage(video, 0, 0); //draw current video frame onto canvas
+//     const data = ctx.getImageData(0, 0, canvas.width, canvas.height); //extract each pixel from canvas
+//     const code = jsQR(data.data, data.width, data.height); //try to detect the QR-code
     
-    if (code) { //detected?
+//     if (code) { //detected?
 
-      const qrData = code.data.toLowerCase(); //convert QR-content to lowercase
-      const geldigeTeams = [
-          "aandrijving",
-          "programma",
-          "klankbron"
-      ];
+//       const qrData = code.data.toLowerCase(); //convert QR-content to lowercase
+//       const geldigeTeams = [
+//           "aandrijving",
+//           "programma",
+//           "klankbron"
+//       ];
 
-      if (geldigeTeams.includes(qrData)) { //does QR contain valid teamname?
-          localStorage.setItem("team", qrData); //store teamname in local storage
-          window.location.href = "template.html"; //redirect user to next page
-      }
+//       if (geldigeTeams.includes(qrData)) { //does QR contain valid teamname?
+//           localStorage.setItem("team", qrData); //store teamname in local storage
+//           window.location.href = "template.html"; //redirect user to next page
+//       }
+//     }
+
+//   }
+//   requestAnimationFrame(tick);
+// }
+
+
+// =================================================
+// QR SCANNER
+// =================================================
+
+// Start de QR-scanner.
+//
+// mode:
+// - "team"     -> QR-code bevat een teamnaam
+// - "opdracht" -> QR-code bevat de code van de opdracht
+//
+
+
+function startQRScanner(mode = "team") {
+
+    const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
+    const msg = document.getElementById("msg");
+
+    if (!video || !canvas || !msg) {
+        console.error("QR-scanner elementen niet gevonden.");
+        return;
     }
 
-  }
-  requestAnimationFrame(tick);
+    const ctx = canvas.getContext("2d");
+
+    // Vraag toegang tot de camera
+    navigator.mediaDevices.getUserMedia({
+        video: {
+            facingMode: "environment"
+        }
+    })
+    .then(stream => {
+
+      console.log("QR: camera stream ontvangen");
+
+      video.srcObject = stream;
+
+      console.log("QR: video.srcObject ingesteld");
+
+      video.play();
+
+      console.log("QR: video.play() uitgevoerd");
+
+      msg.textContent = "Richt de camera op een QR-code!";
+
+      requestAnimationFrame(tick);
+
+      console.log("QR: scan-loop gestart");
+
+  })
+    .catch(() => {
+
+        msg.textContent = "Toegang tot camera geweigerd.";
+
+    });
+
+
+    // =================================================
+    // SCANNEN
+    // =================================================
+
+    function tick() {
+
+        console.log("QR: tick");
+
+        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+
+            ctx.drawImage(
+                video,
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+            const data = ctx.getImageData(
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            );
+
+            const code = jsQR(
+                data.data,
+                data.width,
+                data.height
+            );
+
+
+            // QR-code gevonden
+            if (code) {
+
+                const qrData = code.data
+                    .toLowerCase()
+                    .trim();
+
+
+                // =============================================
+                // TEAM MODUS
+                // =============================================
+
+                if (mode === "team") {
+
+                    const geldigeTeams = [
+                        "aandrijving",
+                        "programma",
+                        "klankbron"
+                    ];
+
+                    if (geldigeTeams.includes(qrData)) {
+
+                        localStorage.setItem(
+                            "team",
+                            qrData
+                        );
+
+                        stopCamera();
+
+                        window.location.href =
+                            "../uitleg/uitleg.html?type=team&team=" + qrData;
+                    }
+                }
+
+
+                // =============================================
+                // OPDRACHT MODUS
+                // =============================================
+
+                else if (mode === "opdracht") {
+
+                    if (typeof window.handleQRCode === "function") {
+
+                        console.log("QR opdracht gevonden:", qrData);
+
+                        scannerActief = false;
+
+                        stopCamera();
+
+                        window.handleQRCode(qrData);
+
+                        return;
+
+                    } else {
+
+                        console.error(
+                            "window.handleQRCode is niet beschikbaar."
+                        );
+
+                    }
+                }
+
+            }
+        }
+
+        requestAnimationFrame(tick);
+    }
+
+
+    // =================================================
+    // CAMERA STOPPEN
+    // =================================================
+
+    function stopCamera() {
+
+        if (video.srcObject) {
+
+            video.srcObject
+                .getTracks()
+                .forEach(track => track.stop());
+
+            video.srcObject = null;
+        }
+    }
 }

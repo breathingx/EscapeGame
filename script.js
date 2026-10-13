@@ -21,7 +21,7 @@ let antwoordIsCorrect = false;
 
 // scores for minigames
 let simon_punten = 0; //simon says is not used at the moment, but is planned on being used
-// const ENABLE_SIMON_SAYS = false;
+const ENABLE_SIMON_SAYS = false;
 let blockly_punten = 0;
 
 let truthLieProgress = 0;
@@ -66,7 +66,10 @@ if (
 
         let formattedMinutes = String(minutes).padStart(2, '0');
         let formattedSeconds = String(seconds).padStart(2, '0');
+        let formattedMinutes = String(minutes).padStart(2, '0');
+        let formattedSeconds = String(seconds).padStart(2, '0');
 
+        timerElement.textContent = formattedMinutes + ":" + formattedSeconds;
         timerElement.textContent = formattedMinutes + ":" + formattedSeconds;
 
         if (totalSeconds > 0) {
@@ -248,9 +251,13 @@ if (window.location.pathname.includes("template.html") &&
         }
         
         document.addEventListener("keydown", function(event) {
-            if (event.key === "Enter") {
-                verwerkActie();
-            }
+            if (event.key !== "Enter") return;
+
+            const actieBtn = document.getElementById("actieBtn");
+            // ignore Enter while a minigame has hidden the button, or during the 1.5s feedback
+            if (actieBtn.style.display === "none" || actieBtn.disabled) return;
+
+            verwerkActie();
         });
 
     })();
@@ -310,6 +317,92 @@ window.addEventListener("DOMContentLoaded", () => {
 // BASIC EXERCISE LOGIC
 // =================================================
 
+function laadAntwoordInvoer(opdracht) {
+    const container1 = document.getElementById("codeInputContainer1");
+    const container2 = document.getElementById("codeInputContainer2");
+    const container3 = document.getElementById("codeInputContainer3");
+
+    // Maak de huidige invoer leeg
+    container1.innerHTML = "";
+    if(container2) container2.innerHTML = "";
+    if(container3) container3.innerHTML = "";
+
+    container1.classList.add("codeInputContainer");
+
+    // ADDED: Logic for the 3 entry fields (GearCode)
+    if (opdracht.invoerType === "triple") {
+
+        container2.style.display = "flex";
+        container3.style.display = "flex";
+        
+        function createInput(id) {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.id = id;
+            input.placeholder = "Voer code in";
+            input.autocomplete = "off";
+            input.addEventListener("input", (e) => {
+                e.target.value = e.target.value.toUpperCase();
+            });
+            return input;
+        }
+
+        container1.appendChild(createInput("antwoordInput1"));
+        container2.appendChild(createInput("antwoordInput2"));
+        container3.appendChild(createInput("antwoordInput3"));
+        return;
+    }
+
+    // Standaard: normale tekstinvoer
+    if (opdracht.invoerType !== "blokken") {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.id = "antwoordInput1";
+        input.placeholder = "Voer antwoord in";
+        input.autocomplete = "off";
+
+        container1.appendChild(input);
+
+        input.addEventListener("input", (e) => {
+            e.target.value = e.target.value.toUpperCase();
+        });
+
+        return;
+    }
+
+    // Blokken-invoer
+    const aantalBlokken = opdracht.aantalBlokken || 1;
+
+    // Geef het aantal blokken door aan de CSS
+    container1.style.setProperty("--aantal-blokken", aantalBlokken);
+
+    for (let i = 0; i < aantalBlokken; i++) {
+        const input = document.createElement("input");
+        input.type = "text";
+        input.classList.add("antwoordBlok");
+        input.maxLength = 1;
+        input.autocomplete = "off";
+
+        input.addEventListener("input", (e) => {
+            e.target.value = e.target.value.toUpperCase();
+            if (e.target.value && i < aantalBlokken - 1) {
+                const volgendeInput = container1.children[i + 1];
+                volgendeInput.focus();
+            }
+        });
+
+        input.addEventListener("keydown", (e) => {
+            if (e.key === "Backspace" && !e.target.value && i > 0) {
+                const vorigeInput = container1.children[i - 1];
+                vorigeInput.focus();
+                vorigeInput.value = "";
+            }
+        });
+
+        container1.appendChild(input);
+    }
+}
+
 
 // loads the current exercise and resets all temporary game state
 // also initializes any team-specific minigames linked to the exercise
@@ -320,6 +413,7 @@ function laadOpdracht() {
     // clear previous exercise content and reset temporary values
     extraContent.innerHTML = "";
     antwoordIsCorrect = false;
+
     hintGebruiktPerVraag = 0;
     laatsteHintTijd = 0;
     simon_punten = 0;
@@ -328,11 +422,16 @@ function laadOpdracht() {
 
     // restore the default template layout
     document.getElementById("uitlegBlok").style.display = "block";
-    document.getElementById("codeInputContainer").style.display = "flex";
+    document.getElementById("codeInputContainer1").style.display = "flex";
+    document.getElementById("codeInputContainer2").style.display = "none";
+    document.getElementById("codeInputContainer3").style.display = "none";
     document.getElementById("actieBtn").style.display = "block";
     document.getElementById("hintBtn").style.display = "block";
     document.getElementById("hintBlocks").style.display = "flex";
     document.getElementById("hintContainer").style.display = "flex";
+
+    const huidigeOpdrachtData = gameData[team].opdrachten[huidigeOpdracht];
+    laadAntwoordInvoer(huidigeOpdrachtData);
 
     // reset action button state
     const actieBtn = document.getElementById("actieBtn");
@@ -341,10 +440,10 @@ function laadOpdracht() {
     actieBtn.classList.remove("aandrijving", "programma", "klankbron");
 
     // reset answer input field
-    const antwoordInput = document.getElementById("antwoordInput");
-    if (antwoordInput) {
-        antwoordInput.value = "";
-        antwoordInput.disabled = false;
+    const antwoordInput1 = document.getElementById("antwoordInput1");
+    if (antwoordInput1) {
+        antwoordInput1.value = "";
+        antwoordInput1.disabled = false;
     }
 
     // get teamspecific exercise content
@@ -465,7 +564,12 @@ function verwerkActie() {
             return;
         }
 
-        if (huidigeOpdracht < 5) {
+        // if (huidigeOpdracht < 5) {
+        //     toonTussenPagina();
+        // } else {
+        //     volgendeOpdracht();
+        // }
+        if (huidigeOpdracht < totaal_opdrachten - 1) {
             toonTussenPagina();
         } else {
             volgendeOpdracht();
@@ -475,11 +579,35 @@ function verwerkActie() {
     }   
 
     // compare input with the correct answer
-    let invoer = document.getElementById("antwoordInput").value
-        .toUpperCase()
-        .trim();
+    const huidigeOpdrachtData = gameData[team].opdrachten[huidigeOpdracht];
 
-    let juistAntwoord = gameData[team].opdrachten[huidigeOpdracht].antwoord.toUpperCase();
+    let invoer;
+
+    if (huidigeOpdrachtData.invoerType === "blokken") {
+        // Verzamel de inhoud van alle blokken
+        const blokken = document.querySelectorAll(".antwoordBlok");
+
+        invoer = Array.from(blokken)
+            .map(blok => blok.value)
+            .join("")
+            .toUpperCase()
+            .trim();
+    } else if (huidigeOpdrachtData.invoerType === "triple") {
+        // Verzamel de inhoud van alle drie de invoervelden
+        const invoer1 = document.getElementById("antwoordInput1").value.toUpperCase().trim();
+        const invoer2 = document.getElementById("antwoordInput2").value.toUpperCase().trim();
+        const invoer3 = document.getElementById("antwoordInput3").value.toUpperCase().trim();
+
+        // antwoord moet structuur hebben van "ANTW1-ANTW2-ANTW3"
+        invoer = `${invoer1}-${invoer2}-${invoer3}`;
+    } else {
+        // Standaard tekstinvoer
+        invoer = document.getElementById("antwoordInput1").value
+            .toUpperCase()
+            .trim();
+    }
+
+    let juistAntwoord = huidigeOpdrachtData.antwoord.toUpperCase();
 
     // when the answer is correct
     if (invoer === juistAntwoord) {
@@ -503,7 +631,7 @@ function verwerkActie() {
 
         // calculate score for this exercise
         let punten = 10 - foutPogingen;
-        if (team === "programma" && huidigeOpdracht === 5) {
+        if (team === "programma" && huidigeOpdracht === 6) {
             punten = window.simon_punten
         } else if (team === "programma" && huidigeOpdracht === 4) {
             punten = window.blockly_punten || 0;
@@ -520,7 +648,7 @@ function verwerkActie() {
         updateProgressBar();
 
         antwoordIsCorrect = true;
-        document.getElementById("antwoordInput").disabled = true;
+        // document.getElementById("antwoordInput1").disabled = true;
         // update button state for continuing
         
         setTimeout(() => {
@@ -530,13 +658,30 @@ function verwerkActie() {
             } else {
                 actieBtn.textContent = "Naar volgende opdracht";
             }
-
+        
             actieBtn.classList.add("correct-state");
             actieBtn.classList.add(team);
             actieBtn.disabled = false;
-        
+
         }, 1500);
-    } else { // when the answer is wrong, show feedback and increase penalty
+        
+
+        // Disable the answer input after a correct answer
+        if (huidigeOpdrachtData.invoerType === "blokken") {
+            document.querySelectorAll(".antwoordBlok").forEach(blok => {
+                blok.disabled = true;
+            });
+        } else if (huidigeOpdrachtData.invoerType === "triple") {
+            // ADDED: Disable all 3 GearCode inputs
+            document.getElementById("antwoordInput1").disabled = true;
+            document.getElementById("antwoordInput2").disabled = true;
+            document.getElementById("antwoordInput3").disabled = true;
+        } else {
+            document.getElementById("antwoordInput1").disabled = true;
+        }
+    }
+     else { 
+        // when the answer is wrong, show feedback and increase penalty
         const actieBtn = document.getElementById("actieBtn");
         actieBtn.textContent = "Onjuist, probeer opnieuw.";
         actieBtn.classList.add("feedback-incorrect");
@@ -608,7 +753,9 @@ function toonTussenPagina() {
     );
     actieBtn.classList.add("correct-state");
 
-    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("codeInputContainer1").style.display = "none";
+    document.getElementById("codeInputContainer2").style.display = "none";
+    document.getElementById("codeInputContainer3").style.display = "none";
     document.getElementById("feedback").textContent = "";
     document.getElementById("actieBtn").style.display = "block";
     document.getElementById("actieBtn").textContent = "Volgende opdracht";
@@ -622,6 +769,20 @@ function toonTussenPagina() {
 // =================================================
 // -----------------AANDRIJVING---------------------
 // =================================================
+
+window.hefboomKlaar = function(punten) {
+    score += punten;
+    localStorage.setItem("score", score);
+    document.getElementById("scoreDisplay").textContent = String(score).padStart(5, '0');
+
+    correcteAntwoorden++;
+    localStorage.setItem("correct", correcteAntwoorden);
+    updateProgressBar();
+
+    antwoordIsCorrect = true;
+    verwerkActie();
+};
+
 
 
 // loads the correct minigame depending for this team
@@ -647,6 +808,10 @@ function hefboomGame() {
     if (team !== "presentatie") {
         document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
     }
+
+    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("actieBtn").style.display = "none";
+    document.getElementById("hintContainer").style.display = "none";
 
     const extraContent = document.getElementById("extraContent");
 
@@ -676,7 +841,7 @@ function hefboomGame() {
 function blockly() {
 
     // hide defult controls while the minigame is active
-    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("codeInputContainer1").style.display = "none";
     document.getElementById("actieBtn").style.display = "none";
 
     if (
@@ -736,7 +901,7 @@ function simon_says() {
 
     // hide the standard interface
     document.getElementById("uitlegBlok").style.display = "none";
-    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("codeInputContainer1").style.display = "none";
     document.getElementById("actieBtn").style.display = "none";
     document.getElementById("hintBtn").style.display = "none";
     document.getElementById("hintBlocks").style.display = "none";
@@ -784,9 +949,9 @@ function laadOpdrachtProgramma() {
             inladenTruthLieElementen();
             break;
 
-        // case 5:
-        //     simon_says();
-        //     break;
+        case 6:
+            simon_says();
+            break;
 
         default:
             document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
@@ -797,16 +962,33 @@ function laadOpdrachtProgramma() {
 // ============ PROGRAMMA MINI-GAMES ============== \\
 
 // shows the qr-scanner exercise button to start scanning.
+// function qrScannerOpdracht() {
+//     const origineleInnerHTML =
+//         Object.getOwnPropertyDescriptor(
+//             Element.prototype,
+//             "innerHTML"
+//         );
+
+//     document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+
+//     const extraContent = document.getElementById("extraContent");
+
+//     extraContent.innerHTML = `
+//         <button id="startQRScanBtn">
+//             Scan QR-code
+//         </button>
+//     `;
+
+//     document.getElementById("startQRScanBtn")
+//         .addEventListener("click", startQRScanner);
+// }
 function qrScannerOpdracht() {
-    const origineleInnerHTML =
-        Object.getOwnPropertyDescriptor(
-            Element.prototype,
-            "innerHTML"
-        );
 
-    document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+    document.getElementById("uitlegTekst").textContent =
+        gameData[team].opdrachten[huidigeOpdracht].uitleg;
 
-    const extraContent = document.getElementById("extraContent");
+    const extraContent =
+        document.getElementById("extraContent");
 
     extraContent.innerHTML = `
         <button id="startQRScanBtn">
@@ -814,34 +996,215 @@ function qrScannerOpdracht() {
         </button>
     `;
 
-    document.getElementById("startQRScanBtn")
-        .addEventListener("click", startQRScanner);
+    document
+        .getElementById("startQRScanBtn")
+        .addEventListener("click", laadQRScanner);
 }
 
 // // loads the qr-scanner interface and required resources.
-function startQRScanner() {
+// function startQRScanner() {
 
-    const extraContent = document.getElementById("extraContent");
+//     const extraContent = document.getElementById("extraContent");
 
-    // get qr-scanner
-    fetch("QRScanner/qrScanner.html")
+//     // get qr-scanner
+//     fetch("QRScanner/qrScanner.html")
+//         .then(res => res.text())
+//         .then(html => {
+
+//             extraContent.innerHTML =
+//                 `<div class="fullscreen-content">${html}</div>`;
+
+//             // get the css
+//             const link = document.createElement("link");
+//             link.rel = "stylesheet";
+//             link.href = "QRScanner/qrScanner.css";
+//             document.head.appendChild(link);
+
+//             // get the script
+//             const script = document.createElement("script");
+//             script.src = "QRScanner/qrScanner.js";
+//             document.body.appendChild(script);
+//         });
+// }
+function laadQRScanner() {
+
+    const extraContent =
+        document.getElementById("extraContent");
+
+    // =================================================
+    // SCANNER HTML LADEN
+    // =================================================
+
+    fetch("QRScanner/qrScannerFragment.html")
         .then(res => res.text())
         .then(html => {
 
-            extraContent.innerHTML =
-                `<div class="fullscreen-content">${html}</div>`;
+            extraContent.innerHTML = `
+                <div class="fullscreen-content">
+                    ${html}
+                </div>
+            `;
 
-            // get the css
-            const link = document.createElement("link");
-            link.rel = "stylesheet";
-            link.href = "QRScanner/qrScanner.css";
-            document.head.appendChild(link);
 
-            // get the script
-            const script = document.createElement("script");
-            script.src = "QRScanner/qrScanner.js";
-            document.body.appendChild(script);
+            // =================================================
+            // QR SCANNER CSS LADEN
+            // =================================================
+
+            if (!document.getElementById("qrScannerCSS")) {
+
+                const link = document.createElement("link");
+
+                link.id = "qrScannerCSS";
+                link.rel = "stylesheet";
+                link.href = "QRScanner/qrScanner.css";
+
+                document.head.appendChild(link);
+            }
+
+
+            // =================================================
+            // jsQR LADEN
+            // =================================================
+
+            function laadQrLibrary() {
+
+                return new Promise((resolve, reject) => {
+
+                    // jsQR is al geladen
+                    if (typeof jsQR !== "undefined") {
+
+                        resolve();
+                        return;
+                    }
+
+
+                    // jsQR script aanmaken
+                    const script =
+                        document.createElement("script");
+
+                    script.src =
+                        "https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js";
+
+                    script.onload = () => {
+
+                        console.log(
+                            "QR: jsQR library geladen"
+                        );
+
+                        resolve();
+
+                    };
+
+                    script.onerror = () => {
+
+                        reject(
+                            new Error(
+                                "jsQR kon niet worden geladen."
+                            )
+                        );
+
+                    };
+
+                    document.body.appendChild(script);
+
+                });
+
+            }
+
+
+            // =================================================
+            // QR SCANNER JS LADEN
+            // =================================================
+
+            function laadQrScannerScript() {
+
+                return new Promise((resolve, reject) => {
+
+                    // qrScanner.js is al geladen
+                    if (document.getElementById("qrScannerJS")) {
+
+                        resolve();
+                        return;
+                    }
+
+
+                    const script =
+                        document.createElement("script");
+
+                    script.id = "qrScannerJS";
+
+                    script.src =
+                        "QRScanner/qrScanner.js";
+
+                    script.onload = () => {
+
+                        console.log(
+                            "QR: qrScanner.js geladen"
+                        );
+
+                        resolve();
+
+                    };
+
+                    script.onerror = () => {
+
+                        reject(
+                            new Error(
+                                "qrScanner.js kon niet worden geladen."
+                            )
+                        );
+
+                    };
+
+                    document.body.appendChild(script);
+
+                });
+
+            }
+
+
+            // =================================================
+            // ALLES IN DE JUISTE VOLGORDE STARTEN
+            // =================================================
+
+            laadQrLibrary()
+
+                .then(() => {
+
+                    return laadQrScannerScript();
+
+                })
+
+                .then(() => {
+
+                    console.log(
+                        "QR: scanner starten in opdracht-modus"
+                    );
+
+                    startQRScanner("opdracht");
+
+                })
+
+                .catch(error => {
+
+                    console.error(
+                        "QR-scanner kon niet worden gestart:",
+                        error
+                    );
+
+                });
+
+        })
+
+        .catch(error => {
+
+            console.error(
+                "QR-scanner HTML kon niet worden geladen:",
+                error
+            );
+
         });
+
 }
 
 // handles scanned qr-odes and checks if the scanned value is correct.
@@ -858,7 +1221,7 @@ window.handleQRCode = function(qrData) {
         document.getElementById("feedback").textContent =
             "QR-code correct gescand!";
 
-        // adds points
+        // Punten toevoegen
         score += 10;
         localStorage.setItem("score", score);
 
@@ -867,11 +1230,17 @@ window.handleQRCode = function(qrData) {
 
         antwoordIsCorrect = true;
 
-        // button to move on
-        const actieBtn =document.getElementById("actieBtn");
-        actieBtn.textContent = "Naar volgende opdracht";
+        // Toon kort dat de QR-code correct was
+        const actieBtn = document.getElementById("actieBtn");
+
+        actieBtn.textContent = "Correct!";
         actieBtn.classList.add("correct-state");
         actieBtn.classList.add(team);
+
+        // Automatisch naar de volgende opdracht
+        setTimeout(() => {
+            volgendeOpdracht();
+        }, 1000);
 
     } else {
         // when the qr-code is wrong
@@ -912,7 +1281,7 @@ function inladenTruthLieElementen() {
 
 
     document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
-    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("codeInputContainer1").style.display = "none";
     document.getElementById("actieBtn").style.display = "none";
     document.getElementById("hintContainer").style.display = "none";
     document.getElementById("truth-lie-div").hidden = false;
@@ -1068,7 +1437,7 @@ function correctAnswer(chipElement) {
 }
 
 function endTruthLie() { //restore original template
-    document.getElementById("codeInputContainer").style.display = "";
+    document.getElementById("codeInputContainer1").style.display = "";
     document.getElementById("hintContainer").style.display = "";
     document.getElementById("actieBtn").style.display = "block";
     document.getElementById("truth-lie-div").style.display = "none";
@@ -1556,11 +1925,11 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     // automatically focus and capitalize answer input
-    const antwoordInput = document.getElementById("antwoordInput");
-    if (antwoordInput) {
-        antwoordInput.focus();
+    const antwoordInput1 = document.getElementById("antwoordInput1");
+    if (antwoordInput1) {
+        antwoordInput1.focus();
 
-        antwoordInput.addEventListener("input", (e) => {
+        antwoordInput1.addEventListener("input", (e) => {
             e.target.value = e.target.value.toUpperCase();
         });
     }

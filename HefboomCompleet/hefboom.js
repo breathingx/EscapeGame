@@ -1,256 +1,637 @@
+(() => {
+"use strict";
+
+// ---- DOM references --------------------------------------------------------
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
-const slider = document.getElementById("pivotSlider");
+const slider = document.getElementById("strengthSlider");
+const strengthPctEl = document.getElementById("strengthPct");
+const launchBtn = document.getElementById("launchBtn");
+const verderBtn = document.getElementById("hefboomVerderBtn");
+const scoreEl = document.getElementById("score");
+const scoreMaxEl = document.getElementById("scoreMax");
+const targetNameEl = document.getElementById("targetName");
+const msgEl = document.getElementById("message");
 
-let pivotPct = 35; //position of pivot as percentage along the beam
-let projectile = null; //store the launched projectile object
-let launching = false; //prevent multiple simultaneous launches
 
-function resize () { //resize the canvas to match the display size
-  const rect = canvas.getBoundingClientRect();
-  canvas.height = rect.height;
-  canvas.width = rect.width;
-  draw();
+// ---- Fixed logical drawing space -------------------------------------------
+// Everything is drawn in this coordinate system and scaled to the real canvas,
+// so the note's flight path stays correct on any screen size.
+const SPACE_W = 620;
+const SPACE_H = 300;
+const GROUND_Y = 272;
+const FONT = '"Right Grotesk Medium", Montserrat, Arial, sans-serif';
+
+
+// ---- The notes and the ladder ----------------------------------------------
+// Do is the lowest rung, So the highest.
+const NOTES = [
+  { name: "Do", freq: 261.63, color: "#d64545" }, // C4
+  { name: "Re", freq: 293.66, color: "#e8892b" }, // D4
+  { name: "Mi", freq: 329.63, color: "#f2c200" }, // E4
+  { name: "Fa", freq: 349.23, color: "#3f9b5a" }, // F4
+  { name: "So", freq: 392.00, color: "#3b6fd1" }  // G4
+];
+
+const LADDER_X = 500;       // horizontal centre of the ladder
+const LADDER_HALF = 50;     // half the width of the ladder
+const LADDER_TOP = 26;
+const RUNG_Y0 = 232;        // y of the lowest rung (Do)
+const RUNG_GAP = 42;        // vertical distance between rungs
+const NOTE_LIFT = 9;        // a note "sits" this far above the rung's centre line
+const TOL = 15;             // how close (in pixels) the note must be to a rung to hit it, tolerance
+
+
+// ---- Catapult geometry and strength ----------------------------------------
+const PIVOT = { x: 120, y: 226 };
+const ARM_LEN = 60;         // pivot to cup
+const TAIL_LEN = 14;        // pivot to counterweight
+const NOTE_OFF = 8;         // distance from the cup's tip to the note's head
+
+const RELEASE_ANGLE = -14 * Math.PI / 180; // arm angle when the note is released (leaning forward)
+
+// Height (y) at which the note arrives at the ladder for 0% and 100% strength.
+// 0% falls below the lowest rung, 100% flies above the highest rung.
+const REACH_LOW = 256;
+const REACH_HIGH = 40;
+
+const APEX_CLEARANCE = 24;  // how far above the lowest point of the path the arc peaks
+const SWING_MS = 170;
+const FLIGHT_MS = 1100;
+const HIT_HOLD_MS = 1600;
+const MISS_HOLD_MS = 1100;
+
+
+// ---- Game state ------------------------------------------------------------
+const state = {
+  phase: "idle",   // idle -> swing -> flight -> settle -> idle (or "done" when every note is hit)
+  t0: 0,
+  power: Number(slider.value),
+  armAngle: 0,
+  swingFrom: 0,
+  traj: null,
+  noteX: 0,
+  noteY: 0,
+  target: -1,      // index in NOTES of the note the player has to place
+  landedIndex: -1, // index of the rung the note landed on (-1 = between rungs)
+  hit: false,
+  hitNotes: NOTES.map(() => false), // which notes have been hit so far
+  score: 0,        // 1 point per note hit; never decreases
+  finished: false  // true once the player has pressed Verder
+};
+state.armAngle = cockedAngle(state.power);
+
+let lastNow = performance.now();
+let audioCtx = null;
+
+
+// ---- Helpers ---------------------------------------------------------------
+function rungY(i) {
+  return RUNG_Y0 - RUNG_GAP * i;
 }
 
-function layout() { //calculate layout of the lever-system
-  const H = canvas.height;
-  const W = canvas.width;
-  const left = 70;
-  const right = 430;
-  const beamY = H*0.55;
-  const pivotX = left+(right-left)*(pivotPct/100);
+function hitY(i) {
+  return rungY(i) - NOTE_LIFT;
+}
 
-  return { //return calculated coordinates
-    W, H, left, right, beamY, pivotX
+// Arrival height at the ladder for a given strength (0-100).
+function reachForPower(p) {
+  return REACH_LOW + (REACH_HIGH - REACH_LOW) * (p / 100);
+}
+
+// Arm angle (radians, positive = leaning back) for a given strength.
+function cockedAngle(p) {
+  return (10 + 50 * (p / 100)) * Math.PI / 180;
+}
+
+// Which rung is the given height close enough to? -1 when it is between rungs.
+function rungAt(y) {
+  for (let i = 0; i < NOTES.length; i++) {
+    if (Math.abs(y - hitY(i)) <= TOL) return i;
+  }
+  return -1;
+}
+
+// Position of the tip of the cup and of the note lying in it for an arm angle.
+function cupGeometry(theta) {
+  const dx = -Math.sin(theta);
+  const dy = -Math.cos(theta);
+  const tipX = PIVOT.x + dx * ARM_LEN;
+  const tipY = PIVOT.y + dy * ARM_LEN;
+  return {
+    dx, dy, tipX, tipY,
+    noteX: tipX + dx * NOTE_OFF,
+    noteY: tipY + dy * NOTE_OFF
   };
 }
 
-function updateCode() { //update the displayed code values that are shown on screen
-  const {left,right,pivotX} = layout(); //when adjusting the lever
-  const arm1 = pivotX-left;
-  const arm2 = right-pivotX;
-  const ratio = arm1/arm2;
-
-  document.getElementById("d1").textContent = Math.max(1,Math.min(9,Math.round(ratio*3)));
-  document.getElementById("d2").textContent = Math.round(arm1/50);
-  document.getElementById("d3").textContent = Math.round(arm2/50);
+// A parabola from the cup to the ladder: y(t) = yA + c * (t - ta)^2, t = 0..1.
+// The note always arrives at the ladder while coming down.
+function buildTrajectory(x0, y0, yEnd) {
+  const yA = Math.min(y0, yEnd) - APEX_CLEARANCE;
+  const a = y0 - yA;
+  const b = yEnd - yA;
+  const r = Math.sqrt(a / b);
+  const ta = r / (1 + r);
+  const c = b / ((1 - ta) * (1 - ta));
+  return { x0, x1: LADDER_X, y0, yEnd, yA, ta, c };
 }
 
-function drawArrow(x1,y1,x2,y2,color) { //draw an arrow between two points
-  ctx.strokeStyle = color;
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(x1,y1);
-  ctx.lineTo(x2,y2);
-  ctx.stroke();
+function setMessage(text, kind) {
+  msgEl.textContent = text;
+  msgEl.className = kind ? "message " + kind : "message";
+}
 
-  const angle = Math.atan2(y2-y1,x2-x1);
+// Enables/disables the buttons depending on the phase and the score.
+// - Launch and slider only work while idle.
+// - Verder works once at least 1 point is scored, but not while a note is in the air.
+function updateControls() {
+  const busy = state.phase !== "idle";
+  const done = state.phase === "done";
 
-  ctx.fillStyle = color;
-  ctx.beginPath();
-  ctx.moveTo(x2,y2);
-  ctx.lineTo(x2-12*Math.cos(angle-0.4), y2-12*Math.sin(angle-0.4));
-  ctx.lineTo(x2-12*Math.cos(angle+0.4), y2-12*Math.sin(angle+0.4));
-  ctx.fill();
+  slider.disabled = busy;
+  launchBtn.disabled = busy;
+  verderBtn.disabled = state.finished || state.score < 1 || (busy && !done);
+}
+
+// Pick a random note out of the notes that have not been hit yet.
+function nextNote() {
+  const open = [];
+  NOTES.forEach((n, i) => {
+    if (!state.hitNotes[i]) open.push(i);
+  });
+  if (open.length === 0) return;
+
+  state.target = open[Math.floor(Math.random() * open.length)];
+  targetNameEl.textContent = NOTES[state.target].name;
 }
 
 
-function draw() {
-
-  ctx.setTransform(1,0,0,1,0,0);
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-
-  const spaceWidth = 460;
-  const spaceHeight = 260;
-  const scale = Math.min(
-    canvas.width/spaceWidth,
-    canvas.height/spaceHeight
-  );
-
-  const spaceX = (canvas.width-spaceWidth*scale)/2;
-  const spaceY = (canvas.height-spaceHeight*scale)/2;
-
-  ctx.setTransform(scale,0,0,scale,spaceX,spaceY);
-
-  const {
-    W,H,left,right,beamY,pivotX
-  } = layout();
-
-  ctx.clearRect(0,0,W,H);
-  ctx.strokeStyle = "black";
-  ctx.lineWidth = 8;
-  ctx.beginPath();
-  ctx.moveTo(left, beamY);
-  ctx.lineTo(right, beamY);
-  ctx.stroke();
-  ctx.fillStyle = "#ffd700";
-  ctx.beginPath();
-  ctx.moveTo(pivotX, beamY-10);
-  ctx.lineTo(pivotX+18, beamY+24);
-  ctx.lineTo(pivotX-18, beamY+24);
-  ctx.fill();
-
-  if(!projectile) {
-    ctx.fillStyle = "#0091FF";
-    ctx.beginPath();
-    ctx.arc(left, beamY-16,12,0,Math.PI*2);
-    ctx.fill();
+// ---- Sound -----------------------------------------------------------------
+// The audio context has to be created/resumed from a user action (the launch click).
+function ensureAudio() {
+  try {
+    if (!audioCtx) {
+      const AC = window.AudioContext || window.webkitAudioContext;
+      if (AC) audioCtx = new AC();
+    }
+    if (audioCtx && audioCtx.state === "suspended") audioCtx.resume();
+  } catch (e) {
+    audioCtx = null;
   }
+}
 
-  drawArrow(left,beamY-45,pivotX-15,beamY-45,"#00f280"); //arm1
-  ctx.fillStyle = "#00f280";
-  ctx.font = "20px Montserrat";
-  ctx.textAlign = "center";
-  ctx.fillText("arm1",(left+pivotX)/2,beamY-55);
+// A soft, bell-like tone: a triangle wave plus a quiet octave above it.
+function playTone(freq) {
+  if (!audioCtx) return;
+  try {
+    const t = audioCtx.currentTime;
+    const master = audioCtx.createGain();
+    master.gain.setValueAtTime(0.0001, t);
+    master.gain.exponentialRampToValueAtTime(0.4, t + 0.02);
+    master.gain.exponentialRampToValueAtTime(0.0001, t + 1.6);
+    master.connect(audioCtx.destination);
 
-  drawArrow(right,beamY-45,pivotX+15,beamY-45,"#ff6800"); //arm2
-  ctx.fillStyle = "#ff6800";
-  ctx.fillText("arm2",(right+pivotX)/2,beamY-55);
+    [[freq, "triangle", 1], [freq * 2, "sine", 0.25]].forEach(([f, type, level]) => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = type;
+      osc.frequency.value = f;
+      gain.gain.value = level;
+      osc.connect(gain);
+      gain.connect(master);
+      osc.start(t);
+      osc.stop(t + 1.7);
+    });
+  } catch (e) {
+    // Sound is optional; ignore failures.
+  }
+}
 
-  drawArrow(left,beamY+5,left,beamY+60,"#00f280"); //fz
-  ctx.fillStyle = "#00f280";
-  ctx.fillText("Fz",left,beamY+88);
 
-  drawArrow(right,beamY+5,right,beamY+60,"#ff6800"); //fspier
-  ctx.fillStyle = "#ff6800";
-  ctx.fillText("Fspier",right,beamY+88);
+// ---- Game flow -------------------------------------------------------------
+function launch() {
+  if (state.phase !== "idle") return;
 
-  if(projectile) {
-    const age = (Date.now()-projectile.t0)/1000;
-    const x = projectile.x0+projectile.vx*age;
-    const y = projectile.y0+projectile.vy*age+350*age*age;
-    
-    ctx.fillStyle = "#ff6800";
-    ctx.beginPath();
-    ctx.arc(x,y,12,0,Math.PI*2);
-    ctx.fill();
+  ensureAudio();
+  disarmVerder();
+  setMessage("", "");
 
-    if(y > H+100) {
-      projectile = null;
-      launching = false;
+  state.phase = "swing";
+  state.t0 = performance.now();
+  state.swingFrom = state.armAngle;
+  updateControls();
+}
 
-      document.getElementById("launchBtn").disabled = false;
+function startFlight(now) {
+  const start = cupGeometry(RELEASE_ANGLE);
+  state.traj = buildTrajectory(start.noteX, start.noteY, reachForPower(state.power));
+  state.noteX = start.noteX;
+  state.noteY = start.noteY;
+  state.phase = "flight";
+  state.t0 = now;
+}
+
+function land(now) {
+  const tr = state.traj;
+  const target = NOTES[state.target];
+
+  state.noteX = tr.x1;
+  state.noteY = tr.yEnd;
+  state.landedIndex = rungAt(tr.yEnd);
+  state.hit = state.landedIndex === state.target;
+  state.phase = "settle";
+  state.t0 = now;
+
+  if (state.hit) {
+    // +1 point for every note hit. Misses never take points away.
+    state.hitNotes[state.target] = true;
+    state.score++;
+    scoreEl.textContent = state.score;
+    setMessage("Raak! Dat is " + target.name + ".", "hit");
+    playTone(target.freq);
+  } else {
+    // The note landed lower than the target rung -> it needs more strength.
+    const needs = tr.yEnd > hitY(state.target) ? "meer" : "minder";
+    if (state.landedIndex >= 0) {
+      setMessage(
+        "Dat was " + NOTES[state.landedIndex].name + ", niet " + target.name +
+        ". Geef " + needs + " kracht.",
+        "miss"
+      );
+    } else {
+      setMessage("Mis! Geef " + needs + " kracht.", "miss");
     }
   }
-  updateCode();
 
-  ctx.setTransform(1,0,0,1,0,0);
+  updateControls();
 }
 
-// function draw() { //draw the complete canvas-simulation
-//   const spaceWidth = 500; //size of canvas
-//   const spaceHeight = 260;
-//   const scale = Math.min(canvas.width/spaceWidth, canvas.height/spaceHeight); //scale it
-//   const spaceX = (canvas.width-spaceWidth*scale)/2; //center drawing area
-//   const spaceY = (canvas.height-spaceHeight*scale)/2;
-//   ctx.setTransform(scale, 0, 0, scale, spaceX, spaceY);
-
-//   const {
-//     W,H,left,right,beamY,pivotX
-//   } = layout();
-
-//   ctx.clearRect(0,0,W,H); //draw everything that is required on canvas  
-//   ctx.strokeStyle = "black"; //beginning with the beam in black
-//   ctx.lineWidth = 8;
-//   ctx.beginPath();
-//   ctx.moveTo(left, beamY);
-//   ctx.lineTo(right, beamY);
-//   ctx.stroke();
-//   ctx.fillStyle = "#ff00ff"; //then the pivot as pink triangle
-//   ctx.beginPath();
-//   ctx.moveTo(pivotX, beamY-10);
-//   ctx.lineTo(pivotX+18, beamY+24);
-//   ctx.lineTo(pivotX-18, beamY+24);
-//   ctx.fill();
-
-//   if(!projectile) { //and the projectile, at starting position if not launched
-//     ctx.fillStyle = "#ff6800";
-//     ctx.beginPath();
-//     ctx.arc(left, beamY-16,12,0,Math.PI*2);
-//     ctx.fill();
-//   }
-
-//   drawArrow(left,beamY-45,pivotX-15,beamY-45,"#00f280"); //arm1
-//   ctx.fillStyle = "#00f280";
-//   ctx.font = "20px Montserrat";
-//   ctx.textAlign = "center";
-//   ctx.fillText("arm1",(left+pivotX)/2,beamY-55);
-
-//   drawArrow(right,beamY-45,pivotX+15,beamY-45,"#ff6800"); //arm2
-//   ctx.fillStyle = "#ff6800";
-//   ctx.fillText("arm2",(right+pivotX)/2,beamY-55);
-
-//   drawArrow(left,beamY+5,left,beamY+60,"#00f280"); //fz
-//   ctx.fillStyle = "#00f280";
-//   ctx.fillText("Fz",left,beamY+88);
-
-//   drawArrow(right,beamY+5,right,beamY+60,"#ff6800"); //fspier
-//   ctx.fillStyle = "#ff6800";
-//   ctx.fillText("Fspier",right,beamY+88);
- 
-//   if(projectile) { //if the projectile is launched, draw it to be moving
-//     const age = (Date.now()-projectile.t0)/1000; //from now on
-//     const x = projectile.x0+projectile.vx*age; //these equations determine where the projectile is now
-//     const y = projectile.y0+projectile.vy*age+350*age*age;
-    
-//     ctx.fillStyle = "#ff6800";
-//     ctx.beginPath();
-//     ctx.arc(x,y,12,0,Math.PI*2);
-//     ctx.fill();
-
-//     if(y > H+100) { //reset the projectile when it leaves the screen
-//       projectile = null;
-//       launching = false;
-
-//       document.getElementById("launchBtn").disabled = false;
-//     }
-//   }
-//   updateCode(); //update the code
-
-//   ctx.setTransform(1,0,0,1,0,0); //reset transformation
-// }
-
-function launch() { //launch the projectile
-  if (launching) return; //prevent duplicate launches
-  launching = true;
-
-  document.getElementById("launchBtn").disabled = true;
-
-  const {left,beamY,pivotX,right} = layout();
-  const arm1 = pivotX-left; //calculate arm lengths
-  const arm2 = right-pivotX;
-  const ratio = arm2/Math.max(arm1,1); 
-  const speed=140+ratio*120; //launch speed based on ratio
-
-  projectile = {x0:left, y0:beamY-16, vx:speed, vy:-speed*0.8, t0:Date.now()}; //create projectile
-  animate(); //animate all
+function endSettle() {
+  if (state.hit) {
+    if (state.hitNotes.every(Boolean)) {
+      finishGame();
+      return;
+    }
+    nextNote();
+  }
+  state.phase = "idle";
+  updateControls();
 }
 
-function animate() {
-  draw();
+// Every note has been hit: lock the game, only Verder remains.
+function finishGame() {
+  state.phase = "done";
+  targetNameEl.textContent = "-";
+  setMessage("Alle noten geraakt! Ga verder.", "hit");
+  updateControls();
+}
 
-  if (projectile || launching) {
-    requestAnimationFrame(animate);
+let verderArmed = false;
+let verderTimer = null;
+
+// Back to the normal "Verder" state.
+function disarmVerder() {
+  verderArmed = false;
+  clearTimeout(verderTimer);
+  verderBtn.textContent = "Verder";
+  verderBtn.classList.remove("armed");
+}
+
+// First click asks for confirmation, second click really continues.
+function verder() {
+  if (state.finished || state.score < 1) return;
+
+  if (!verderArmed) {
+    verderArmed = true;
+    verderBtn.textContent = "Weet je het zeker?";
+    verderBtn.classList.add("armed");
+    verderTimer = setTimeout(disarmVerder, 4000); // undo if they hesitate
+    return;
+  }
+
+  disarmVerder();
+  state.finished = true;
+  updateControls();
+
+  if (typeof window.hefboomKlaar === "function") {
+    window.hefboomKlaar(state.score * 2);
   }
 }
 
-slider.addEventListener("input",()=>{ //update pivot when slider changes
-  pivotPct = slider.value;
-  document.getElementById("pivotPct").textContent = pivotPct + "%";
-  draw();
+
+// ---- Per-frame update ------------------------------------------------------
+function update(now, dt) {
+  switch (state.phase) {
+    case "idle": {
+      // The arm follows the strength slider smoothly.
+      const goal = cockedAngle(state.power);
+      state.armAngle += (goal - state.armAngle) * (1 - Math.exp(-dt / 80));
+      break;
+    }
+    case "swing": {
+      const t = Math.min(1, (now - state.t0) / SWING_MS);
+      state.armAngle = state.swingFrom + (RELEASE_ANGLE - state.swingFrom) * t * t;
+      if (t >= 1) startFlight(now);
+      break;
+    }
+    case "flight": {
+      const t = Math.min(1, (now - state.t0) / FLIGHT_MS);
+      const tr = state.traj;
+      state.noteX = tr.x0 + (tr.x1 - tr.x0) * t;
+      state.noteY = tr.yA + tr.c * (t - tr.ta) * (t - tr.ta);
+      if (t >= 1) land(now);
+      break;
+    }
+    case "settle": {
+      const hold = state.hit ? HIT_HOLD_MS : MISS_HOLD_MS;
+      if (now - state.t0 >= hold) endSettle();
+      break;
+    }
+  }
+}
+
+
+// ---- Drawing ---------------------------------------------------------------
+// A quarter note: the head sits at (x, y), the stem points up.
+function drawNote(x, y, color, alpha) {
+  ctx.save();
+  ctx.globalAlpha = alpha === undefined ? 1 : alpha;
+  ctx.translate(x, y);
+  ctx.lineCap = "round";
+  ctx.lineWidth = 2;
+  ctx.strokeStyle = "#111";
+  ctx.fillStyle = color;
+
+  // Stem and flag.
+  ctx.beginPath();
+  ctx.moveTo(6.4, -1);
+  ctx.lineTo(6.4, -28);
+  ctx.quadraticCurveTo(16, -23, 13, -12);
+  ctx.stroke();
+
+  // Head.
+  ctx.beginPath();
+  ctx.ellipse(0, 0, 7.5, 5.5, -0.35, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.restore();
+}
+
+function drawGround() {
+  ctx.save();
+  ctx.strokeStyle = "#cbd5e1";
+  ctx.setLineDash([4, 4]);
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(0, GROUND_Y);
+  ctx.lineTo(SPACE_W, GROUND_Y);
+  ctx.stroke();
+  ctx.restore();
+}
+
+function drawLadder(now) {
+  ctx.save();
+
+  // Keep a faint glow on the rungs that were already hit.
+  NOTES.forEach((n, i) => {
+    if (!state.hitNotes[i]) return;
+    ctx.fillStyle = n.color + "30";
+    ctx.fillRect(LADDER_X - LADDER_HALF - 10, rungY(i) - 20, LADDER_HALF * 2 + 20, 40);
+  });
+
+  // Light up the rung that was just hit.
+  if (state.phase === "settle" && state.hit && state.landedIndex >= 0) {
+    const y = rungY(state.landedIndex);
+    ctx.fillStyle = NOTES[state.landedIndex].color + "40";
+    ctx.fillRect(LADDER_X - LADDER_HALF - 10, y - 20, LADDER_HALF * 2 + 20, 40);
+  }
+
+  // Rails.
+  ctx.strokeStyle = "#111";
+  ctx.lineWidth = 6;
+  ctx.lineCap = "round";
+  [LADDER_X - LADDER_HALF, LADDER_X + LADDER_HALF].forEach((x) => {
+    ctx.beginPath();
+    ctx.moveTo(x, GROUND_Y);
+    ctx.lineTo(x, LADDER_TOP);
+    ctx.stroke();
+  });
+
+  // Rungs and their names.
+  ctx.lineCap = "butt";
+  ctx.font = "700 20px " + FONT;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "middle";
+  NOTES.forEach((n, i) => {
+    const y = rungY(i);
+    ctx.strokeStyle = n.color;
+    ctx.lineWidth = 9;
+    ctx.beginPath();
+    ctx.moveTo(LADDER_X - LADDER_HALF, y);
+    ctx.lineTo(LADDER_X + LADDER_HALF, y);
+    ctx.stroke();
+
+    ctx.fillStyle = "#111";
+    ctx.fillText(n.name, LADDER_X + LADDER_HALF + 14, y);
+  });
+
+  ctx.restore();
+}
+
+function drawCatapult() {
+  const g = cupGeometry(state.armAngle);
+  const tailX = PIVOT.x - g.dx * TAIL_LEN;
+  const tailY = PIVOT.y - g.dy * TAIL_LEN;
+
+  ctx.save();
+  ctx.lineCap = "round";
+  ctx.lineJoin = "round";
+  ctx.strokeStyle = "#111";
+
+  // Wheels.
+  ctx.fillStyle = "#fff";
+  ctx.lineWidth = 4;
+  [PIVOT.x - 38, PIVOT.x + 38].forEach((wx) => {
+    ctx.beginPath();
+    ctx.arc(wx, GROUND_Y - 9, 9, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+  });
+
+  // Base beam.
+  ctx.lineWidth = 8;
+  ctx.beginPath();
+  ctx.moveTo(PIVOT.x - 58, GROUND_Y - 22);
+  ctx.lineTo(PIVOT.x + 58, GROUND_Y - 22);
+  ctx.stroke();
+
+  // Support under the pivot.
+  ctx.fillStyle = "#ffd700";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.moveTo(PIVOT.x, PIVOT.y - 6);
+  ctx.lineTo(PIVOT.x + 20, GROUND_Y - 26);
+  ctx.lineTo(PIVOT.x - 20, GROUND_Y - 26);
+  ctx.closePath();
+  ctx.fill();
+  ctx.stroke();
+
+  // Throwing arm.
+  ctx.lineWidth = 7;
+  ctx.beginPath();
+  ctx.moveTo(tailX, tailY);
+  ctx.lineTo(g.tipX, g.tipY);
+  ctx.stroke();
+
+  // Counterweight.
+  ctx.fillStyle = "#111";
+  ctx.beginPath();
+  ctx.arc(tailX, tailY, 6, 0, Math.PI * 2);
+  ctx.fill();
+
+  // Cup at the end of the arm.
+  ctx.save();
+  ctx.translate(g.tipX, g.tipY);
+  ctx.rotate(-state.armAngle);
+  ctx.lineWidth = 4;
+  ctx.beginPath();
+  ctx.arc(0, -10, 10, 0, Math.PI);
+  ctx.stroke();
+  ctx.restore();
+
+  // Pivot pin.
+  ctx.fillStyle = "#ffd700";
+  ctx.lineWidth = 2;
+  ctx.beginPath();
+  ctx.arc(PIVOT.x, PIVOT.y, 5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.stroke();
+
+  ctx.restore();
+
+  // The note waiting in the cup.
+  if (state.phase === "idle" || state.phase === "swing") {
+    drawNote(g.noteX, g.noteY, NOTES[state.target].color);
+  }
+}
+
+function drawFlyingNote(now) {
+  if (state.phase !== "flight" && state.phase !== "settle") return;
+
+  const note = NOTES[state.target];
+  let alpha = 1;
+
+  if (state.phase === "settle") {
+    const elapsed = now - state.t0;
+
+    // A ring that spreads out from the landing spot.
+    const t = Math.min(1, elapsed / 500);
+    ctx.save();
+    ctx.globalAlpha = 1 - t;
+    ctx.strokeStyle = state.hit ? note.color : "#94a3b8";
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.arc(state.noteX, state.noteY, 8 + 26 * t, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+
+    // A missed note fades away before the next try.
+    if (!state.hit) {
+      alpha = Math.max(0, Math.min(1, 1 - (elapsed - 500) / 500));
+    }
+  }
+
+  drawNote(state.noteX, state.noteY, note.color, alpha);
+}
+
+// Card in the corner that shows which note the player has to place.
+function drawBadge() {
+  const note = NOTES[state.target];
+  if (!note || state.phase === "done") return;
+
+  ctx.save();
+  ctx.fillStyle = "#fff";
+  ctx.strokeStyle = "#111";
+  ctx.lineWidth = 2.5;
+  ctx.fillRect(12, 10, 116, 64);
+  ctx.strokeRect(12, 10, 116, 64);
+
+  ctx.fillStyle = "#111";
+  ctx.font = "600 18px " + FONT;
+  ctx.textAlign = "left";
+  ctx.textBaseline = "alphabetic";
+  ctx.fillText("De noot:", 22, 27);
+
+  drawNote(34, 60, note.color);
+
+  ctx.fillStyle = "#111";
+  ctx.font = "700 30px " + FONT;
+  ctx.textBaseline = "middle";
+  ctx.fillText(note.name, 62, 52);
+  ctx.restore();
+}
+
+function draw(now) {
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  // Scale the logical space so it fits the real canvas, and centre it.
+  const scale = Math.min(canvas.width / SPACE_W, canvas.height / SPACE_H);
+  const offX = (canvas.width - SPACE_W * scale) / 2;
+  const offY = (canvas.height - SPACE_H * scale) / 2;
+  ctx.setTransform(scale, 0, 0, scale, offX, offY);
+
+  drawGround();
+  drawLadder(now);
+  drawCatapult();
+  drawFlyingNote(now);
+  drawBadge();
+
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+}
+
+
+// ---- Main loop and events --------------------------------------------------
+function frame(now) {
+  // Stop the loop once the game has been removed from the page.
+  if (!canvas.isConnected) {
+    window.removeEventListener("resize", resize);
+    return;
+  }
+
+  const dt = Math.min(64, now - lastNow);
+  lastNow = now;
+  update(now, dt);
+  draw(now);
+  requestAnimationFrame(frame);
+}
+
+// Match the canvas resolution to its displayed size (sharp on high-DPI screens).
+function resize() {
+  const rect = canvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = Math.max(1, Math.round(rect.width * dpr));
+  canvas.height = Math.max(1, Math.round(rect.height * dpr));
+  draw(lastNow);
+}
+
+slider.addEventListener("input", () => {
+  state.power = Number(slider.value);
+  strengthPctEl.textContent = state.power + "%";
 });
 
-document.getElementById("launchBtn").addEventListener("click",launch); //launch button
-document.getElementById("resetBtn").addEventListener("click",()=>{ //reset button
-  projectile = null;
-  launching = false;
-  pivotPct = 35;
-  slider.value = 35;
-  document.getElementById("pivotPct").textContent = "35%";
-  draw();
-});
+launchBtn.addEventListener("click", launch);
+verderBtn.addEventListener("click", verder);
+window.addEventListener("resize", resize);
 
-window.addEventListener("resize",resize);
 
+// ---- Start -----------------------------------------------------------------
+scoreMaxEl.textContent = NOTES.length;
+nextNote();
+updateControls();
 resize();
+requestAnimationFrame(frame);
+
+})();

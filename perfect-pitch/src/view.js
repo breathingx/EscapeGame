@@ -27,6 +27,7 @@ export class View {
     this.uColor = gl.getUniformLocation(program, 'uColor');
     //HUD Message element
     this.message = document.getElementById('message');
+    this.frequency = document.getElementById('frequency'); // added for testing
     //Platform
     this.platform = new Cuboid(
       gl,
@@ -57,8 +58,15 @@ export class View {
     }
   }
 
-  render(state) {
-    this.renderMessage(state);
+render(state, pitch) {
+  this.renderMessage(state);
+
+  // added for testing: update frequency display
+  if (pitch === -1) {
+    this.frequency.innerText = 'Frequency: -- Hz';
+  } else {
+    this.frequency.innerText = `Frequency: ${pitch.toFixed(1)} Hz`;
+  }
     //Clear colour and depth buffers
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     this.gl.enableVertexAttribArray(this.aPosition);
