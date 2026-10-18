@@ -27,6 +27,9 @@ let blockly_punten = 0;
 let truthLieProgress = 0;
 const truthLieMaxVragen = 6;
 
+// soundmatch
+const SOUNDMATCH_OPDRACHT = 3; // change to the position of SoundMatch in klankbron.json
+
 // tracking hints usage
 let hintGebruiktPerVraag = 0;
 let laatsteHintTijd = 0;
@@ -396,6 +399,7 @@ function laadOpdracht() {
     gebruikteHints = [];
 
     // restore the default template layout
+    document.getElementById("uitlegWrapper").style.minHeight = "";//soundmatch
     document.getElementById("uitlegBlok").style.display = "block";
     document.getElementById("codeInputContainer").style.display = "flex";
     document.getElementById("actieBtn").style.display = "block";
@@ -1213,15 +1217,79 @@ window.handleQRCode = function(qrData) {
 
 // loads the correct minigame for this team
 function laadopdrachtKlankbron() {
-    switch (huidigeOpdracht) {
-        default:
-            document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+    const opdracht = gameData[team].opdrachten[huidigeOpdracht];
+    console.log("Klankbron opdracht:", huidigeOpdracht, opdracht.naam);
+
+    if (opdracht.naam === "SoundMatch") {
+        soundMatchGame();
+    } else {
+        document.getElementById("uitlegTekst").textContent = opdracht.uitleg;
     }
 }
 
 
 // ============ KLANKBRON MINI-GAMES ============== \\
+// loads the SoundMatch minigame
+function soundMatchGame() {
 
+    // hide the default controls, the minigame has its own button
+    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("actieBtn").style.display = "none";
+    document.getElementById("hintContainer").style.display = "none";
+    document.getElementById("uitlegWrapper").style.minHeight = "0"; // make room for the game
+
+    document.getElementById("uitlegTekst").textContent =
+        gameData[team].opdrachten[huidigeOpdracht].uitleg;
+
+    const extraContent = document.getElementById("extraContent");
+
+    fetch("soundmatch/soundmatch.html")
+        .then(res => res.text())
+        .then(html => {
+            extraContent.innerHTML = `<div class="fullscreen-content">${html}</div>`;
+
+            // start once CSS is loaded (so measurements are correct),
+            // load the script only the first time
+            const start = () => {
+                if (typeof window.initSoundMatch === "function") {
+                    window.initSoundMatch();
+                    return;
+                }
+                const script = document.createElement("script");
+                script.src = "soundmatch/soundmatch.js";
+                script.onload = () => window.initSoundMatch();
+                document.body.appendChild(script);
+            };
+
+            if (document.getElementById("soundMatchCSS")) {
+                start();
+                return;
+            }
+
+            const link = document.createElement("link");
+            link.id = "soundMatchCSS";
+            link.rel = "stylesheet";
+            link.href = "soundmatch/soundmatch.css";
+            link.onload = start;
+            link.onerror = start;
+            document.head.appendChild(link);
+        });
+
+}
+
+// called by soundmatch.js when all rounds are done: 2 points per correct instrument (max 10)
+window.soundMatchKlaar = function(punten) {
+    score += punten;
+    localStorage.setItem("score", score);
+    document.getElementById("scoreDisplay").textContent = String(score).padStart(5, '0');
+
+    correcteAntwoorden++;
+    localStorage.setItem("correct", correcteAntwoorden);
+    updateProgressBar();
+
+    antwoordIsCorrect = true;
+    verwerkActie(); // goes to the transition page / next exercise
+};
 
 // Loads the elements necessary for the Truth Lie minigame. Elements from the standard template will be hidden.
 function inladenTruthLieElementen() {

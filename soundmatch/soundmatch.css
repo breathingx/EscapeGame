@@ -1,0 +1,264 @@
+.sm {
+    --sm-size: clamp(150px, min(38vw, 34vh), 320px);
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: clamp(10px, 2.5vh, 24px);
+    font-family: "Montserrat", sans-serif;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+.sm .sm-status {
+    margin: 0;
+    min-height: 1.4em;
+    text-align: center;
+    font-family: "Right Grotesk Medium", sans-serif;
+    font-size: clamp(16px, 2.6vw, 22px);
+}
+
+/* ---------- play button ---------- */
+.sm .sm-play {
+    width: clamp(150px, 26vw, 240px);
+    margin: 0;
+    padding: clamp(14px, 2.5vh, 24px) 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    background-color: #00f280;
+    color: #fff;
+    transition: transform 0.15s ease;
+}
+
+.sm .sm-play:active {
+    transform: scale(0.93);
+}
+
+.sm .sm-speaker {
+    width: clamp(48px, 9vw, 84px);
+    height: auto;
+}
+
+.sm .sm-speaker-body {
+    fill: #fff;
+}
+
+.sm .sm-wave {
+    fill: none;
+    stroke: #fff;
+    stroke-width: 4;
+    stroke-linecap: round;
+}
+
+.sm .sm-play-label {
+    font-family: "Right Grotesk Compact", sans-serif;
+    font-weight: 900;
+    font-size: clamp(18px, 3vw, 28px);
+    text-transform: uppercase;
+}
+
+.sm .sm-play.playing {
+    animation: smPulse 1s ease-in-out infinite;
+}
+
+.sm .sm-play.playing .sm-wave {
+    animation: smWave 0.9s ease-in-out infinite;
+}
+.sm .sm-play.playing .sm-wave2 { animation-delay: 0.2s; }
+.sm .sm-play.playing .sm-wave3 { animation-delay: 0.4s; }
+
+@keyframes smPulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.05); }
+}
+
+@keyframes smWave {
+    0%, 100% { opacity: 0.25; }
+    50%      { opacity: 1; }
+}
+
+/* ---------- carousel ---------- */
+.sm .sm-carousel {
+    position: relative;
+    width: 100%;
+}
+
+.sm .sm-track {
+    position: relative; /* needed: offsetLeft is measured from here */
+    display: flex;
+    align-items: flex-start;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding: 10px 0;
+}
+
+.sm .sm-track::-webkit-scrollbar {
+    display: none;
+}
+
+/* spacers so the first and last instrument can reach the center */
+.sm .sm-track::before,
+.sm .sm-track::after {
+    content: "";
+    flex: 0 0 calc(50% - var(--sm-size) / 2);
+}
+
+.sm .sm-item {
+    flex: 0 0 var(--sm-size);
+    box-sizing: border-box;
+    scroll-snap-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.sm .sm-circle {
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background-color: #00f280;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: scale(0.78);
+    opacity: 0.75;
+    transition: transform 0.3s ease, opacity 0.3s ease, box-shadow 0.3s ease;
+}
+
+.sm .sm-item.active .sm-circle {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.sm .sm-circle img {
+    max-width: 85%;
+    max-height: 90%;
+    object-fit: contain;
+    pointer-events: none;
+    -webkit-user-drag: none;
+}
+
+.sm .sm-name {
+    font-family: "Right Grotesk Medium", sans-serif;
+    font-size: clamp(16px, 2.6vw, 22px);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sm .sm-item.active .sm-name {
+    opacity: 1;
+}
+
+/* shows the right answer after a wrong choice */
+.sm .sm-item.sm-juist .sm-circle {
+    box-shadow: 0 0 0 5px #fff, 0 0 0 9px #000;
+}
+
+/* arrows: mouse users only (touch devices swipe) */
+.sm .sm-arrow {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    margin: auto 0;
+    width: 44px;
+    height: 44px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 28px;
+    line-height: 1;
+    z-index: 2;
+}
+.sm .sm-arrow-left  { left: 0; }
+.sm .sm-arrow-right { right: 0; }
+
+@media (hover: none) {
+    .sm .sm-arrow { display: none; }
+}
+
+/* ---------- action button ---------- */
+.sm .sm-action {
+    width: min(100%, 420px);
+    margin: 0;
+    padding: 14px 24px;
+    font-size: clamp(16px, 2.6vw, 22px);
+    background-color: #000;
+    color: #fff;
+}
+
+.sm .sm-action:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.sm .sm-action:disabled:hover {
+    transform: none;
+}
+
+/* ---------- answer boxes ---------- */
+.sm .sm-boxes {
+    display: flex;
+    justify-content: center;
+    gap: clamp(6px, 1.5vw, 12px);
+    width: 100%;
+    margin-top: 4px;
+}
+
+.sm .sm-box {
+    width: clamp(40px, 9vw, 72px);
+    aspect-ratio: 1 / 1.35;
+    box-sizing: border-box;
+    border: 3px solid #000;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sm .sm-box.current {
+    outline: 3px solid #000;
+    outline-offset: 3px;
+}
+
+.sm .sm-box svg {
+    width: 60%;
+    fill: none;
+    stroke-width: 3.2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.sm .sm-box.correct {
+    background: #a8ffd0; /* light green */
+    animation: smPop 0.4s ease;
+}
+.sm .sm-box.correct svg { stroke: #05803f; }
+
+.sm .sm-box.wrong {
+    background: #ff9b9b;
+    animation: smShake 0.4s ease;
+}
+.sm .sm-box.wrong svg { stroke: #b3261e; }
+
+@keyframes smPop {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.15); }
+    100% { transform: scale(1); }
+}
+
+@keyframes smShake {
+    0%, 100% { transform: translateX(0); }
+    25%      { transform: translateX(-5px); }
+    75%      { transform: translateX(5px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .sm * { animation: none !important; transition: none !important; }
+}
