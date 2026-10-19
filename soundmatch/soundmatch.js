@@ -36,6 +36,10 @@
         }
     }
 
+    function isAanHetSpelen() {
+        return huidigAudio && !huidigAudio.paused && !huidigAudio.ended;
+    }
+
     function speel(src, knop) {
         stopAudio();
 
@@ -169,6 +173,7 @@
             });
 
             if (beste !== actief) {
+                // stopAudio();   // switching instrument stops the sound
                 actief = beste;
                 items.forEach((item, i) => item.classList.toggle("active", i === actief));
             }
@@ -248,13 +253,17 @@
 
         // ---------- events ----------
         playBtn.addEventListener("click", () => {
+            if (isAanHetSpelen()) {
+                stopAudio();            // second press = stop
+                return;
+            }
             speel(INSTRUMENTEN[volgorde[ronde]].geluid, playBtn);
             if (fase === "kies") actionBtn.disabled = false;
         });
 
         actionBtn.addEventListener("click", () => {
             if (fase === "kies") beoordeel();
-            else if (fase === "volgend") { ronde++; startRonde(); }
+            else if (fase === "volgend") { stopAudio(); ronde++; startRonde(); }
             else if (fase === "klaar") afronden();
         });
 
