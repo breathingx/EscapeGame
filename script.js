@@ -1256,6 +1256,9 @@ window.handleQRCode = function(qrData) {
 // loads the correct minigame for this team
 function laadopdrachtKlankbron() {
     switch (huidigeOpdracht) {
+        case 5:
+            laadPatsBoemOpdracht();
+            break;
         default:
             document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
     }
@@ -1469,6 +1472,38 @@ function endTruthLie() { //restore original template
     verwerkActie();
 }
 
+function laadPatsBoemOpdracht() {
+    document.getElementById("codeInputContainer1").style.display = "none";
+
+    document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+
+    const extraContent = document.getElementById("extraContent");
+
+    fetch("PatsBoem/patsboem.html")
+        .then(res => res.text())
+        .then(html => {
+            extraContent.innerHTML = html;
+
+            if (!document.getElementById("patsboemCSS")) {
+                const link = document.createElement("link");
+                link.id = "patsboemCSS";
+                link.rel = "stylesheet";
+                link.href = "PatsBoem/patsboem.css";
+                document.head.appendChild(link);
+            }
+
+            if (!document.getElementById("patsboemJS")) {
+                const script = document.createElement("script");
+                script.id = "patsboemJS";
+                script.src = "PatsBoem/patsboem.js";
+                document.body.appendChild(script);
+            } else {
+                if (typeof resetPatsBoem === "function") {
+                    resetPatsBoem();
+                }
+            }
+        });
+}
 
 
 // =================================================
