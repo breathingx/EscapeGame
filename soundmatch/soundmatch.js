@@ -6,11 +6,16 @@
     // Paths are relative to template.html (the page that loads this game)
     // =================================================
     const INSTRUMENTEN = [
-        { naam: "Draaiorgel", afbeelding: "soundmatch/images/draaiorgel.png", geluid: "soundmatch/sounds/draaiorgel.mp3" },
-        { naam: "Carillon",   afbeelding: "soundmatch/images/carillon.png",   geluid: "soundmatch/sounds/carillon.mp3" },
-        { naam: "Muziekdoos", afbeelding: "soundmatch/images/muziekdoos.png", geluid: "soundmatch/sounds/muziekdoos.mp3" },
-        { naam: "Pianola",    afbeelding: "soundmatch/images/pianola.png",    geluid: "soundmatch/sounds/pianola.mp3" },
-        { naam: "Speelklok",  afbeelding: "soundmatch/images/speelklok.png",  geluid: "soundmatch/sounds/speelklok.mp3" }
+        { naam: "Knop Speelkam",      afbeelding: "soundmatch/images2/knop_speelkam.png",       geluid: "soundmatch/sounds2/speelkam.mp3" },
+        { naam: "Metalen Pijp",       afbeelding: "soundmatch/images2/metalen_pijp.png",        geluid: "soundmatch/sounds2/pijp.mp3" },
+        { naam: "Orgelpijp van hout", afbeelding: "soundmatch/images2/Orgelpijp_hout.png",      geluid: "soundmatch/sounds2/orgelpijp.mp3" },
+        { naam: "Patsboem",           afbeelding: "soundmatch/images2/Patsboem.png",            geluid: "soundmatch/sounds2/boempats.mp3" },
+        { naam: "Piano",              afbeelding: "soundmatch/images2/pianola.png",             geluid: "soundmatch/sounds2/piano.mp3" },
+        { naam: "UD",                 afbeelding: "soundmatch/images2/UD.png",                  geluid: "soundmatch/sounds2/ud.mp3" },
+        { naam: "Verwarrend verlangen", afbeelding: "soundmatch/images2/verwarrend_verlangen.png", geluid: "soundmatch/sounds2/vv.mp3" },
+        { naam: "Bel",                afbeelding: "soundmatch/images2/bel.png",                 geluid: "soundmatch/sounds2/bel.mp3" },
+        { naam: "Darbuka",            afbeelding: "soundmatch/images2/darbuka.png",             geluid: "soundmatch/sounds2/darbuka.mp3" },
+        { naam: "Digeridoo",          afbeelding: "soundmatch/images2/digeridoo.png",           geluid: "soundmatch/sounds2/digeridoo.mp3" }
     ];
 
     const PUNTEN_PER_GOED = 2;
@@ -99,6 +104,9 @@
         const nextBtn   = document.getElementById("sm-next");
 
         if (!track || !playBtn || !actionBtn || !statusEl || !boxesEl) return;
+        
+        // keep the active instrument centered when the size changes (rotation, late layout)
+        new ResizeObserver(() => { if (actief >= 0) scrollNaar(actief, false); }).observe(track);
 
         const totaal = INSTRUMENTEN.length;
         const volgorde = shuffle(INSTRUMENTEN.map((_, i) => i)); // which instrument is the answer per round
@@ -237,7 +245,7 @@
             } else {
                 fase = "klaar";
                 actionBtn.textContent = "Afronden";
-                statusEl.textContent += ` Je hebt ${aantalGoed} van ${totaal} goed (+${aantalGoed * PUNTEN_PER_GOED} punten).`;
+                statusEl.textContent += ` Jullie hebben ${aantalGoed} van ${totaal} goed (+${aantalGoed * PUNTEN_PER_GOED} punten).`;
             }
             actionBtn.disabled = false;
         }
