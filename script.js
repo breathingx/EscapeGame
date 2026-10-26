@@ -958,27 +958,7 @@ function laadOpdrachtProgramma() {
 
 // ============ PROGRAMMA MINI-GAMES ============== \\
 
-// shows the qr-scanner exercise button to start scanning.
-// function qrScannerOpdracht() {
-//     const origineleInnerHTML =
-//         Object.getOwnPropertyDescriptor(
-//             Element.prototype,
-//             "innerHTML"
-//         );
 
-//     document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
-
-//     const extraContent = document.getElementById("extraContent");
-
-//     extraContent.innerHTML = `
-//         <button id="startQRScanBtn">
-//             Scan QR-code
-//         </button>
-//     `;
-
-//     document.getElementById("startQRScanBtn")
-//         .addEventListener("click", startQRScanner);
-// }
 function qrScannerOpdracht() {
 
     document.getElementById("uitlegTekst").textContent =
@@ -998,31 +978,7 @@ function qrScannerOpdracht() {
         .addEventListener("click", laadQRScanner);
 }
 
-// // loads the qr-scanner interface and required resources.
-// function startQRScanner() {
 
-//     const extraContent = document.getElementById("extraContent");
-
-//     // get qr-scanner
-//     fetch("QRScanner/qrScanner.html")
-//         .then(res => res.text())
-//         .then(html => {
-
-//             extraContent.innerHTML =
-//                 `<div class="fullscreen-content">${html}</div>`;
-
-//             // get the css
-//             const link = document.createElement("link");
-//             link.rel = "stylesheet";
-//             link.href = "QRScanner/qrScanner.css";
-//             document.head.appendChild(link);
-
-//             // get the script
-//             const script = document.createElement("script");
-//             script.src = "QRScanner/qrScanner.js";
-//             document.body.appendChild(script);
-//         });
-// }
 function laadQRScanner() {
 
     const extraContent =
@@ -1079,14 +1035,9 @@ function laadQRScanner() {
                     const script =
                         document.createElement("script");
 
-                    script.src =
-                        "https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js";
+                    script.src = "https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.min.js";
 
                     script.onload = () => {
-
-                        console.log(
-                            "QR: jsQR library geladen"
-                        );
 
                         resolve();
 
@@ -1124,20 +1075,11 @@ function laadQRScanner() {
                         return;
                     }
 
-
-                    const script =
-                        document.createElement("script");
-
+                    const script = document.createElement("script");
                     script.id = "qrScannerJS";
-
-                    script.src =
-                        "QRScanner/qrScanner.js";
+                    script.src = "QRScanner/qrScanner.js";
 
                     script.onload = () => {
-
-                        console.log(
-                            "QR: qrScanner.js geladen"
-                        );
 
                         resolve();
 
@@ -1173,10 +1115,6 @@ function laadQRScanner() {
                 })
 
                 .then(() => {
-
-                    console.log(
-                        "QR: scanner starten in opdracht-modus"
-                    );
 
                     startQRScanner("opdracht");
 
@@ -1239,11 +1177,8 @@ window.handleQRCode = function(qrData) {
             volgendeOpdracht();
         }, 1000);
 
-    } else {
-        // when the qr-code is wrong
-        document.getElementById("feedback").textContent =
-            "Verkeerde QR-code.";
-    }
+        return true;
+    } 
 };
 
 
