@@ -1,94 +1,48 @@
-// const video =  document.getElementById('video');
-// const canvas = document.getElementById('canvas');
-// const ctx = canvas.getContext('2d');
-// const msg =  document.getElementById('msg');
-
-// navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}}) //request camera access
-//   .then(stream => {
-//     video.srcObject = stream; //connect camera stream to video
-//     msg.textContent = 'Richt de camera op een QR-code!'; //instruct user
-//     requestAnimationFrame(tick); //start continuously scanning frames
-//   })
-//   .catch(() => {
-//     msg.textContent = 'Toegang tot camera geweigerd.'; //access denied
-//   });
-
-// function tick () {
-//   if (video.readyState === video.HAVE_ENOUGH_DATA) { //is there enough data available
-//     canvas.width = video.videoWidth; //match canvas dimensions to video dimensions
-//     canvas.height = video.videoHeight;
-//     ctx.drawImage(video, 0, 0); //draw current video frame onto canvas
-//     const data = ctx.getImageData(0, 0, canvas.width, canvas.height); //extract each pixel from canvas
-//     const code = jsQR(data.data, data.width, data.height); //try to detect the QR-code
-    
-//     if (code) { //detected?
-
-//       const qrData = code.data.toLowerCase(); //convert QR-content to lowercase
-//       const geldigeTeams = [
-//           "aandrijving",
-//           "programma",
-//           "klankbron"
-//       ];
-
-//       if (geldigeTeams.includes(qrData)) { //does QR contain valid teamname?
-//           localStorage.setItem("team", qrData); //store teamname in local storage
-//           window.location.href = "template.html"; //redirect user to next page
-//       }
-//     }
-
-//   }
-//   requestAnimationFrame(tick);
-// }
-
-
-// =================================================
-// QR SCANNER
-// =================================================
-
-// Start de QR-scanner.
-//
-// mode:
-// - "team"     -> QR-code bevat een teamnaam
-// - "opdracht" -> QR-code bevat de code van de opdracht
-//
-
 
 function startQRScanner(mode = "team") {
 
     const video = document.getElementById("video");
     const canvas = document.getElementById("canvas");
     const msg = document.getElementById("msg");
+    let messageTimeout;
 
     if (!video || !canvas || !msg) {
         console.error("QR-scanner elementen niet gevonden.");
         return;
     }
 
-    const ctx = canvas.getContext("2d");
+    const ctx = canvas.getContext("2d", {
+        willReadFrequently: true
+    });
 
     // Vraag toegang tot de camera
     navigator.mediaDevices.getUserMedia({
+        audio: false,
         video: {
+            width: { ideal: 1280 },
+            height: { ideal: 1280 },
+            frameRate: { ideal: 60 },
             facingMode: "environment"
         }
     })
     .then(stream => {
 
-      console.log("QR: camera stream ontvangen");
+        video.srcObject = stream;
 
-      video.srcObject = stream;
+        // const cameraSettings =
+        //     video.srcObject.getVideoTracks()[0].getSettings();
 
-      console.log("QR: video.srcObject ingesteld");
+        // console.log("Cameraresolutie:", {
+        //     width: cameraSettings.width,
+        //     height: cameraSettings.height,
+        //     frameRate: cameraSettings.frameRate
+        // });
 
-      video.play();
+        video.play();
 
-      console.log("QR: video.play() uitgevoerd");
+        msg.textContent = "Richt de camera op een QR-code!";
 
-      msg.textContent = "Richt de camera op een QR-code!";
-
-      requestAnimationFrame(tick);
-
-      console.log("QR: scan-loop gestart");
+        requestAnimationFrame(tick);
 
   })
     .catch(() => {
@@ -103,8 +57,6 @@ function startQRScanner(mode = "team") {
     // =================================================
 
     function tick() {
-
-        console.log("QR: tick");
 
         if (video.readyState === video.HAVE_ENOUGH_DATA) {
 
@@ -134,7 +86,13 @@ function startQRScanner(mode = "team") {
 
 
             // QR-code gevonden
-            if (code) {
+            if (code && code.data && code.data.trim() !== "") {
+
+                // console.log("QR-detectie:", {
+                //     data: code.data,
+                //     lengte: code.data.length,
+                //     locatie: code.location
+                // });
 
                 const qrData = code.data
                     .toLowerCase()
@@ -172,28 +130,43 @@ function startQRScanner(mode = "team") {
                 // OPDRACHT MODUS
                 // =============================================
 
+                
                 else if (mode === "opdracht") {
 
                     if (typeof window.handleQRCode === "function") {
+                   
+                        const correct = window.handleQRCode(qrData);
 
-                        console.log("QR opdracht gevonden:", qrData);
+                        if (correct === true) {
 
-                        scannerActief = false;
+                            clearTimeout(messageTimeout);
 
-                        stopCamera();
+                            stopCamera();
 
-                        window.handleQRCode(qrData);
+                            return;
 
-                        return;
+                        } else {
 
-                    } else {
+                            // Toon de foutmelding
+                            msg.textContent =
+                                "QR-code niet herkend. Controleer of je de juiste QR-code scant.";
 
-                        console.error(
-                            "window.handleQRCode is niet beschikbaar."
-                        );
+                            // Annuleer een eventuele vorige timer
+                            clearTimeout(messageTimeout);
+
+                            // Zet de melding na 3 seconden terug
+                            messageTimeout = setTimeout(() => {
+
+                                msg.textContent = "Richt de camera op een QR-code!";
+
+                            }, 3000);
+
+                        }
 
                     }
+
                 }
+
 
             }
         }
