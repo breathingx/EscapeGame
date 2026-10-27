@@ -1,3 +1,13 @@
+:root {
+    --scale: 1;
+    --page-margin: 7vh;
+    --content-width: 100%;
+    --max-content-width: 500px; 
+    --max-ui-width: clamp(250px, 80vw, 800px);     
+    --hud-heigt: 140px;
+}
+
+
 #patsboem-wrapper {
     display: flex;
     flex-direction: column;
@@ -57,11 +67,11 @@
 .pb-controls {
     display: flex;
     gap: 15px;
-    width: 100%;
-    max-width: 300px;
+    width: 50%;
 }
 
 #pb-reset-btn {
     background-color: black;
     color: white;
+    width: 100%;
 }

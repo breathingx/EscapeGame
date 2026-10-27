@@ -419,7 +419,7 @@ function submitBlocklyScore() {
             score += bestBlocklyScore;
             localStorage.setItem("score", score);
             if (document.getElementById("scoreDisplay")) {
-                document.getElementById("scoreDisplay").textContent = "Score: " + score;
+                document.getElementById("scoreDisplay").textContent = String(score).padStart(5, '0');
             }
 
             correcteAntwoorden++;
