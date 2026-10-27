@@ -1,0 +1,67 @@
+#patsboem-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    margin: 20px 0;
+}
+
+.patsboem-buttons-container {
+    display: flex;
+    gap: 30px;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.pb-btn-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.pb-circle-btn {
+    width: clamp(70px, 15vw, 100px);
+    height: clamp(70px, 15vw, 100px);
+    border-radius: 50%;
+    background-color: white;
+    border: 4px solid black;
+    color: black;
+    font-size: clamp(24px, 5vw, 36px);
+    font-family: "Right Grotesk Medium";
+    cursor: pointer;
+    transition: transform 0.1s ease, background-color 0.1s ease;
+}
+#btn-boem {
+    background-color: #ff1a1a;
+}
+#btn-pats {
+    background-color: #fcff2d;
+}
+#btn-rust {
+    background-color: #ffffff;
+}
+
+
+.pb-circle-btn:active {
+    transform: scale(0.9);
+    background-color: #f0f0f0;
+}
+
+.pb-label {
+    font-size: clamp(20px, 5vw, 26px);
+    font-family: "Right Grotesk Medium";
+    font-weight: bold;
+}
+
+.pb-controls {
+    display: flex;
+    gap: 15px;
+    width: 100%;
+    max-width: 300px;
+}
+
+#pb-reset-btn {
+    background-color: black;
+    color: white;
+}
