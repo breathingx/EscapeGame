@@ -45,7 +45,7 @@ function startQRScanner(mode = "team") {
     // =================================================
 
     let lastScanTime = 0;
-    const scanInterval = 10;
+    const scanInterval = 0;
     const maxScanDimension = 640;
 
     function tick(timestamp) {
