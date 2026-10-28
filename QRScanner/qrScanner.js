@@ -11,9 +11,7 @@ function startQRScanner(mode = "team") {
         return;
     }
 
-    const ctx = canvas.getContext("2d", {
-        willReadFrequently: true
-    });
+    const ctx = canvas.getContext("2d", {willReadFrequently: true});
 
     // Vraag toegang tot de camera
     navigator.mediaDevices.getUserMedia({
@@ -28,16 +26,6 @@ function startQRScanner(mode = "team") {
     .then(stream => {
 
         video.srcObject = stream;
-
-        // const cameraSettings =
-        //     video.srcObject.getVideoTracks()[0].getSettings();
-
-        // console.log("Cameraresolutie:", {
-        //     width: cameraSettings.width,
-        //     height: cameraSettings.height,
-        //     frameRate: cameraSettings.frameRate
-        // });
-
         video.play();
 
         msg.textContent = "Richt de camera op een QR-code!";
@@ -56,118 +44,91 @@ function startQRScanner(mode = "team") {
     // SCANNEN
     // =================================================
 
-    function tick() {
+    let lastScanTime = 0;
+    const scanInterval = 150;
+    const maxScanDimension = 640;
 
-        if (video.readyState === video.HAVE_ENOUGH_DATA) {
+    function tick(timestamp) {
 
-            canvas.width = video.videoWidth;
-            canvas.height = video.videoHeight;
+        if (
+            video.readyState === video.HAVE_ENOUGH_DATA &&
+            timestamp - lastScanTime >= scanInterval
+        ) {
 
-            ctx.drawImage(
-                video,
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
+            lastScanTime = timestamp;
 
-            const data = ctx.getImageData(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            );
+            const videoWidth = video.videoWidth;
+            const videoHeight = video.videoHeight;
 
-            const code = jsQR(
-                data.data,
-                data.width,
-                data.height
-            );
+            if (videoWidth > 0 && videoHeight > 0) {
 
+                const scale = Math.min(1, maxScanDimension / Math.max(videoWidth, videoHeight));
+                const scanWidth = Math.round(videoWidth * scale);
+                const scanHeight = Math.round(videoHeight * scale);
 
-            // QR-code gevonden
-            if (code && code.data && code.data.trim() !== "") {
-
-                // console.log("QR-detectie:", {
-                //     data: code.data,
-                //     lengte: code.data.length,
-                //     locatie: code.location
-                // });
-
-                const qrData = code.data
-                    .toLowerCase()
-                    .trim();
-
-
-                // =============================================
-                // TEAM MODUS
-                // =============================================
-
-                if (mode === "team") {
-
-                    const geldigeTeams = [
-                        "aandrijving",
-                        "programma",
-                        "klankbron"
-                    ];
-
-                    if (geldigeTeams.includes(qrData)) {
-
-                        localStorage.setItem(
-                            "team",
-                            qrData
-                        );
-
-                        stopCamera();
-
-                        window.location.href =
-                            "../uitleg/uitleg.html?type=team&team=" + qrData;
-                    }
+                if (
+                    canvas.width !== scanWidth ||
+                    canvas.height !== scanHeight
+                ) {
+                    canvas.width = scanWidth;
+                    canvas.height = scanHeight;
                 }
 
+                ctx.drawImage(video, 0, 0, scanWidth, scanHeight);
 
-                // =============================================
-                // OPDRACHT MODUS
-                // =============================================
+                const data = ctx.getImageData(0, 0, scanWidth, scanHeight);
+                const code = jsQR(data.data, data.width, data.height);
 
-                
-                else if (mode === "opdracht") {
+                if (code && code.data && code.data.trim() !== "") {
 
-                    if (typeof window.handleQRCode === "function") {
-                   
-                        const correct = window.handleQRCode(qrData);
+                    const qrData = code.data.toLowerCase().trim();
 
-                        if (correct === true) {
+                    if (mode === "team") {
 
-                            clearTimeout(messageTimeout);
+                        const geldigeTeams = [
+                            "aandrijving",
+                            "programma",
+                            "klankbron"
+                        ];
+
+                        if (geldigeTeams.includes(qrData)) {
+
+                            localStorage.setItem("team", qrData);
 
                             stopCamera();
 
+                            window.location.href = "../uitleg/uitleg.html?type=team&team=" + qrData;
+
                             return;
-
-                        } else {
-
-                            // Toon de foutmelding
-                            msg.textContent =
-                                "QR-code niet herkend. Controleer of je de juiste QR-code scant.";
-
-                            // Annuleer een eventuele vorige timer
-                            clearTimeout(messageTimeout);
-
-                            // Zet de melding na 3 seconden terug
-                            messageTimeout = setTimeout(() => {
-
-                                msg.textContent = "Richt de camera op een QR-code!";
-
-                            }, 3000);
-
                         }
-
                     }
 
+                    else if (mode === "opdracht") {
+
+                        if (typeof window.handleQRCode === "function") {
+
+                            const correct = window.handleQRCode(qrData);
+
+                            if (correct === true) {
+
+                                clearTimeout(messageTimeout);
+                                stopCamera();
+
+                                return;
+
+                            } else {
+
+                                msg.textContent = "QR-code niet herkend. Controleer of je de juiste QR-code scant.";
+
+                                clearTimeout(messageTimeout);
+
+                                messageTimeout = setTimeout(() => {
+                                    msg.textContent = "Richt de camera op een QR-code!";
+                                }, 3000);
+                            }
+                        }
+                    }
                 }
-
-
             }
         }
 

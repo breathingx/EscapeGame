@@ -17,12 +17,11 @@ body.scanner-page {
     height: auto;
     margin: 24px auto;
     border: 5px solid black;
-    background: #000;
+    background: transparent;
     overflow: hidden;
     position: relative;
     box-sizing: border-box;
 }
-
 
 .qr-scanner .scanner-wrapper video,
 .qr-scanner .scanner-wrapper canvas {
@@ -33,13 +32,12 @@ body.scanner-page {
 }
 
 .qr-scanner .scanner-wrapper video {
-    object-fit: contain;
+    object-fit: cover;
     display: block;
-    max-width: 100%;
-    max-height: 100%;
 }
 
 .qr-scanner #canvas {
+    opacity: 0;
     pointer-events: none;
 }
 
@@ -50,4 +48,5 @@ body.scanner-page {
     color: black;
     text-align: center;
 }
+
 
