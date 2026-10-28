@@ -4,13 +4,21 @@
 
 .game-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: row; 
     align-items: stretch;
     gap: 20px;
     width: 100%; 
-    max-width: 800px;
+    max-width: 1200px; 
     margin: 0 auto;
     box-sizing: border-box;
+}
+
+.left-panel, .right-panel {
+    flex: 1; /* Both panels take up equal 50% space */
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    min-width: 0; /* Prevents flex children from overflowing bounds */
 }
 
 #blocklyDiv, #gameArea {
@@ -40,6 +48,7 @@
         linear-gradient(90deg, rgba(0,0,0,0.05) 1px, transparent 1px);
     background-size: 10% 10%;
 }
+
 .stats-sidebar {
     display: flex;
     flex-direction: row; 
@@ -76,23 +85,41 @@
     transition: transform 0.2s ease;
 }
 
-.action-button-wrapper {
-    display: flex;
-    justify-content: center;
-    margin-top: 30px;
-    width: 100%;
-}
 
 .run-btn {
-    width: auto !important;
+    width: 100%;
     font-size: clamp(18px, 3vw, 24px);
     padding: 18px 40px;
 }
 
-@media (max-width: 800px) {
+.advance-btn {
+    background-color: #ffffff;
+    color: black;
+    width: 100%;
+    font-size: clamp(18px, 3vw, 24px);
+    padding: 18px 40px;
+}
+/* Fallback to stack vertically on smaller browser sizes */
+/* Fallback to stack vertically on smaller browser sizes and phones */
+@media (max-width: 900px) {
+    .game-container {
+        flex-direction: column;
+        max-width: 100%;
+        gap: 20px;
+    }
+
+    .left-panel, .right-panel {
+        width: 100%;
+        flex: none; /* Disable side-by-side distribution */
+    }
+
+    /* Optional: Use flex order if you want the game area to appear above the code blocks on mobile */
+    /* .left-panel { order: 2; } */
+    /* .right-panel { order: 1; } */
+
     #blocklyDiv {
-        height: 480px !important; 
-        max-height: 80vh;
+        height: 50vh !important; /* Adapts to phone screen height */
+        min-height: 400px;
     }
     
     .stats-sidebar {

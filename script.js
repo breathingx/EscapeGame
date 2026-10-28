@@ -406,8 +406,12 @@ function laadMinigameUitleg() {
     const overlay = document.getElementById("minigameOverlay");
     
     // Grab the text for this specific exercise
+    const opdrachtTitel = gameData[team].opdrachten[huidigeOpdracht].naam;
     const uitlegText = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+    document.getElementById("minigameOpdrachtTitel").textContent = opdrachtTitel;
+    document.getElementById("opdrachtTitel").style.display = "none";
     document.getElementById("minigameUitlegTekst").textContent = uitlegText;
+    document.getElementById("uitlegBlok").style.display = "none";
     
     // Show the overlay
     overlay.style.display = "flex";
@@ -449,6 +453,7 @@ function laadOpdracht() {
     document.getElementById("hintBlocks").style.display = "flex";
     document.getElementById("hintContainer").style.display = "flex";
     document.getElementById("openMinigameOverlay").style.display = "none";
+    document.getElementById("minigameOpdrachtTitel").style.display = "none";
 
     const huidigeOpdrachtData = gameData[team].opdrachten[huidigeOpdracht];
     laadAntwoordInvoer(huidigeOpdrachtData);
@@ -739,7 +744,9 @@ function volgendeOpdracht() {
 // shows the transition page between exercises with text and the bonus questions, 
 // depending on team and exercise
 function toonTussenPagina() {
-
+    document.getElementById("openMinigameOverlay").style.display = "none";
+    document.getElementById("minigameOpdrachtTitel").style.display = "none";
+    document.getElementById("opdrachtTitel").style.display = "block";
     const data = gameData[team].opdrachten[huidigeOpdracht].tussenPagina;
     document.getElementById("opdrachtTitel").textContent = "Voor de volgende opdracht";
 
