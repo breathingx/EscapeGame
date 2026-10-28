@@ -401,6 +401,28 @@ function laadAntwoordInvoer(opdracht) {
 }
 
 
+// loads mini game specific explanation view
+function laadMinigameUitleg() {
+    const overlay = document.getElementById("minigameOverlay");
+    
+    // Grab the text for this specific exercise
+    const uitlegText = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+    document.getElementById("minigameUitlegTekst").textContent = uitlegText;
+    
+    // Show the overlay
+    overlay.style.display = "flex";
+    
+    // Hide the overlay when they click start
+    document.getElementById("closeMinigameOverlay").onclick = () => {
+        overlay.style.display = "none";
+        document.getElementById("openMinigameOverlay").style.display = "block";
+        document.getElementById("openMinigameOverlay").onclick = () => {
+            document.getElementById("openMinigameOverlay").style.display = "none";
+            laadMinigameUitleg();
+        };
+    };
+}
+
 // loads the current exercise and resets all temporary game state
 // also initializes any team-specific minigames linked to the exercise
 function laadOpdracht() {
@@ -426,6 +448,7 @@ function laadOpdracht() {
     document.getElementById("hintBtn").style.display = "block";
     document.getElementById("hintBlocks").style.display = "flex";
     document.getElementById("hintContainer").style.display = "flex";
+    document.getElementById("openMinigameOverlay").style.display = "none";
 
     const huidigeOpdrachtData = gameData[team].opdrachten[huidigeOpdracht];
     laadAntwoordInvoer(huidigeOpdrachtData);
@@ -484,6 +507,8 @@ function laadOpdracht() {
                 script.type = "module";
                 script.src = "perfect-pitch/toonladder.js";
                 document.body.appendChild(script);
+
+                laadMinigameUitleg()
 })
     }
 
@@ -830,6 +855,8 @@ function hefboomGame() {
             const script = document.createElement("script");
             script.src = "HefboomCompleet/hefboom.js";
             document.body.appendChild(script);
+
+            laadMinigameUitleg()
         });
 }
 
@@ -864,6 +891,7 @@ function blockly() {
             const blocklyScript = document.createElement("script");
             blocklyScript.src = "blockly/blockly.min.js";
 
+
             blocklyScript.onload = () => {
 
                 // load blockly JavaScript generator
@@ -888,7 +916,7 @@ function blockly() {
 
                 document.body.appendChild(jsScript);
             };
-
+            laadMinigameUitleg()
             document.body.appendChild(blocklyScript);
         });
 }
@@ -919,6 +947,8 @@ function simon_says() {
                 const script = document.createElement("script");
                 script.src = "simon-says/simon.js";
                 document.body.appendChild(script);
+
+                laadMinigameUitleg()
             });
 }
 
