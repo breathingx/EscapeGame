@@ -325,8 +325,26 @@ function laadAntwoordInvoer(opdracht) {
     if(container3) container3.innerHTML = "";
 
     container1.classList.add("codeInputContainer");
+    if (opdracht.invoerType === "double") {
 
-    // ADDED: Logic for the 3 entry fields (GearCode)
+        container2.style.display = "flex";
+        
+        function createInput(id) {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.id = id;
+            input.placeholder = "Voer code in";
+            input.autocomplete = "off";
+            input.addEventListener("input", (e) => {
+                e.target.value = e.target.value.toUpperCase();
+            });
+            return input;
+        }
+
+        container1.appendChild(createInput("antwoordInput1"));
+        container2.appendChild(createInput("antwoordInput2"));
+        return;
+    }
     if (opdracht.invoerType === "triple") {
 
         container2.style.display = "flex";
@@ -619,6 +637,13 @@ function verwerkActie() {
             .join("")
             .toUpperCase()
             .trim();
+    }   else if (huidigeOpdrachtData.invoerType === "double") {
+        // Verzamel de inhoud van alle drie de invoervelden
+        const invoer1 = document.getElementById("antwoordInput1").value.toUpperCase().trim();
+        const invoer2 = document.getElementById("antwoordInput2").value.toUpperCase().trim();
+
+        // antwoord moet structuur hebben van "ANTW1-ANTW2-ANTW3"
+        invoer = `${invoer1}-${invoer2}`;
     } else if (huidigeOpdrachtData.invoerType === "triple") {
         // Verzamel de inhoud van alle drie de invoervelden
         const invoer1 = document.getElementById("antwoordInput1").value.toUpperCase().trim();
@@ -698,8 +723,12 @@ function verwerkActie() {
             document.querySelectorAll(".antwoordBlok").forEach(blok => {
                 blok.disabled = true;
             });
+        } else if (huidigeOpdrachtData.invoerType === "double") {
+            //Disable both double inputs
+            document.getElementById("antwoordInput1").disabled = true;
+            document.getElementById("antwoordInput2").disabled = true;
         } else if (huidigeOpdrachtData.invoerType === "triple") {
-            // ADDED: Disable all 3 GearCode inputs
+            // Disable all 3 GearCode inputs
             document.getElementById("antwoordInput1").disabled = true;
             document.getElementById("antwoordInput2").disabled = true;
             document.getElementById("antwoordInput3").disabled = true;
