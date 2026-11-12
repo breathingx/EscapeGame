@@ -577,14 +577,14 @@ button.feedback-incorrect {
 
 /* hint button and hint blocks container */
 #hintContainer {
-    position: fixed;
+    position: absolute;
     bottom: calc(var(--page-margin) / 2 + 10px);
     left: 0;
     right: 0;
-    margin: 0 auto;
+    margin: 0 auto; 
     width: 100%;
     max-width: calc(var(--max-ui-width) + var(--page-margin) * 0.6);
-    height: clamp(36px, 8.5vh, 160px);
+    height: clamp(36px, 8.5vh, 160px); 
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
@@ -597,7 +597,6 @@ button.feedback-incorrect {
 #hintContainer > * {
     pointer-events: auto;
 }
-
 
 .hintLeft {
     display: flex;
@@ -1017,13 +1016,13 @@ button.feedback-incorrect {
 }
 
 .hud-mask {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
     width: 100%;
     height: calc(clamp(36px, 8.5vh, 160px) + (var(--page-margin) / 2) + 20px);
     background-color: #ffffff;
-    z-index: -1;
+    z-index: -1; 
     pointer-events: none;
 }
 body.team-aandrijving .hud-mask { background-color: #0091FF; }
