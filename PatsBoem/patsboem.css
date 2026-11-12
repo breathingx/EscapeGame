@@ -1,3 +1,4 @@
+
 #patsboem-wrapper {
     display: flex;
     flex-direction: column;
@@ -33,7 +34,7 @@
     transition: transform 0.1s ease, background-color 0.1s ease;
 }
 #btn-boem {
-    background-color: #ff1a1a;
+    background-color: #ff1a1a; /* ff1a1a */
 }
 #btn-pats {
     background-color: #fcff2d;
@@ -57,11 +58,14 @@
 .pb-controls {
     display: flex;
     gap: 15px;
-    width: 100%;
-    max-width: 300px;
+    width: 50%;
 }
 
 #pb-reset-btn {
-    background-color: black;
-    color: white;
+    background-color: white;;
+    color: black;
+    font-family: "Right Grotesk Medium";
+    border: 3px solid black;
+    font-weight: bold;
+    width: 100%;
 }

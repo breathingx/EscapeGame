@@ -325,8 +325,26 @@ function laadAntwoordInvoer(opdracht) {
     if(container3) container3.innerHTML = "";
 
     container1.classList.add("codeInputContainer");
+    if (opdracht.invoerType === "double") {
 
-    // ADDED: Logic for the 3 entry fields (GearCode)
+        container2.style.display = "flex";
+        
+        function createInput(id) {
+            const input = document.createElement("input");
+            input.type = "text";
+            input.id = id;
+            input.placeholder = "Voer code in";
+            input.autocomplete = "off";
+            input.addEventListener("input", (e) => {
+                e.target.value = e.target.value.toUpperCase();
+            });
+            return input;
+        }
+
+        container1.appendChild(createInput("antwoordInput1"));
+        container2.appendChild(createInput("antwoordInput2"));
+        return;
+    }
     if (opdracht.invoerType === "triple") {
 
         container2.style.display = "flex";
@@ -401,6 +419,32 @@ function laadAntwoordInvoer(opdracht) {
 }
 
 
+// loads mini game specific explanation view
+function laadMinigameUitleg() {
+    const overlay = document.getElementById("minigameOverlay");
+    
+    // Grab the text for this specific exercise
+    const opdrachtTitel = gameData[team].opdrachten[huidigeOpdracht].naam;
+    const uitlegText = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+    document.getElementById("minigameOpdrachtTitel").textContent = opdrachtTitel;
+    document.getElementById("opdrachtTitel").style.display = "none";
+    document.getElementById("minigameUitlegTekst").textContent = uitlegText;
+    document.getElementById("uitlegBlok").style.display = "none";
+    
+    // Show the overlay
+    overlay.style.display = "flex";
+    
+    // Hide the overlay when they click start
+    document.getElementById("closeMinigameOverlay").onclick = () => {
+        overlay.style.display = "none";
+        document.getElementById("openMinigameOverlay").style.display = "block";
+        document.getElementById("openMinigameOverlay").onclick = () => {
+            document.getElementById("openMinigameOverlay").style.display = "none";
+            laadMinigameUitleg();
+        };
+    };
+}
+
 // loads the current exercise and resets all temporary game state
 // also initializes any team-specific minigames linked to the exercise
 function laadOpdracht() {
@@ -426,6 +470,8 @@ function laadOpdracht() {
     document.getElementById("hintBtn").style.display = "block";
     document.getElementById("hintBlocks").style.display = "flex";
     document.getElementById("hintContainer").style.display = "flex";
+    document.getElementById("openMinigameOverlay").style.display = "none";
+    document.getElementById("minigameOpdrachtTitel").style.display = "none";
 
     const huidigeOpdrachtData = gameData[team].opdrachten[huidigeOpdracht];
     laadAntwoordInvoer(huidigeOpdrachtData);
@@ -484,6 +530,8 @@ function laadOpdracht() {
                 script.type = "module";
                 script.src = "perfect-pitch/toonladder.js";
                 document.body.appendChild(script);
+
+                laadMinigameUitleg()
 })
     }
 
@@ -589,6 +637,13 @@ function verwerkActie() {
             .join("")
             .toUpperCase()
             .trim();
+    }   else if (huidigeOpdrachtData.invoerType === "double") {
+        // Verzamel de inhoud van alle drie de invoervelden
+        const invoer1 = document.getElementById("antwoordInput1").value.toUpperCase().trim();
+        const invoer2 = document.getElementById("antwoordInput2").value.toUpperCase().trim();
+
+        // antwoord moet structuur hebben van "ANTW1-ANTW2-ANTW3"
+        invoer = `${invoer1}-${invoer2}`;
     } else if (huidigeOpdrachtData.invoerType === "triple") {
         // Verzamel de inhoud van alle drie de invoervelden
         const invoer1 = document.getElementById("antwoordInput1").value.toUpperCase().trim();
@@ -668,8 +723,12 @@ function verwerkActie() {
             document.querySelectorAll(".antwoordBlok").forEach(blok => {
                 blok.disabled = true;
             });
+        } else if (huidigeOpdrachtData.invoerType === "double") {
+            //Disable both double inputs
+            document.getElementById("antwoordInput1").disabled = true;
+            document.getElementById("antwoordInput2").disabled = true;
         } else if (huidigeOpdrachtData.invoerType === "triple") {
-            // ADDED: Disable all 3 GearCode inputs
+            // Disable all 3 GearCode inputs
             document.getElementById("antwoordInput1").disabled = true;
             document.getElementById("antwoordInput2").disabled = true;
             document.getElementById("antwoordInput3").disabled = true;
@@ -714,7 +773,9 @@ function volgendeOpdracht() {
 // shows the transition page between exercises with text and the bonus questions, 
 // depending on team and exercise
 function toonTussenPagina() {
-
+    document.getElementById("openMinigameOverlay").style.display = "none";
+    document.getElementById("minigameOpdrachtTitel").style.display = "none";
+    document.getElementById("opdrachtTitel").style.display = "block";
     const data = gameData[team].opdrachten[huidigeOpdracht].tussenPagina;
     document.getElementById("opdrachtTitel").textContent = "Voor de volgende opdracht";
 
@@ -830,6 +891,8 @@ function hefboomGame() {
             const script = document.createElement("script");
             script.src = "HefboomCompleet/hefboom.js";
             document.body.appendChild(script);
+
+            laadMinigameUitleg()
         });
 }
 
@@ -864,6 +927,7 @@ function blockly() {
             const blocklyScript = document.createElement("script");
             blocklyScript.src = "blockly/blockly.min.js";
 
+
             blocklyScript.onload = () => {
 
                 // load blockly JavaScript generator
@@ -888,7 +952,7 @@ function blockly() {
 
                 document.body.appendChild(jsScript);
             };
-
+            laadMinigameUitleg()
             document.body.appendChild(blocklyScript);
         });
 }
@@ -919,6 +983,8 @@ function simon_says() {
                 const script = document.createElement("script");
                 script.src = "simon-says/simon.js";
                 document.body.appendChild(script);
+
+                laadMinigameUitleg()
             });
 }
 

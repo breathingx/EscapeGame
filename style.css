@@ -40,8 +40,9 @@
     --scale: 1;
     --page-margin: 7vh;
     --content-width: 100%;
-    --max-content-width: 500px;
-    --hud-heigt: 140px;
+    --max-content-width: clamp(250px, 80vw, 500px); 
+    --max-ui-width: clamp(250px, 80vw, 800px);     
+    --hud-height: calc(clamp(36px, 8.5vh, 160px) + var(--page-margin) / 2 + 20px);
 }
 
 
@@ -53,22 +54,26 @@
 }
 
 .main-content {
-    padding-left: var(--page-margin);
-    padding-right: var(--page-margin);
-    padding-top: calc(var(--page-margin)* 0.3);
-    padding-bottom: calc(var(--page-margin)* 0.5);
-    max-width: 1200px;
-    margin: 0 auto;
+    flex: 1 1 auto;
+    padding-bottom: var(--hud-height);
+    width: 100%;
+    max-width: var(--max-ui-width);
+    margin: auto;
+    box-sizing: border-box;
+    overflow-y: auto;
 }
 
 .content-wrapper {
     width: 100%;
-    max-width: var(--max-content-width);
+    max-width: var(--max-ui-width);
     margin-left: auto;
     margin-right: auto;
     box-sizing: border-box;
 }
 
+body.no-scroll .main-content {
+    overflow: hidden;
+}
 
 /* ================================================= */
 /* ================== BASE ========================= */
@@ -77,6 +82,7 @@
 html, body {
     height: 100%;
     margin: 0;
+    overscroll-behavior-y: none;
 }
 
 body {
@@ -84,6 +90,7 @@ body {
     height: 100vh;
     min-height: 100dvh;
     overflow-x: hidden;
+    overflow-y: hidden; 
     background-color: #ffd700;
     font-family: "Montserrat", sans-serif;
     color: black;
@@ -91,6 +98,8 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
+    touch-action: manipulation;
+    overscroll-behavior-y: none;
 }
 
 
@@ -116,6 +125,18 @@ body.team-klankbron {
     background-color: #ff6800;
 }
 
+#screen {
+    height: 100dvh;
+    min-width: 100vw;
+    min-height: 0;
+    max-height: none;
+    box-sizing: border-box;
+    padding: 0 calc(var(--page-margin)*0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 auto;
+}
 
 /* ================================================= */
 /* ================== HEADER ======================= */
@@ -157,7 +178,7 @@ body.team-klankbron {
 
 #scoreDisplay, #timer {
     font-family: "right Grotesk Medium";
-    font-size: clamp(18px, 6vw, 26px);
+    font-size: clamp(20px, 6vw, 30px);
     font-weight: 500;
     text-align: center;
     color:#fff;
@@ -174,6 +195,7 @@ body.team-klankbron {
     text-align: center;
     color:#000;
     font-family: "Right Grotesk Compact";
+    font-size: clamp(14px, 5vw, 24px);
     margin: 0;
 }
 
@@ -199,10 +221,13 @@ body.team-klankbron {
 
  #vraagContainer {
     position: static;
+    min-height: 100%;
     width: 100%;
+    max-width: var(--max-ui-width);
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between;
 }
 
 #vraag {
@@ -226,10 +251,27 @@ body.team-klankbron {
     display: flex;
     justify-content: center;
 }
+#minigameWrapper {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding-top: 60px;
+}
+
+#minigameOpdrachtTitel {
+    position: absolute;
+    top: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: clamp(20px, 4vw, 28px);
+
+}
 
 .minigame {
     width: 100%;
-    max-width: 500px;
+    max-width: var(--max-ui-width);
     margin: 40px auto;
 }
 
@@ -247,7 +289,7 @@ body.team-klankbron {
 }
 
 #minigameUitlegBlok {
-    width: 80%;
+    width: var(--max-content-width);
     border: 3px solid black;
     padding: 50px 2vw 1vh 2vw; 
     display: flex;
@@ -271,10 +313,12 @@ button {
     font-family: "Right Grotesk Medium";
     font-weight: 500;
     padding: 12px 24px;
-    margin: 10px 0;
+    margin: 10px auto; 
     font-size: clamp(14px, 2.5vw, 20px);
     border: none;
     width: var(--content-width);
+    max-width: var(--max-ui-width);
+    box-sizing: border-box;
     cursor: pointer;
     transition: 0.3s ease;
     background-color: black;
@@ -314,13 +358,13 @@ button {
     top: 5px;
     left: 5px;
     height: 40px;
-    width: auto; /* Allows the word 'Uitleg' to fit naturally */
+    width: auto;
     padding: 0 15px; 
     background-color: black;
     color: white;
     font-size: clamp(14px, 2.5vw, 20px);
     font-family: "Right Grotesk Medium";
-    z-index: 90; /* Ensures it sits BEHIND the overlay */
+    z-index: 90;
     border: none;
     cursor: pointer;
 }
@@ -384,12 +428,14 @@ button {
 button.correct-state {
     background-color: white !important;
     color: black !important;
+    box-shadow: inset 0 0 0 3px black !important;
 }
 
 
 #continueBtn {
     background-color: black;
     color: white;
+    box-shadow: inset 0 0 0 3px black !important;
 }
 
 #continueText {
@@ -451,7 +497,7 @@ button.feedback-incorrect {
 
 .video-wrapper iframe {
     width: 100%;
-    max-width: 500px;
+    max-width: var(--max-ui-width);
     border: 6px solid black;
     box-shadow: 0 20px 50px rgba(0,0,0,0.3);
 }
@@ -492,12 +538,8 @@ button.feedback-incorrect {
 
  .logo {
     position: relative;
-    bottom: auto;
-    left: auto;
     transform: none;
-    width: clamp(140px, 22vw, 260px);
-    height: auto;
-    margin-bottom: calc(var(--page-margin) / 1.75);
+    width: clamp(100px, 15vw, 220px);
 }
 
 
@@ -506,7 +548,7 @@ button.feedback-incorrect {
 /* ================================================= */
 
 /* grey background behind progress bar */
- .progress-container {
+.progress-container {
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -515,6 +557,7 @@ button.feedback-incorrect {
     overflow: hidden;
     box-shadow: 0 100px 0 0 rgba(0, 0, 0, 0.2);
     padding-bottom: env(safe-area-inset-bottom);
+    z-index: 30;
 }
 
 /* animated progress bar */
@@ -534,40 +577,54 @@ button.feedback-incorrect {
 
 /* hint button and hint blocks container */
 #hintContainer {
+    position: fixed;
+    bottom: calc(var(--page-margin) / 2 + 10px);
+    left: 0;
+    right: 0;
+    margin: 0 auto;
     width: 100%;
+    max-width: calc(var(--max-ui-width) + var(--page-margin) * 0.6);
+    height: clamp(36px, 8.5vh, 160px);
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    padding-left: var(--page-margin);
-    padding-right: var(--page-margin);
+    align-items: flex-end;
     box-sizing: border-box;
-    margin-top: -40px;
-    flex-shrink: 0;
+    padding: 0 calc(var(--page-margin) * 0.3);
+    pointer-events: none;
+    z-index: 20; 
+}
+
+#hintContainer > * {
+    pointer-events: auto;
 }
 
 
 .hintLeft {
     display: flex;
     flex-direction: column;
-    gap: 6px;
+    height: clamp(36px, 8.5vh, 160px);
+    width: clamp(80px, 18vw, 200px); /* Explicitly matches #bonusBtn width */
+    gap: 8px;
 }
 
 #hintBtn {
-    width: clamp(80px, 18vw, 200px);
-    height: clamp(36px, 6vh, 60px);
+    width: 100%; /* Fills the new explicit width */
+    height: auto;
+    flex: 2;
     margin: 0;
 }
 
 #hintBlocks {
     display: flex;
     justify-content: space-between;
-    width: clamp(80px, 18vw, 200px);
-    height: 18px;
+    width: 100%; /* Fills the new explicit width */
+    height: auto;
+    flex: 1;
 }
 
 .hintBlock {
     width: 30%;
-    height: 18px;
+    height: 100%;
     background-color: black;
 }
 
@@ -710,7 +767,9 @@ button.feedback-incorrect {
 }
 
 .tussenBonusBlok {
-    width: 100%;
+    width: var(--max-content-width);
+    margin: 0 auto;
+    margin-top: 10vh;
 }
 
 .bonusPreview {
@@ -849,24 +908,38 @@ button.feedback-incorrect {
 
 #uitlegBlok {
     width: var(--content-width);
+    max-width: var(--max-content-width);
+    box-sizing: border-box; 
+    margin: 0 auto;
     border: 3px solid black;
-    padding: 1vh 2vw;
+    padding: 1vh 1vw;
     font-family: "Montserrat";
     font-size: clamp(16px, 3vw, 20px);
-
     text-align: center;
     background: #fff;
-    max-height: 30vh;
+    max-height: 35vh; 
     overflow-y: auto;
     position: relative;
 }
 #uitlegWrapper {
-    min-height: 40vh;
     display: flex;
     flex-direction: column;
+    
+    justify-content: space-between;
+    justify-content: flex-start;
+    align-items: center;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+}
+#codeinputs {
+    display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
+    gap: clamp(4px, 1.5vw, 10px);
+    margin-bottom: 10px;
+    box-sizing: border-box;
 }
 
 .codeInputContainer {
@@ -881,6 +954,7 @@ button.feedback-incorrect {
 
 #antwoordInput1, #antwoordInput2, #antwoordInput3 {
     width: 100%;
+    max-width: 100%;
     height: clamp(50px, 7vh, 70px);
     padding: 0 20px;
     font-size: clamp(20px, 4vw, 28px);
@@ -926,19 +1000,14 @@ button.feedback-incorrect {
 
 #extraContent {
     width: 100%;
-    margin-bottom: 20px;
+    margin-top: 0;
 }
 
 .hud-footer {
-    position: static;
-    bottom: 0;
-    left: 0;
-    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    padding-top: 10vh;
+    justify-content: flex-end;
     z-index: 10;
 }
 
@@ -946,6 +1015,21 @@ button.feedback-incorrect {
     margin-bottom: 1vh;
     font-size: clamp(20px, 4vw, 28px);;
 }
+
+.hud-mask {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: calc(clamp(36px, 8.5vh, 160px) + (var(--page-margin) / 2) + 20px);
+    background-color: #ffffff;
+    z-index: -1;
+    pointer-events: none;
+}
+body.team-aandrijving .hud-mask { background-color: #0091FF; }
+body.team-programma .hud-mask { background-color: #00f280; }
+body.team-klankbron .hud-mask { background-color: #ff6800; }
+
 
 /* ================================================= */
 /* ================ TRUTH OR LIE =================== */
@@ -955,7 +1039,7 @@ button.feedback-incorrect {
     display: flex;
     flex-direction: row;
     justify-content: center;
-    width: 70%;
+    width: calc(var(--max-ui-width)*0.3);
 }
 
 
@@ -964,7 +1048,7 @@ button.feedback-incorrect {
   flex-direction: row;
   justify-content: center;
   gap: 8px;
-  width: 110%;
+  width: var(--max-content-width);
   margin-bottom: 2vh;
 }
 
