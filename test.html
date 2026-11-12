@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Museum Track Codes</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            max-width: 500px;
+            margin: auto;
+            background-color: #f9f9f9;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        h2 {
+            margin-top: 0;
+            font-size: 1.2rem;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #555;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        button {
+            margin-top: 15px;
+            padding: 12px 15px;
+            background: #2c3e50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #1a252f;
+        }
+        .output-box {
+            margin-top: 15px;
+            padding: 12px;
+            background: #eef2f5;
+            border-left: 4px solid #2c3e50;
+            font-family: monospace;
+            font-size: 1.1rem;
+            min-height: 24px;
+            white-space: pre-wrap;
+        }
+        .error {
+            border-left-color: #e74c3c;
+            color: #c0392b;
+            font-family: sans-serif;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Generate Save Code</h2>
+        <label for="genTeam">Team ID (0-4):</label>
+        <input type="number" id="genTeam" min="0" max="4" value="1">
+
+        <label for="genScore">Score (0-150):</label>
+        <input type="number" id="genScore" min="0" max="150" value="100">
+
+        <label for="genTime">Time Left (Seconds, max 3600):</label>
+        <input type="number" id="genTime" min="0" max="3600" value="1200">
+
+        <button onclick="handleGenerate()">Generate Code</button>
+        <div id="genResult" class="output-box"></div>
+    </div>
+
+    <div class="container">
+        <h2>Decode Save Code</h2>
+        <label for="decCode">9-Character Code:</label>
+        <input type="text" id="decCode" maxlength="9" placeholder="e.g. 0B4K+V8M-">
+
+        <button onclick="handleDecode()">Decode Code</button>
+        <div id="decResult" class="output-box"></div>
+    </div>
+
+    <script>
+        // --- Base33 Logic ---
+        const ALPHABET = "0123456789BCDFGHJKLMNPQRSTVWXYZ+-";
+        const BASE = 33n;
+        const SECRET_KEY = 0x8F3B9A2Cn; 
+
+        function encodeBase33(num) {
+            if (num === 0n) return ALPHABET[0];
+            let str = "";
+            while (num > 0n) {
+                let remainder = Number(num % BASE);
+                str = ALPHABET[remainder] + str;
+                num = num / BASE;
+            }
+            return str;
+        }
+
+        function decodeBase33(str) {
+            let num = 0n;
+            for (let i = 0; i < str.length; i++) {
+                let charIndex = BigInt(ALPHABET.indexOf(str[i].toUpperCase()));
+                if (charIndex === -1n) throw new Error("Invalid character in code.");
+                num = num * BASE + charIndex;
+            }
+            return num;
+        }
+
+        function generateSaveCode(teamId, score, timeLeft) {
+            const today = new Date();
+            const currentMonth = today.getMonth() + 1; 
+            const currentDay = today.getDate();        
+
+            const bTeam = BigInt(teamId) & 7n;          
+            const bScore = BigInt(score) & 255n;        
+            const bTime = BigInt(timeLeft) & 4095n;     
+            const bDay = BigInt(currentDay) & 31n;      
+            const bMonth = BigInt(currentMonth) & 15n;  
+
+            const rawData = (bMonth << 28n) | (bDay << 23n) | (bTime << 11n) | (bScore << 3n) | bTeam;
+            const encData = rawData ^ SECRET_KEY;
+            const checksum = encData % 8192n;
+            const finalNum = (checksum << 32n) | encData;
+
+            return encodeBase33(finalNum).padStart(9, '0');
+        }
+
+        function decodeSaveCode(code) {
+            if (code.length !== 9) throw new Error("Code must be exactly 9 characters long.");
+
+            const finalNum = decodeBase33(code);
+            const checksum = finalNum >> 32n;
+            const encData = finalNum & 0xFFFFFFFFn; 
+
+            if (encData % 8192n !== checksum) {
+                throw new Error("Invalid code: Checksum mismatch (likely a typo).");
+            }
+
+            const rawData = encData ^ SECRET_KEY;
+
+            const bTeam = rawData & 7n;
+            const bScore = (rawData >> 3n) & 255n;
+            const bTime = (rawData >> 11n) & 4095n;
+            const bDay = (rawData >> 23n) & 31n;
+            const bMonth = (rawData >> 28n) & 15n;
+
+            const today = new Date();
+            const currentMonth = today.getMonth() + 1;
+            const currentDay = today.getDate();
+
+            if (Number(bMonth) !== currentMonth || Number(bDay) !== currentDay) {
+                throw new Error("Expired code: This code was not generated today.");
+            }
+
+            return {
+                team_id: Number(bTeam),
+                score: Number(bScore),
+                time_left: Number(bTime)
+            };
+        }
+
+        // --- UI Handlers ---
+        function handleGenerate() {
+            const team = parseInt(document.getElementById('genTeam').value) || 0;
+            const score = parseInt(document.getElementById('genScore').value) || 0;
+            const time = parseInt(document.getElementById('genTime').value) || 0;
+            const resultBox = document.getElementById('genResult');
+
+            try {
+                const code = generateSaveCode(team, score, time);
+                resultBox.className = "output-box";
+                resultBox.innerText = code;
+            } catch (err) {
+                resultBox.className = "output-box error";
+                resultBox.innerText = err.message;
+            }
+        }
+
+        function handleDecode() {
+            const code = document.getElementById('decCode').value.trim().toUpperCase();
+            const resultBox = document.getElementById('decResult');
+
+            try {
+                const data = decodeSaveCode(code);
+                resultBox.className = "output-box";
+                resultBox.innerText = `Team: ${data.team_id}\nScore: ${data.score}\nTime Left: ${data.time_left}s`;
+            } catch (err) {
+                resultBox.className = "output-box error";
+                resultBox.innerText = err.message;
+            }
+        }
+    </script>
+</body>
+</html>

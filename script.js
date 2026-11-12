@@ -1828,36 +1828,157 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-// =================================================
-// TEAM CODES
-// =================================================
+// // =================================================
+// // TEAM CODES
+// // =================================================
 
 
-// initializes the team code page and displays the player's own code and the other team slots
+// // initializes the team code page and displays the player's own code and the other team slots
+// if (window.location.pathname.includes("codes.html")) {
+
+//     const team = localStorage.getItem("team");
+
+//     const alleTeams = ["aandrijving", "programma", "klankbron"];
+
+//     const andereTeams = alleTeams.filter(t => t !== team);
+
+//     document.getElementById("scoreDisplay").textContent =
+//     String(localStorage.getItem("score") || 0).padStart(5, '0');
+
+//     document.getElementById("eigenTeamBlok").classList.add(team);
+//     document.getElementById("team2Blok").classList.add(andereTeams[0]);
+//     document.getElementById("team3Blok").classList.add(andereTeams[1]);
+
+//     document.getElementById("eigenTeamTitel").textContent = "Team: " + team;
+//     document.getElementById("eigenCode").textContent =
+//         "Jullie code: " + teamCodes[team];
+
+//     document.getElementById("team2Naam").textContent =
+//         "Team: " + andereTeams[0];
+
+//     document.getElementById("team3Naam").textContent =
+//         "Team: " + andereTeams[1];
+
+//     document.getElementById("team2Input").addEventListener("input", (e) => {
+//         e.target.value = e.target.value.toUpperCase();
+//     });
+
+//     document.getElementById("team3Input").addEventListener("input", (e) => {
+//         e.target.value = e.target.value.toUpperCase();
+//     });
+// }
+
+// // checks whether a submitted team code is correct
+// // when both codes are found, the game is completed
+// function controleerCode(index) {
+
+
+//     const team = localStorage.getItem("team");
+    
+//     const alleTeams = ["aandrijving", "programma", "klankbron"];
+//     const andereTeams = alleTeams.filter(t => t !== team);
+
+//     const inputId = index === 0 ? "team2Input" : "team3Input";
+//     const feedbackId = index === 0 ? "team2Feedback" : "team3Feedback";
+//     const blokId = index === 0 ? "team2Blok" : "team3Blok";
+
+//     const input = document.getElementById(inputId);
+//     const feedback = document.getElementById(feedbackId);
+//     const blok = document.getElementById(blokId);
+
+//     const invoer = input.value.trim().toUpperCase();
+
+//     const juisteCode = teamCodes[andereTeams[index]];
+
+//     // if both team codes are known save the final score and remaining time
+//     if (invoer === juisteCode) {
+
+//         correcteCodes[index] = true;
+
+//         const knop = blok.querySelector("button");
+
+//         blok.innerHTML = `
+//             <h2>
+//                 Team: ${andereTeams[index]}
+//             </h2>
+
+
+//             <div class="codeCorrect">
+//                 ${juisteCode}
+//             </div>
+
+//         `;
+
+//         if (correcteCodes[0] && correcteCodes[1]) {
+
+//             const eindScore = localStorage.getItem("score");
+//             const eindTijd = localStorage.getItem("totalSeconds");
+
+//             let totalSeconds = parseInt(eindTijd);
+
+//             let minutes = Math.floor(totalSeconds / 60);
+//             let seconds = totalSeconds % 60;
+
+//             if (seconds < 10) seconds = "0" + seconds;
+
+//             localStorage.setItem("eindScore", eindScore);
+
+//             localStorage.setItem(
+//                 "eindTijd",
+//                 minutes + ":" + seconds
+//             );
+
+//             window.location.href = "video/video.html?team=" + team + "&type=outro";
+//         }
+
+//     } else {
+
+//         feedback.textContent = "Onjuist";
+//     }
+// }
+
+// =================================================
+// NEW TEAM CODES
+// =================================================
+const ALPHABET = "0123456789BCDFGHJKLMNPQRSTVWXYZ+-";
+const BASE = 33n;
+const SECRET_KEY = 0x8F3B9A2Cn; 
+const TEAM_IDS = {
+    "programma": 1,
+    "klankbron": 2,
+    "aandrijving": 3
+};
+
+// Initializes the team code page and generates the player's own code
 if (window.location.pathname.includes("codes.html")) {
 
     const team = localStorage.getItem("team");
-
     const alleTeams = ["aandrijving", "programma", "klankbron"];
-
     const andereTeams = alleTeams.filter(t => t !== team);
 
-    document.getElementById("scoreDisplay").textContent =
-    String(localStorage.getItem("score") || 0).padStart(5, '0');
+    const currentScore = parseInt(localStorage.getItem("score")) || 0;
+    const currentSeconds = parseInt(localStorage.getItem("totalSeconds")) || 0;
+    const myTeamId = TEAM_IDS[team] || 0;
+
+    document.getElementById("scoreDisplay").textContent = String(currentScore).padStart(5, '0');
 
     document.getElementById("eigenTeamBlok").classList.add(team);
     document.getElementById("team2Blok").classList.add(andereTeams[0]);
     document.getElementById("team3Blok").classList.add(andereTeams[1]);
 
     document.getElementById("eigenTeamTitel").textContent = "Team: " + team;
-    document.getElementById("eigenCode").textContent =
-        "Jullie code: " + teamCodes[team];
+    
+    // Generate the dynamic code for the current team
+    try {
+        const myCode = generateTeamCode(myTeamId, currentScore, currentSeconds);
+        document.getElementById("eigenCode").textContent = "Jullie code: " + myCode;
+    } catch (e) {
+        document.getElementById("eigenCode").textContent = "Fout bij genereren code.";
+        console.error(e);
+    }
 
-    document.getElementById("team2Naam").textContent =
-        "Team: " + andereTeams[0];
-
-    document.getElementById("team3Naam").textContent =
-        "Team: " + andereTeams[1];
+    document.getElementById("team2Naam").textContent = "Team: " + andereTeams[0];
+    document.getElementById("team3Naam").textContent = "Team: " + andereTeams[1];
 
     document.getElementById("team2Input").addEventListener("input", (e) => {
         e.target.value = e.target.value.toUpperCase();
@@ -1868,13 +1989,10 @@ if (window.location.pathname.includes("codes.html")) {
     });
 }
 
-// checks whether a submitted team code is correct
-// when both codes are found, the game is completed
+// Decodes a submitted team code and checks if it belongs to the correct team
 function controleerCode(index) {
 
-
     const team = localStorage.getItem("team");
-    
     const alleTeams = ["aandrijving", "programma", "klankbron"];
     const andereTeams = alleTeams.filter(t => t !== team);
 
@@ -1887,54 +2005,145 @@ function controleerCode(index) {
     const blok = document.getElementById(blokId);
 
     const invoer = input.value.trim().toUpperCase();
+    
+    const expectedTeamString = andereTeams[index];
+    const expectedTeamId = TEAM_IDS[expectedTeamString];
 
-    const juisteCode = teamCodes[andereTeams[index]];
+    try {
+        // Attempt to decode the input string
+        const decodedData = decodeTeamCode(invoer);
 
-    // if both team codes are known save the final score and remaining time
-    if (invoer === juisteCode) {
+        // Verify the code actually belongs to the team they are entering it for
+        if (decodedData.team_id !== expectedTeamId) {
+            feedback.textContent = "Deze code is van een ander team!";
+            return;
+        }
 
+        // Code is valid and belongs to the correct team
         correcteCodes[index] = true;
-
-        const knop = blok.querySelector("button");
 
         blok.innerHTML = `
             <h2>
-                Team: ${andereTeams[index]}
+                Team: ${expectedTeamString}
             </h2>
-
-
             <div class="codeCorrect">
-                ${juisteCode}
+                Code correct! Score: ${decodedData.score}
             </div>
-
         `;
 
+        // If both team codes are known, save the final score and end the game
         if (correcteCodes[0] && correcteCodes[1]) {
-
             const eindScore = localStorage.getItem("score");
             const eindTijd = localStorage.getItem("totalSeconds");
 
             let totalSeconds = parseInt(eindTijd);
-
             let minutes = Math.floor(totalSeconds / 60);
             let seconds = totalSeconds % 60;
 
             if (seconds < 10) seconds = "0" + seconds;
 
             localStorage.setItem("eindScore", eindScore);
-
-            localStorage.setItem(
-                "eindTijd",
-                minutes + ":" + seconds
-            );
+            localStorage.setItem("eindTijd", minutes + ":" + seconds);
 
             window.location.href = "video/video.html?team=" + team + "&type=outro";
         }
 
-    } else {
-
-        feedback.textContent = "Onjuist";
+    } catch (error) {
+        // Catch checksum failures, wrong dates, and invalid characters
+        if (error.message.includes("Invalid character")) {
+            feedback.textContent = "Ongeldige tekens gebruikt.";
+        } else if (error.message.includes("Expired code")) {
+            feedback.textContent = "Deze code is verlopen (niet van vandaag).";
+        } else {
+            feedback.textContent = "Onjuist of typefout (Checksum mismatch).";
+        }
     }
+}
+// Base33: Numbers (10) + Letters (21) + Symbols (2) = 33 
+
+
+function encodeBase33(num) {
+    if (num === 0n) return ALPHABET[0];
+    let str = "";
+    while (num > 0n) {
+        let remainder = Number(num % BASE);
+        str = ALPHABET[remainder] + str;
+        num = num / BASE;
+    }
+    return str;
+}
+
+function decodeBase33(str) {
+    let num = 0n;
+    for (let i = 0; i < str.length; i++) {
+        let charIndex = BigInt(ALPHABET.indexOf(str[i]));
+        if (charIndex === -1n) throw new Error("Invalid character in code");
+        num = num * BASE + charIndex;
+    }
+    return num;
+}
+
+function generateTeamCode(teamId, score, timeLeft) {
+    const today = new Date();
+    const currentMonth = today.getMonth() + 1; // 1-12
+    const currentDay = today.getDate();        // 1-31
+
+    // convert values into bigint and apply bitmasks
+    const bTeam = BigInt(teamId) & 7n;          // 3 bits (0-7)
+    const bScore = BigInt(score) & 255n;        // 8 bits (0-255)
+    const bTime = BigInt(timeLeft) & 4095n;     // 12 bits (0-4095)
+    const bDay = BigInt(currentDay) & 31n;      // 5 bits (0-31)
+    const bMonth = BigInt(currentMonth) & 15n;  // 4 bits (0-15)
+
+    // [Month: 4] [Day: 5] [Time: 12] [Score: 8] [Team: 3]
+    const rawData = (bMonth << 28n) | (bDay << 23n) | (bTime << 11n) | (bScore << 3n) | bTeam;
+
+    // obfuscate a bit
+    const encData = rawData ^ SECRET_KEY;
+
+    const checksum = encData % 8192n;
+    const finalNum = (checksum << 32n) | encData;
+
+    // Convert to Base33
+    return encodeBase33(finalNum).padStart(9, '0');
+}
+
+function decodeTeamCode(code) {
+    if (code.length !== 9) throw new Error("Code must be exactly 9 characters");
+
+    const finalNum = decodeBase33(code);
+
+    const checksum = finalNum >> 32n;
+    const encData = finalNum & 0xFFFFFFFFn;
+
+    if (encData % 8192n !== checksum) {
+        throw new Error("Invalid team code: Checksum mismatch.");
+    }
+
+    // de-obfuscate
+    const rawData = encData ^ SECRET_KEY;
+
+    // Unpack variables using bitmasks
+    const bTeam = rawData & 7n;
+    const bScore = (rawData >> 3n) & 255n;
+    const bTime = (rawData >> 11n) & 4095n;
+    const bDay = (rawData >> 23n) & 31n;
+    const bMonth = (rawData >> 28n) & 15n;
+
+    // check if date matches TODAY
+    const today = new Date();
+    const currentMonth = today.getMonth() + 1;
+    const currentDay = today.getDate();
+
+    if (Number(bMonth) !== currentMonth || Number(bDay) !== currentDay) {
+        throw new Error("wrong date");
+    }
+
+    return {
+        team_id: Number(bTeam),
+        score: Number(bScore),
+        time_left: Number(bTime)
+    };
 }
 
 
