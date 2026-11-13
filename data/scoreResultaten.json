@@ -40,8 +40,8 @@
             "aantal": 25
         },
         {
-            "naam": "Number of seconds to",
-            "onderdeel": "Mars",
+            "naam": "Duitse Bandoneon",
+            "onderdeel": "Knoppen",
             "aantal": 30
         },
         {
@@ -77,7 +77,7 @@
         },
         {
             "naam": "Viool",
-            "onderdeel": "Aantal onderdelen",
+            "onderdeel": "Onderdelen",
             "aantal": 70
         },
         {
@@ -125,5 +125,6 @@
             "naam": "Symphony No. 8",
             "onderdeel": "Aantal muziekspelers",
             "aantal": 1000
-        },
+        }
     ]
+}
