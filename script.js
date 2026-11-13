@@ -1960,7 +1960,13 @@ if (window.location.pathname.includes("codes.html")) {
     const currentSeconds = parseInt(localStorage.getItem("totalSeconds")) || 0;
     const myTeamId = TEAM_IDS[team] || 0;
 
-    document.getElementById("scoreDisplay").textContent = String(currentScore).padStart(5, '0');
+    localStorage.setItem(`team_${team}_score`, currentScore);
+    localStorage.setItem(`team_${team}_time`, currentSeconds);
+
+    const scoreDisplay = document.getElementById("scoreDisplay");
+    if (scoreDisplay) {
+        scoreDisplay.textContent = String(currentScore).padStart(5, '0');
+    }
 
     document.getElementById("eigenTeamBlok").classList.add(team);
     document.getElementById("team2Blok").classList.add(andereTeams[0]);
@@ -1968,7 +1974,6 @@ if (window.location.pathname.includes("codes.html")) {
 
     document.getElementById("eigenTeamTitel").textContent = "Team: " + team;
     
-    // Generate the dynamic code for the current team
     try {
         const myCode = generateTeamCode(myTeamId, currentScore, currentSeconds);
         document.getElementById("eigenCode").textContent = "Jullie code: " + myCode;
@@ -1989,7 +1994,6 @@ if (window.location.pathname.includes("codes.html")) {
     });
 }
 
-// Decodes a submitted team code and checks if it belongs to the correct team
 function controleerCode(index) {
 
     const team = localStorage.getItem("team");
@@ -2010,28 +2014,26 @@ function controleerCode(index) {
     const expectedTeamId = TEAM_IDS[expectedTeamString];
 
     try {
-        // Attempt to decode the input string
         const decodedData = decodeTeamCode(invoer);
 
-        // Verify the code actually belongs to the team they are entering it for
         if (decodedData.team_id !== expectedTeamId) {
             feedback.textContent = "Deze code is van een ander team!";
             return;
         }
 
-        // Code is valid and belongs to the correct team
         correcteCodes[index] = true;
+        localStorage.setItem(`team_${expectedTeamString}_score`, decodedData.score);
+        localStorage.setItem(`team_${expectedTeamString}_time`, decodedData.time_left);
 
         blok.innerHTML = `
             <h2>
                 Team: ${expectedTeamString}
             </h2>
             <div class="codeCorrect">
-                Code correct! Score: ${decodedData.score}
+                Code correct!
             </div>
         `;
 
-        // If both team codes are known, save the final score and end the game
         if (correcteCodes[0] && correcteCodes[1]) {
             const eindScore = localStorage.getItem("score");
             const eindTijd = localStorage.getItem("totalSeconds");
@@ -2049,7 +2051,6 @@ function controleerCode(index) {
         }
 
     } catch (error) {
-        // Catch checksum failures, wrong dates, and invalid characters
         if (error.message.includes("Invalid character")) {
             feedback.textContent = "Ongeldige tekens gebruikt.";
         } else if (error.message.includes("Expired code")) {
