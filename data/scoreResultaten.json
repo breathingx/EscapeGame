@@ -10,212 +10,120 @@
 
     "instruments": [
         {
-            "naam": "Fluit",
-            "onderdeel": "Gaten",
+            "naam": "Theremin",
+            "onderdeel": "Met 0 aanrakingen te bespelen",
             "aantal": 0
         },
         {
-            "naam": "Klarinet",
-            "onderdeel": "Kleppen",
+            "naam": "Mexicaanse vihuela",
+            "onderdeel": "Snaren",
             "aantal": 5
         },
         {
-            "naam": "Saxofoon",
-            "onderdeel": "Kleppen",
+            "naam": "Yepes gitaar",
+            "onderdeel": "Snaren",
             "aantal": 10
         },
         {
-            "naam": "Accordeon",
-            "onderdeel": "Knoppen",
+            "naam": "Kleine Organette",
+            "onderdeel": "Noten",
             "aantal": 15
         },
         {
-            "naam": "Xylofoon",
-            "onderdeel": "Staven",
-            "aantal": 20
+            "naam": "Mande-kora harp",
+            "onderdeel": "Snaren",
+            "aantal": 21
         },
         {
-            "naam": "Drumkit",
-            "onderdeel": "Onderdelen",
+            "naam": "Kleine MIDI keyboard",
+            "onderdeel": "Toetsen",
             "aantal": 25
         },
         {
-            "naam": "Synthesizer",
-            "onderdeel": "Toetsen",
+            "naam": "Number of seconds to",
+            "onderdeel": "Mars",
             "aantal": 30
         },
         {
-            "naam": "Carillon",
-            "onderdeel": "Klokken",
+            "naam": "Zither",
+            "onderdeel": "Snaren",
             "aantal": 35
         },
 
         {
-            "naam": "Piano",
+            "naam": "Glasharmonica",
+            "onderdeel": "Glazen",
+            "aantal": 37
+        },
+        {
+            "naam": "Minimoog Model D",
             "onderdeel": "Toetsen",
-            "aantal": 40
+            "aantal": 44
         },
         {
-            "naam": "Orgel",
-            "onderdeel": "Pijpen",
-            "aantal": 45
-        },
-        {
-            "naam": "Harp",
+            "naam": "Grote Concertharp",
             "onderdeel": "Snaren",
-            "aantal": 50
+            "aantal": 47
         },
         {
-            "naam": "Gitaar",
-            "onderdeel": "Snaren",
-            "aantal": 55
+            "naam": "Concertmarimba",
+            "onderdeel": "Staven",
+            "aantal": 52
         },
         {
-            "naam": "Fluit",
-            "onderdeel": "Gaten",
-            "aantal": 60
+            "naam": "Fortepianos van Mozart",
+            "onderdeel": "Toetsen",
+            "aantal": 61
         },
         {
-            "naam": "Klarinet",
-            "onderdeel": "Kleppen",
-            "aantal": 65
-        },
-        {
-            "naam": "Saxofoon",
-            "onderdeel": "Kleppen",
+            "naam": "Viool",
+            "onderdeel": "Aantal onderdelen",
             "aantal": 70
         },
         {
-            "naam": "Accordeon",
-            "onderdeel": "Knoppen",
-            "aantal": 75
+            "naam": "Perzische santoer",
+            "onderdeel": "Snaren",
+            "aantal": 72
         },
         {
-            "naam": "Xylofoon",
-            "onderdeel": "Staven",
-            "aantal": 80
+            "naam": "NYC: Riverside Church",
+            "onderdeel": "Aantal bellen",
+            "aantal": 74
         },
-        {
-            "naam": "Drumkit",
-            "onderdeel": "Onderdelen",
-            "aantal": 85
-        },
-        {
-            "naam": "Synthesizer",
-            "onderdeel": "Toetsen",
-            "aantal": 90
-        },
-        {
-            "naam": "Carillon",
-            "onderdeel": "Klokken",
-            "aantal": 95
-        },
-
         {
             "naam": "Piano",
+            "onderdeel": "Toetsen",
+            "aantal": 88
+        },
+        {
+            "naam": "Hammond B-3",
+            "onderdeel": "Tonewielen",
+            "aantal": 91
+        },
+        {
+            "naam": "Bösendorfer Imperial",
+            "onderdeel": "Toetsen",
+            "aantal": 97
+        },
+        {
+            "naam": "Kasjmiri santoer",
             "onderdeel": "Snaren",
             "aantal": 100
         },
+
         {
-            "naam": "Orgel",
-            "onderdeel": "Registers",
-            "aantal": 105
+            "naam": "Stuart & Sons piano",
+            "onderdeel": "Toetsen",
+            "aantal": 108
         },
         {
-            "naam": "Harp",
-            "onderdeel": "Snaren",
-            "aantal": 110
-        },
-        {
-            "naam": "Gitaar",
-            "onderdeel": "Snaren",
-            "aantal": 115
-        },
-        {
-            "naam": "Fluit",
-            "onderdeel": "Gaten",
+            "naam": "120-Bassknoppen accordeon",
+            "onderdeel": "Knoppen",
             "aantal": 120
         },
         {
-            "naam": "Klarinet",
-            "onderdeel": "Kleppen",
-            "aantal": 125
+            "naam": "Symphony No. 8",
+            "onderdeel": "Aantal muziekspelers",
+            "aantal": 1000
         },
-        {
-            "naam": "Saxofoon",
-            "onderdeel": "Kleppen",
-            "aantal": 130
-        },
-        {
-            "naam": "Accordeon",
-            "onderdeel": "Knoppen",
-            "aantal": 135
-        },
-        {
-            "naam": "Xylofoon",
-            "onderdeel": "Staven",
-            "aantal": 140
-        },
-        {
-            "naam": "Drumkit",
-            "onderdeel": "Bevestigingen",
-            "aantal": 145
-        },
-        {
-            "naam": "Synthesizer",
-            "onderdeel": "Toetsen",
-            "aantal": 150
-        },
-        {
-            "naam": "Carillon",
-            "onderdeel": "Klokken",
-            "aantal": 155
-        },
-
-        {
-            "naam": "Piano",
-            "onderdeel": "Toetsen",
-            "aantal": 160
-        },
-        {
-            "naam": "Orgel",
-            "onderdeel": "Pijpen",
-            "aantal": 165
-        },
-        {
-            "naam": "Harp",
-            "onderdeel": "Snaren",
-            "aantal": 170
-        },
-        {
-            "naam": "Gitaar",
-            "onderdeel": "Snaren",
-            "aantal": 175
-        },
-        {
-            "naam": "Fluit",
-            "onderdeel": "Gaten",
-            "aantal": 180
-        },
-        {
-            "naam": "Klarinet",
-            "onderdeel": "Kleppen",
-            "aantal": 185
-        },
-        {
-            "naam": "Saxofoon",
-            "onderdeel": "Kleppen",
-            "aantal": 190
-        },
-        {
-            "naam": "Accordeon",
-            "onderdeel": "Knoppen",
-            "aantal": 195
-        },
-        {
-            "naam": "Xylofoon",
-            "onderdeel": "Staven",
-            "aantal": 200
-        }
     ]
-}
