@@ -1152,3 +1152,71 @@ body.team-klankbron .hud-mask { background-color: #ff6800; }
 .MC-btn.red { background-color: #ff3333; }
 .MC-btn.yellow { background-color: #ffd700; }
 .MC-btn.blue { background-color: #3388ff; }
+
+
+/* ================================================= */
+
+.carillon-afbeelding {
+    display: block;
+    width: 100%;
+    max-width: 500px;
+    height: auto;
+    margin: 15px auto 25px auto;
+    object-fit: contain;
+}
+
+.MkKc {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    margin-bottom: 20px;
+    justify-content: center;
+    justify-items: center;
+}
+
+.Mk-btn {
+    width: clamp(140px, 20vw, 180px);
+    height: clamp(140px, 20vw, 180px);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    border: 3px solid black;
+    border-radius: 10px;
+
+    font-family: "Montserrat", sans-serif;
+    font-weight: bold;
+    font-size: clamp(16px, 2vw, 20px);
+
+    padding: 8px;
+    box-sizing: border-box;
+
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: transparent;
+
+    transition: background-color 0.2s ease;
+}
+
+.Mk-btn.green { background-color: #00f280; }
+.Mk-btn.red { background-color: #ff3333; }
+.Mk-btn.yellow { background-color: #ffd700; }
+.Mk-btn.blue { background-color: #3388ff; }
+
+
+.Mk-btn.mc-fout-tijdelijk {
+    background-color: #e53935 !important;
+}
+
+.Mk-btn.mc-fout {
+    background-color: #888888 !important;
+    pointer-events: none;
+    cursor: default;
+}
+
+.Mk-btn.mc-goed {
+    background-color: #00c853 !important;
+}

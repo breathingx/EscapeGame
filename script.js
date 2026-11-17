@@ -324,6 +324,11 @@ function laadAntwoordInvoer(opdracht) {
     if(container2) container2.innerHTML = "";
     if(container3) container3.innerHTML = "";
 
+    // Meerkeuzevragen gebruiken vier knoppen
+    if (opdracht.type === "Meerkeuze") {
+        return;
+    }
+
     container1.classList.add("codeInputContainer");
     if (opdracht.invoerType === "double") {
 
@@ -419,6 +424,102 @@ function laadAntwoordInvoer(opdracht) {
 }
 
 
+// MEERKEUZE VRAGEN
+function laadMeerkeuzeVraag(opdracht) {
+    const mcContainer = document.getElementById("MeerkeuzeKleurenCarillon");
+
+    mcContainer.hidden = false;
+
+    const knoppen = [
+        document.getElementById("Mk-0"),
+        document.getElementById("Mk-1"),
+        document.getElementById("Mk-2"),
+        document.getElementById("Mk-3")
+    ];
+
+    knoppen.forEach(knop => {
+        knop.classList.remove("mc-fout", "mc-goed");
+
+        knop.style.pointerEvents = "auto";
+        knop.style.opacity = "1";
+
+        knop.removeAttribute("aria-disabled");
+        knop.onclick = () => verwerkMeerkeuzeAntwoord(knop, opdracht);
+    });
+}
+
+
+// Controleert meerkeuzeantwoord
+function verwerkMeerkeuzeAntwoord(knop, opdracht) {
+
+    if (antwoordIsCorrect) {
+        return;
+    }
+
+    const gekozenAntwoord = knop.textContent.trim().toUpperCase();
+    const juisteAntwoord = opdracht.antwoord.trim().toUpperCase();
+
+    // Fout
+    if (gekozenAntwoord !== juisteAntwoord) {
+
+        // Voorkom dat dezelfde knop opnieuw aangeklikt wordt
+        knop.style.pointerEvents = "none";
+        knop.setAttribute("aria-disabled", "true");
+
+        knop.classList.add("mc-fout-tijdelijk");
+
+        foutPogingen++;
+
+        setTimeout(() => {
+            knop.classList.remove("mc-fout-tijdelijk");
+            knop.classList.add("mc-fout");
+        }, 700);
+
+        return;
+    }
+
+    // Goed
+    antwoordIsCorrect = true;
+
+    knop.classList.add("mc-goed");
+
+    document.querySelectorAll(".Mk-btn").forEach(mcKnop => {
+        mcKnop.style.pointerEvents = "none";
+        mcKnop.setAttribute("aria-disabled", "true");
+    });
+
+    // Fix score
+    let punten = 10 - (foutPogingen * 2);
+    if (punten < 0) {punten = 0};
+
+    score += punten;
+
+    localStorage.setItem("score", score);
+    document.getElementById("scoreDisplay").textContent = String(score).padStart(5, "0");
+
+    correcteAntwoorden++;
+    localStorage.setItem("correct", correcteAntwoorden);
+
+    updateProgressBar();
+
+    const xPos = (knop.offsetLeft + knop.offsetWidth / 2) / window.innerWidth;
+    const yPos = (knop.offsetTop + knop.offsetHeight / 2) / window.innerHeight;
+
+    confetti({
+        particleCount: 50,
+        spread: 100,
+        startVelocity: 15,
+        origin: { x: xPos, y: yPos },
+        colors: ['#00F280', '#FFD700', '#8268FF', '#FF5733', '#0091FF'],
+        zIndex: 100
+    });
+
+    setTimeout(() => {
+        toonTussenPagina();
+    }, 1500);
+}
+
+
 // loads mini game specific explanation view
 function laadMinigameUitleg() {
     const overlay = document.getElementById("minigameOverlay");
@@ -473,8 +574,20 @@ function laadOpdracht() {
     document.getElementById("openMinigameOverlay").style.display = "none";
     document.getElementById("minigameOpdrachtTitel").style.display = "none";
 
+    // Reset de meerkeuze-interface
+    const MkContainer = document.getElementById("MeerkeuzeKleurenCarillon");
+    MkContainer.hidden = true;
+
     const huidigeOpdrachtData = gameData[team].opdrachten[huidigeOpdracht];
     laadAntwoordInvoer(huidigeOpdrachtData);
+
+    if (huidigeOpdrachtData.type === "Meerkeuze") {
+        document.getElementById("codeInputContainer1").style.display = "none";
+        document.getElementById("codeInputContainer2").style.display = "none";
+        document.getElementById("codeInputContainer3").style.display = "none";
+        document.getElementById("actieBtn").style.display = "none";
+        laadMeerkeuzeVraag(huidigeOpdrachtData);
+    }
 
     // reset action button state
     const actieBtn = document.getElementById("actieBtn");
@@ -778,6 +891,7 @@ function toonTussenPagina() {
     document.getElementById("opdrachtTitel").style.display = "block";
     const data = gameData[team].opdrachten[huidigeOpdracht].tussenPagina;
     document.getElementById("opdrachtTitel").textContent = "Voor de volgende opdracht";
+    document.getElementById("MeerkeuzeKleurenCarillon").hidden = true;
 
     // skip transition page if none exists
     if (!data) {
@@ -1260,6 +1374,20 @@ function laadopdrachtKlankbron() {
         case 5:
             laadPatsBoemOpdracht();
             break;
+
+        case 6:
+            document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
+            const wilhelmus = document.getElementById("extraContent");
+
+            wilhelmus.innerHTML = `
+                <img
+                    src="Wilhelmus kleurcode.png"
+                    alt="Kleuren Carillon"
+                    class="carillon-afbeelding"
+                >
+            `;
+            break;
+
         default:
             document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
     }
