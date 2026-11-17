@@ -16,7 +16,8 @@
                 "_bonus": [
                     {
                         "_vraag": "the bonus question",
-                        "_antwoord": "answer to the bonus question"
+                        "_antwoord": "answer to the bonus question",
+                        "_hint": "hint to the bonus question"
                     }
                 ]
             }
@@ -46,7 +47,8 @@
                 "bonus": [
                     {
                         "vraag": "Hoeveel verschillende melodieën kunnen er op 1 cilinder worden genoteerd? ",
-                        "antwoord": "12"
+                        "antwoord": "12",
+                        "hint": "+++++ HINT BONUS +++++"
                     }
                 ]
             }
@@ -78,7 +80,8 @@
                 "bonus": [
                     {
                         "vraag": "Hoeveel verschillende programmadragers zijn er te zien in deze tentoonstelling?",
-                        "antwoord": "5"
+                        "antwoord": "5",
+                        "hint": "+++++ HINT BONUS +++++"
                     }
                 ]
             }
@@ -107,7 +110,8 @@
                 "bonus": [
                     {
                         "vraag": "Waarmee werd in het 'Musikalisches Würfelspiel' muziek gecomponeerd?",
-                        "antwoord": "dobbelstenen"
+                        "antwoord": "dobbelstenen",
+                        "hint": "+++++ HINT BONUS +++++"
                     }
                 ]
             }
@@ -139,7 +143,8 @@
                 "bonus": [
                     {
                         "vraag": "Hoe heet de oudste programmadrager?",
-                        "antwoord": "Speeltrommel"
+                        "antwoord": "Speeltrommel",
+                        "hint": "+++++ HINT BONUS +++++"
                     }
                 ]
             }
@@ -167,7 +172,8 @@
                 "bonus": [
                     {
                         "vraag": "Waarvoor staat de afkorting MIDI?",
-                        "antwoord": "Musical instrument digital interface"
+                        "antwoord": "Musical Instrument Digital Interface",
+                        "hint": "+++++ HINT BONUS +++++"
                     }
                 ]
             }
@@ -199,7 +205,8 @@
                 "bonus": [
                     {
                         "vraag": "Welk materiaal wordt gebruikt voor een orgelboek?",
-                        "antwoord": "karton"
+                        "antwoord": "Karton",
+                        "hint": "+++++ HINT BONUS +++++"
                     }
                 ]
             }
@@ -227,7 +234,8 @@
                 "bonus": [
                     {
                         "vraag": "Hoeveel orgelpijpen heeft het grote kerkorgel in het museum?",
-                        "antwoord": "3700"
+                        "antwoord": "3700",
+                        "hint": "+++++ HINT BONUS +++++"
                     }
                 ]
             }

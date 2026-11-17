@@ -37,7 +37,6 @@ let hintInterval = null;
 
 // bonus questions
 let verzameldeBonusVragen = JSON.parse(localStorage.getItem("bonusVragen")) || [];
-let pendingBonusVragen = [];
 
 
 
@@ -225,6 +224,8 @@ if (window.location.pathname.includes("template.html") &&
         await laadGameData(team);
         totaal_opdrachten = gameData[team].opdrachten.length;
 
+        initializeBonusQuestions();
+
         huidigeOpdracht = parseInt(localStorage.getItem("opdracht")) || 0;
         correcteAntwoorden = parseInt(localStorage.getItem("correct")) || 0;
         score = parseInt(localStorage.getItem("score")) || 0;
@@ -259,6 +260,36 @@ if (window.location.pathname.includes("template.html") &&
 
     })();
 }
+
+
+// Loads all bonus questions for the selected team
+// and preserves which questions have already been answered correctly
+function initializeBonusQuestions() {
+
+    const opgeslagenBonusVragen = JSON.parse(localStorage.getItem("bonusVragen")) || [];
+
+    verzameldeBonusVragen = gameData[team].opdrachten.flatMap(opdracht =>
+
+        (opdracht.tussenPagina?.bonus || []).map(bonus => {
+
+            const opgeslagenBonus = opgeslagenBonusVragen.find(
+                opgeslagen =>
+                    opgeslagen.vraag === bonus.vraag &&
+                    opgeslagen.antwoord === bonus.antwoord
+            );
+
+            return {
+                vraag: bonus.vraag,
+                antwoord: bonus.antwoord,
+                gehaald: opgeslagenBonus?.gehaald || false
+            };
+        })
+    );
+
+    localStorage.setItem("bonusVragen", JSON.stringify(verzameldeBonusVragen));
+}
+
+
 
 // ensures the correct styling to the page based on the team
 function applyTeamTheme() {
@@ -679,19 +710,6 @@ function verwerkActie() {
     // check if in a page between exercises
     if (zitOpTussenPagina) {
 
-        pendingBonusVragen.forEach(vraag => {
-            verzameldeBonusVragen.push({
-                vraag: vraag.vraag,
-                antwoord: vraag.antwoord,
-                gehaald: false
-            });
-        });
-
-        localStorage.setItem(
-            "bonusVragen",
-            JSON.stringify(verzameldeBonusVragen)
-        );
-
         zitOpTussenPagina = false;
         volgendeOpdracht();
 
@@ -701,32 +719,6 @@ function verwerkActie() {
     // if the exercise is already completed move to the next stage of the game
     if (antwoordIsCorrect) {
 
-        if (zitOpTussenPagina) {
-
-            pendingBonusVragen.forEach(vraag => {
-                verzameldeBonusVragen.push({
-                    vraag: vraag.vraag,
-                    antwoord: vraag.antwoord,
-                    gehaald: false
-                });
-            });
-
-            localStorage.setItem(
-                "bonusVragen",
-                JSON.stringify(verzameldeBonusVragen)
-            );
-
-            zitOpTussenPagina = false;
-            volgendeOpdracht();
-
-            return;
-        }
-
-        // if (huidigeOpdracht < 5) {
-        //     toonTussenPagina();
-        // } else {
-        //     volgendeOpdracht();
-        // }
         if (huidigeOpdracht < totaal_opdrachten - 1) {
             toonTussenPagina();
         } else {
@@ -901,18 +893,16 @@ function toonTussenPagina() {
 
     // store transition state and pending bonus questions
     zitOpTussenPagina = true;
-    pendingBonusVragen = data.bonus;
 
     document.getElementById("uitlegTekst").textContent = data.tekst;
     document.getElementById("extraContent").innerHTML = `
     <div class="tussenBonusBlok">
-        <h3 class="bonusTitel">Bonus vraag</h3>
+        <h3 class="bonusTitel">Wist je dat...</h3>
         ${data.bonus.map(vraag => `
             <div class="bonusPreview">
-                <p>${vraag.vraag}</p>
+                <p>${vraag.hint}</p>
             </div>
         `).join("")}
-
     </div>
 `;
 
@@ -1816,7 +1806,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // ------------BONUS QUESTION SYSTEM----------------
 // =================================================
 
-// opens the bonus question popup and displays all unlocked bonus questions
+// Opens the bonus question popup and displays all bonus questions
 function toonBonusPopup() {
 
     const overlay = document.getElementById("bonusOverlay");
@@ -1828,7 +1818,7 @@ function toonBonusPopup() {
     if (verzameldeBonusVragen.length === 0) {
         lijst.innerHTML = `
             <div class="bonusLeeg">
-                <p>Hier vind je na iedere opdracht één nieuwe bonusvraag.</p>
+                <p>Hier vind je zo de bonus vragen, als je goed op let krijg je misschien hier en daar zelfs wel een hint.</p>
             </div>
         `;
 
@@ -1861,6 +1851,11 @@ function toonBonusPopup() {
                         <input
                             type="text"
                             id="bonusInput${index}"
+                            onkeydown="if(event.key === 'Enter') {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                controleerBonus(${index});
+                            }"
                         >
 
                         <button onclick="controleerBonus(${index})">
@@ -1929,8 +1924,9 @@ function controleerBonus(index) {
 
     } else {
         // when the answer is wrong
-        document.getElementById(`bonusFeedback${index}`).textContent =
-            "Onjuist";
+        input.classList.add("bonus-fout");
+
+        document.getElementById(`bonusFeedback${index}`).textContent = "Onjuist";
     }
 }
 
