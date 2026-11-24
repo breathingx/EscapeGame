@@ -144,7 +144,6 @@
                 ]
             }
         },
----------- { vnaf hier verder } ---------
         {
             "nummer": "5",
 
@@ -162,7 +161,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 5++++++++++",
+                "tekst": "Je hebt al verschillende programmadragers ontdekt: een boek, een rol, een cilinder...\n\nMaar er is er nóg één!",
 
                 "bonus": [
                     {
@@ -180,7 +179,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Je hebt al verschillende programmadragers ontdekt: een boek, een rol, een cilinder...\n\nMaar er is er nóg één!\n\nZoek de drie draaischijven in de koffer.\n\nDraai de schijven tot ze same een woord vormen.\n\nDat woord geeft ook een geheime code.",
+            "uitleg": "Zoek de drie draaischijven in de koffer.\n\nDraai de schijven tot ze same een woord vormen.\n\nDat woord geeft ook een geheime code.",
 
             "invoerType": "blokken",
 
@@ -189,7 +188,7 @@
             "antwoord": "9205",
 
             "hints": [
-                "Lees de museumteksten. In welk instrument vind je een metalen plaat?",
+                "Lees de museumteksten in PROGRAM goed. Welke muziekmachine gebruikt een metalen plaat als programmadrager?",
                 "Platenspeeldoos"
             ],
 
@@ -226,8 +225,8 @@
 
                 "bonus": [
                     {
-                        "vraag": "Hoeveel orgelpijpen heeft het grote kerkorgel in het museum?",
-                        "antwoord": "3700"
+                        "vraag": "Hoe heet de machine waarmee gaten in een orgelboek worden gemaakt?",
+                        "antwoord": "Kapmachine"
                     }
                 ]
             }
