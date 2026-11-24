@@ -301,8 +301,14 @@ body.team-klankbron {
     position: relative;
     z-index: 100;
 }
+
 #minigameUitlegTekst {
     margin: 10px 0 10px 0;
+    white-space: pre-line;
+}
+
+#uitlegTekst {
+    white-space: pre-line;
 }
 
 /* ================================================= */
