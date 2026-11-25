@@ -11,8 +11,10 @@
 <div class="main-content">
     <div class="content-wrapper">
 
-        <h1>Welkom bij het spel</h1>
-        <p>Kies een team:</p>
+        <div class="home-heading-box">
+            <h1>Welkom bij het spel</h1>
+            <p>Kies een team:</p>
+        </div>
 
         <div class="team-buttons">
             <button id="continueBtn">Spel Hervatten</button>
@@ -21,21 +23,13 @@
             <button class="klankbron" onclick="startGame('klankbron')">Klankbron</button>
             <button class="aandrijving" onclick="startGame('aandrijving')">Machines</button>
         </div>
-
-        <!--  -->
-        <button class="presentatie" onclick="startPresentatie()">
-            Minigames
-        </button>
-        <!--  -->
-        
+       
     </div>
 </div>
 
 <img src="logo.png" alt="Logo" class="logo">
 
 <script src="script.js"></script>
-<!-- alleen voor presentatie -->
-<script src="presentatie.js"></script>
-<!--  -->
+
 </body>
 </html>

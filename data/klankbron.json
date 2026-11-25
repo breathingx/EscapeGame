@@ -16,7 +16,8 @@
                 "_bonus": [
                     {
                         "_vraag": "the bonus question",
-                        "_antwoord": "answer to the bonus question"
+                        "_antwoord": "answer to the bonus question",
+                        "_hint": "hint to the bonus question"
                     }
                 ]
             }
@@ -50,7 +51,8 @@
                 "bonus": [
                     {
                         "vraag": "Hoeveel theepotten heb je geteld in de tentoonstelling?",
-                        "antwoord": "++++++++++ANTWOORD\nPLACEHOLDER++++++++++"
+                        "antwoord": "++++++++++ANTWOORD\nPLACEHOLDER++++++++++",
+                        "hint": "+++++ HINT BONUS 1 +++++"
                     }
                 ]
             }
@@ -79,7 +81,8 @@
                 "bonus": [
                     {
                         "vraag": "Hoeveel kilo weegt de grootste klok in de Domtoren?",
-                        "antwoord": "8227"
+                        "antwoord": "8227",
+                        "hint": "+++++ HINT BONUS 2 +++++"
                     }
                 ]
             }
@@ -107,7 +110,8 @@
                 "bonus": [
                     {
                         "vraag": "Welk instrument vindt zijn oorsprong in Australië?",
-                        "antwoord": "digeridoo"
+                        "antwoord": "digeridoo",
+                        "hint": "+++++ HINT BONUS 3 +++++"
                     }
                 ]
             }
@@ -135,7 +139,8 @@
                 "bonus": [
                     {
                         "vraag": "Vul in:\nRitme = __________ + __________ + ___________",
-                        "antwoord": "maatsoort + accent + tempo"
+                        "antwoord": "maatsoort + accent + tempo",
+                        "hint": "+++++ HINT BONUS 4+++++"
                     }
                 ]
             }
@@ -167,7 +172,8 @@
                 "bonus": [
                     {
                         "vraag": "Hoe noem je de bekendste toonladder in het Westen?",
-                        "antwoord": "diatonische toonladder"
+                        "antwoord": "diatonische toonladder",
+                        "hint": "+++++ HINT BONUS 5 +++++"
                     }
                 ]
             }
@@ -195,7 +201,8 @@
                 "bonus": [
                     {
                         "vraag": "Hoeveel porcelaine borden zitten er in de piano van Jelle Mastenbroek?",
-                        "antwoord": "++++++++++ANTWOORD\nPLACEHOLDER++++++++++"
+                        "antwoord": "++++++++++ANTWOORD\nPLACEHOLDER++++++++++",
+                        "hint": "+++++ HINT BONUS 6 +++++"
                     }
                 ]
             }
@@ -218,12 +225,13 @@
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 8++++++++++",
+                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 7 ++++++++++",
 
                 "bonus": [
                     {
                         "vraag": "Hoeveel orgelpijpen heeft het grote kerkorgel in het museum?",
-                        "antwoord": "3700"
+                        "antwoord": "3700",
+                        "hint": "+++++ HINT BONUS 7 +++++"
                     }
                 ]
             }

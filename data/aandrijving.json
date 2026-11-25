@@ -16,7 +16,8 @@
                 "_bonus": [
                     {
                         "_vraag": "the bonus question",
-                        "_antwoord": "answer to the bonus question"
+                        "_antwoord": "answer to the bonus question",
+                        "_hint": "hint to the bonus question"                        
                     }
                 ]
             }
@@ -48,7 +49,8 @@
                 "bonus": [
                     {
                         "vraag": "Mechaniek = __ __ + ____",
-                        "antwoord": "beweegbare delen + verbinding"
+                        "antwoord": "beweegbare delen + verbinding",
+                        "hint": "+++++ HINT BONUS +++++"
                     }
                 ]
             }
@@ -76,7 +78,8 @@
                 "bonus": [
                     {
                         "vraag": "Hoeveel collectiestukken kun jij vinden waarin een krukas zit?",
-                        "antwoord": "6"
+                        "antwoord": "6",
+                        "hint": "+++++ HINT BONUS +++++"
                     }
                 ]
             }
@@ -108,7 +111,8 @@
                 "bonus": [
                     {
                         "vraag": "Wat wordt in de museumcollectie gebruikt als vervanging voor spierkracht?",
-                        "antwoord": "elektriciteit"
+                        "antwoord": "elektriciteit",
+                        "hint": "+++++ HINT BONUS +++++"
                     }
                 ]
             }
@@ -140,7 +144,8 @@
                 "bonus": [
                     {
                         "vraag": "Noem vier voorbeelden van manieren waarmee energie kan worden opgeslagen in een muziekmachine",
-                        "antwoord": "Gewicht, Veer, Lucht, Electriciteit"
+                        "antwoord": "Gewicht, Veer, Lucht, Electriciteit",
+                        "hint": "+++++ HINT BONUS +++++"
                     }
                 ]
             }
@@ -168,7 +173,8 @@
                 "bonus": [
                     {
                         "vraag": "Uit hoeveel onderdelen bestaat het techniekmodel “overbrengingen”?",
-                        "antwoord": "++++++++++ANTWOORD\nPLACEHOLDER++++++++++"
+                        "antwoord": "++++++++++ANTWOORD\nPLACEHOLDER++++++++++",
+                        "hint": "+++++ HINT BONUS +++++"
                     }
                 ]
             }
@@ -200,7 +206,8 @@
                 "bonus": [
                     {
                         "vraag": "Welke vorm van aandrijving gebruikt een draaiorgel?",
-                        "antwoord": "Spierkracht"
+                        "antwoord": "Spierkracht",
+                        "hint": "+++++ HINT BONUS +++++"
                     }
                 ]
             }
@@ -228,7 +235,8 @@
                 "bonus": [
                     {
                         "vraag": "Maak af:\nMet een hefboom ben je....",
-                        "antwoord": "Sterker dan jezelf"
+                        "antwoord": "Sterker dan jezelf",
+                        "hint": "+++++ HINT BONUS +++++"
                     }
                 ]
             }

@@ -59,12 +59,8 @@ function toonUitleg() {
                 .join("");
 
         buttonContainer.innerHTML = `
-            <button onclick="window.location.href='../QRScanner/qrScanner.html'">
-                QR Kies je Team
-            </button>
-
             <button onclick="window.location.href='../home.html'">
-                Knop Kies je Team
+                Kies je Team
             </button>
         `;
     }

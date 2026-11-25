@@ -214,6 +214,35 @@ body.team-klankbron {
     font-size: clamp(18px, 2.5vw, 22px);
 } 
 
+/* ================================================= */
+/* ==================== Home Page ================== */
+/* ================================================= */
+
+.content-wrapper h1,
+.content-wrapper > p {
+    text-align: center;
+}
+
+.home-heading-box {
+    width: var(--content-width);
+    max-width: var(--max-ui-width);
+    margin: 60px auto 0;
+    padding: 20px;
+    box-sizing: border-box;
+
+    border: 3px solid black;
+    text-align: center;
+}
+
+.home-heading-box h1 {
+    font-size: clamp(28px, 4vw, 40px);
+    margin: 0 0 15px;
+}
+
+.home-heading-box p {
+    font-size: clamp(20px, 3vw, 28px);
+    margin: 0;
+}
 
 /* ================================================= */
 /* ================== GAME CONTENT ================= */
@@ -343,16 +372,22 @@ button {
     display: flex;
     flex-direction: column;   
     align-items: center;     
-    gap: 16px;                
+    gap: 60px;                
     margin-top: 30px;
 }
 
 .team-buttons button {
     width: var(--content-width);
     font-size: clamp(18px, 3vw, 24px);
-    padding: 18px 24px;
+    padding: 24px 24px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
+
+.team-buttons button:active {
+    transform: scale(1.06);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
 #openMinigameOverlay {
     position: absolute;
     top: 5px;
@@ -480,6 +515,10 @@ button.feedback-incorrect {
 /* ================== START ======================== */
 /* ================================================= */
 
+#uitlegTitel {
+    margin-top: 60px;
+}
+
 .index-title {
     font-family: "Right Grotesk Medium";
     margin-bottom: var(--scale);
@@ -506,6 +545,13 @@ button.feedback-incorrect {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+}
+
+.start-button-wrapper button {
+    width: var(--content-width);
+    max-width: var(--max-ui-width);
+    font-size: clamp(18px, 3vw, 24px);
+    padding: 24px 24px;
 }
 
 .hidden {
@@ -733,21 +779,63 @@ button.feedback-incorrect {
 
 #bonusModal {
     background: #FFFFFF;
-    width: min(70vw, 500px);
-    max-height: 80vh;
+    width: min(85vw, 700px);
+    max-height: 85vh;
     overflow-y: auto;
-    padding: 30px;
+    padding: 40px;
     border: 4px solid black;
     position: relative;
+    box-sizing: border-box;
+}
+
+#bonusModal h2 {
+    font-family: "Right Grotesk Compact";
+    font-size: clamp(28px, 4vw, 38px);
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.bonusVraagBlok p {
+    font-family: "Montserrat", sans-serif;
+    font-size: clamp(18px, 2.5vw, 24px);
+    line-height: 1.5;
+}
+
+.bonusVraagBlok input {
+    width: 100%;
+    height: 60px;
+    margin-bottom: 15px;
+    font-size: 22px;
+    padding: 10px 15px;
+    box-sizing: border-box;
+    border: 3px solid black;
+    border-radius: 0;
+    background-color: white;
+    outline: none;
+    transition: background-color 0.2s ease;
+}
+
+.bonusVraagBlok input.bonus-fout {
+    background-color: #df3c3c;
+}
+
+.bonusVraagBlok button {
+    min-height: 55px;
+    font-size: 20px;
+    padding: 10px 25px;
+}
+
+.bonusVraagBlok p[id^="bonusFeedback"] {
+    font-size: 18px;
 }
 
 #closeBonus {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
     background: none;
     color: black;
-    font-size: 32px;
+    font-size: 55px;
     border: none;
     width: auto;
 }
@@ -758,12 +846,6 @@ button.feedback-incorrect {
     padding-bottom: 20px;
 }
 
-.bonusVraagBlok input {
-    width: 100%;
-    height: 45px;
-    margin-bottom: 10px;
-    font-size: 18px;
-}
 
 .tussenBonusBlok {
     width: var(--max-content-width);
@@ -790,22 +872,21 @@ button.feedback-incorrect {
     font-weight: bold;
     color: black;
     border: 3px solid black;
-    padding: 12px 16px;
+    padding: 16px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    min-height: 45px;
+    min-height: 60px;
     box-sizing: border-box;
 }
-
 
 .bonusCorrectRow {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: 8px;
+    margin-top: 12px;
     font-family: "Right Grotesk Medium";
-    font-size: 20px;
+    font-size: 24px;
 }
 
 .bonusAntwoord {
@@ -1163,6 +1244,8 @@ body.team-klankbron .hud-mask { background-color: #ff6800; }
     height: auto;
     margin: 15px auto 25px auto;
     object-fit: contain;
+
+    border: 3px solid black;
 }
 
 .MkKc {
