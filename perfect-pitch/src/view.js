@@ -61,12 +61,14 @@ export class View {
 render(state, pitch) {
   this.renderMessage(state);
 
-  // added for testing: update frequency display
-  if (pitch === -1) {
-    this.frequency.innerText = 'Frequency: -- Hz';
-  } else {
-    this.frequency.innerText = `Frequency: ${pitch.toFixed(1)} Hz`;
+  // debug display: only update when the element exists
+  if (this.frequency) {
+    this.frequency.innerText =
+      pitch > 0 ? `Frequency: ${pitch.toFixed(1)} Hz` : 'Frequency: -- Hz';
   }
+
+  //Clear colour and depth buffers
+  this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     //Clear colour and depth buffers
     this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
     this.gl.enableVertexAttribArray(this.aPosition);
