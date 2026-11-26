@@ -93,7 +93,7 @@
 
             "type": "game",
 
-            "uitleg": "Naast echte instrumenten zitten er ook klanken verstopt in objecten waarvan je het niet verwacht.\n\nLuister naar de fragmenten en kies steeds de afbeelding van de juiste klankbron.",
+            "uitleg": "Geen uitleg",
 
             "antwoord": "KLA333",
 
@@ -103,7 +103,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "Loop naar de fruitmachine",
+                "tekst": "Naast echte instrumenten zitten er ook klanken verstopt in objecten waarvan je het niet verwacht.\n\nLuister naar de fragmenten en kies steeds de afbeelding van de juiste klankbron.",
 
                 "bonus": [
                     {
