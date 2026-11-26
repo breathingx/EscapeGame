@@ -42,7 +42,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 1++++++++++",
+                "tekst": "Een orgelboek is een programmadrager. De gaatjes bepalen welke orgelpijpen gespeeld worden",
 
                 "bonus": [
                     {
@@ -61,7 +61,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Een orgelboek is een programmadraer. De gaatjes bepalen welke orgelpijpen gespeeld worden.\n\nKijk in de koffer en pak de pagina's van het orgelboek\n\nLeg de juiste pagina over de tekst. Er verschijnt een verborgen boodschap.\n\nKun jij de viercijferige code vinden?",
+            "uitleg": "Kijk in de koffer en pak de pagina's van het orgelboek\n\nLeg de juiste pagina over de tekst. Er verschijnt een verborgen boodschap.\n\nKun jij de viercijferige code vinden?",
 
             "invoerType": "blokken",
 
@@ -75,7 +75,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 2++++++++++",
+                "tekst": "Een muziekmachine volgt een programma als een soort stappenplan.\n\nKun jij een stappenplan maken waarmee je onderweg muzieknoten verzamelt?",
 
                 "bonus": [
                     {
@@ -94,7 +94,7 @@
 
             "type": "game:blockly",
 
-            "uitleg": "Een muziekmachine volgt een programma als een soort stappenplan.\n\nKun jij een stappenplan maken waarmee je onderweg muzieknoten verzamelt?\n\nBouw de juiste route met de beschikbare blokken.\n\nElk blok heeft een eigen functie. Sleep de blokken in de juiste volgorde om een stappenplan te maken. Klik daarna op 'Start' en controleer of het stappenplan werkt!",
+            "uitleg": "Bouw de juiste route met de beschikbare blokken.\n\nElk blok heeft een eigen functie. Sleep de blokken in de juiste volgorde om een stappenplan te maken. Klik daarna op 'Start' en controleer of het stappenplan werkt!",
 
             "antwoord": "PRO333",
 
@@ -105,7 +105,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "Loop naar de Musicon, de programmeerbare muziekmachine.",
+                "tekst": "Nu ga je zelf een muziekmachine programeren.\n\nLoop naar de Musicon, de programmeerbare muziekmachine in de tentoonstelling. Zet de pinnetjes precies zoals op de codekaart die je in de koffer vindt. Lukt het jou om de code te kraken?",
 
                 "bonus": [
                     {
@@ -124,7 +124,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Nu ga je zelf een muziekmachine programeren.\n\nZet de pinnetjes precies zoals op de codekaart die je in de koffer vindt. Lukt het jou om de code te kraken?",
+            "uitleg": "Zo werkt het:\n\n1. Zet eerst alle pinnetjes naar beneden.\n2. Zet daarna alleen de pinnetjes omhoog die op de codekaart staan.\n3. Laat de Musicon spelen of draai hem met de hand van je af.\n4. Schrijf de nummers op van de instrumenten die je hoort, in de juiste volgorde.\n\n Kun jij de code kraken?",
 
             "invoerType": "blokken",
 
@@ -138,7 +138,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 4++++++++++",
+                "tekst": "Tijd voor een quiz!\n\nKies steeds WAAR (1) of NIET WAAR (0).\n\nSamen vormen de antwoorden een code.",
 
                 "bonus": [
                     {
@@ -149,7 +149,6 @@
                 ]
             }
         },
-
         {
             "nummer": "5",
 
@@ -167,7 +166,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 5++++++++++",
+                "tekst": "Je hebt al verschillende programmadragers ontdekt: een boek, een rol, een cilinder...\n\nMaar er is er nóg één!",
 
                 "bonus": [
                     {
@@ -186,7 +185,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Je hebt al verschillende programmadragers ontdekt: een boek, een rol, een cilinder...\n\nMaar er is er nóg één!\n\nZoek de drie draaischijven in de koffer.\n\nDraai de schijven tot ze same een woord vormen.\n\nDat woord geeft ook een geheime code.",
+            "uitleg": "Zoek de drie draaischijven in de koffer.\n\nDraai de schijven tot ze same een woord vormen.\n\nDat woord geeft ook een geheime code.",
 
             "invoerType": "blokken",
 
@@ -195,7 +194,7 @@
             "antwoord": "9205",
 
             "hints": [
-                "Lees de museumteksten. In welk instrument vind je een metalen plaat?",
+                "Lees de museumteksten in PROGRAM goed. Welke muziekmachine gebruikt een metalen plaat als programmadrager?",
                 "Platenspeeldoos"
             ],
 

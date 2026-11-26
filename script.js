@@ -32,7 +32,7 @@ let hintGebruiktPerVraag = 0;
 let laatsteHintTijd = 0;
 let gebruikteHints = [];
 const maxHints = 3;
-const hintCooldown = 180;
+const hintCooldown = 5;
 let hintInterval = null;
 
 // bonus questions
@@ -105,61 +105,14 @@ const teamCodes = {
     klankbron: "KL00"
 };
 
-// the truth or lie questions
-const truthLieVragen = {
-    aandrijving: [
-        "Een krukas wordt gebruikt om energie in op te slaan.",
-        "In een muziekdoosje zit dezelfde soort veer als in een balpen.",
-        "De gewichten in een klok werken door opgeslagen spierkracht.",
-        "Met een hefboom ben je sterker dan jezelf.",
-        "Alle orgels in Museum Speelklok werken door spierkracht.",
-        "Een balg moet in beweging blijven om te werken."
-    ],
-    programma: [
-        "De enige plek waar je code tegenkomt, is in je computer.",
-        "Een boek in een orgel werkt op dezelfde manier als een papieren rol in een pianola",
-        "Een MIDI stuurt geluid vanaf een computer naar een instrument.",
-        "Op één cilinder kun je meerdere/verschillende melodieën zetten.",
-        "Als je arrangeert, bewerk je een muziekstuk dat al bestaat.",
-        "Arrangeren is een ander woord voor componeren."
-    ],
-    klankbron: [
-        "Carillons zijn de oudste instrumenten die je in de buitenlucht kunt horen",
-        "Een snaar kan alleen geluid maken als je hem aanraakt wanneer hij onder spanning staat.",
-        "Een ritme bestaat uit een maatsoort, tempo en een melodie.",
-        "Als je een melodie wil krijgen uit orgelpijpen, moet je ze één voor één aanblazen.",
-        "Hoe korter de tand op een speelkam, hoe lager de toon.",
-        "Bellen kunnen van metaal, glas en keramiek zijn."
-    ]
-};
+// the truth or lie questions, loaded from data/truthlie.json
+let truthLieVragen = {};
 
-// the truth or lie answers
-const truthLieAntwoordData = {
-    aandrijving: [
-        false,
-        false,
-        true,
-        true,
-        false,
-        true
-    ],
-    programma: [
-        false,
-        false,
-        false,
-        true,
-        true,
-        false
-    ],
-    klankbron: [
-        true,
-        true,
-        false,
-        false,
-        false,
-        true
-    ]
-};
+async function laadTruthLieVragen() {
+    const response = await fetch("data/truthlie.json");
+    truthLieVragen = await response.json();
+}
+
 
 var truthLieCorrect = [false, false, false, false, false, false];
 
@@ -223,6 +176,7 @@ if (window.location.pathname.includes("template.html") &&
         team = localStorage.getItem("team");
 
         await laadGameData(team);
+        await laadTruthLieVragen();
         totaal_opdrachten = gameData[team].opdrachten.length;
 
         initializeBonusQuestions();
@@ -1397,8 +1351,6 @@ function inladenTruthLieElementen() {
         truthLieCorrect = JSON.parse(savedCorrect);
     }
 
-
-    document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
     document.getElementById("codeInputContainer1").style.display = "none";
     document.getElementById("actieBtn").style.display = "none";
     document.getElementById("hintContainer").style.display = "none";
@@ -1414,8 +1366,9 @@ function inladenTruthLieElementen() {
     ];
 
     for (let i = 0; i < truthLieProgress; i++) {
+        
         truthLieChips[i].classList.add("filling");
-        let juistAntwoord = truthLieAntwoordData[team][i];
+        let juistAntwoord = truthLieVragen[team][i].antwoord;
         let gekozenAntwoord = truthLieCorrect[i] ? juistAntwoord : !juistAntwoord;
         truthLieChips[i].textContent = gekozenAntwoord ? "1" : "0";
     }
@@ -1430,7 +1383,7 @@ function inladenTruthLieElementen() {
         document.getElementById("truth-lie-nee").style.display = "none";
         showTruthLieScore();
     } else {
-        document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
+        document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress].vraag;
     }
 }
 
@@ -1445,7 +1398,7 @@ function verwerkTruthLie(isCorrect) {
     }, 300);
 
     updateTruthLieChip(isCorrect);
-    if (isCorrect == truthLieAntwoordData[team][truthLieProgress]) {
+    if (isCorrect == truthLieVragen[team][truthLieProgress].antwoord) {
         truthLieCorrect[truthLieProgress] = true;
     } 
     else {
@@ -1487,8 +1440,6 @@ function updateTruthLie() {
     truthLieProgress++;
     localStorage.setItem("truthLieProgress", truthLieProgress);
 
-    document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
-
     if (truthLieProgress == truthLieMaxVragen) {
         document.getElementById("uitlegTekst").textContent = "Je hebt alle vragen beantwoord! Je hebt 0 goed...";
         document.getElementById("truth-lie-next").disabled = true;
@@ -1501,6 +1452,7 @@ function updateTruthLie() {
 
     }
     else {
+        document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress].vraag;
         setTimeout(() => {
         document.getElementById("truth-lie-ja").disabled = false;
         document.getElementById("truth-lie-ja").style.opacity = 1;
@@ -1645,6 +1597,8 @@ function updateProgressBar() {
 
 // opens the hint popup and handles hint availability, cooldowns 
 // and confirmation before using a hint
+// opens the hint popup and handles hint availability, cooldowns
+// and confirmation before using a hint
 function geefHint() {
 
     const overlay = document.getElementById("hintOverlay");
@@ -1657,11 +1611,8 @@ function geefHint() {
 
     const huidigeTijd = Math.floor(Date.now() / 1000);
 
-    // check whether the player is still in the cooldown period
-    if (laatsteHintTijd !== 0) {
-    let verschil = huidigeTijd - laatsteHintTijd;
-
-    if (verschil < hintCooldown) {
+    // still in the cooldown period: show the countdown
+    if (laatsteHintTijd !== 0 && huidigeTijd - laatsteHintTijd < hintCooldown) {
 
         overlay.style.display = "flex";
         actions.style.display = "none";
@@ -1670,19 +1621,29 @@ function geefHint() {
         // prevent multiple countdown timers from running
         if (hintInterval) clearInterval(hintInterval);
 
-        // update the remaining cooldown time every second
-        hintInterval = setInterval(() => {
+        const tick = () => {
 
-            let nu = Math.floor(Date.now() / 1000);
-            let resterend = hintCooldown - (nu - laatsteHintTijd);
+            // popup was closed during the countdown: stop, don't reopen it
+            if (overlay.style.display === "none") {
+                clearInterval(hintInterval);
+                return;
+            }
 
-            let minuten = Math.floor(resterend / 60);
+            const nu = Math.floor(Date.now() / 1000);
+            const resterend = hintCooldown - (nu - laatsteHintTijd);
+
+            // cooldown over: go straight to the confirmation
+            if (resterend <= 0) {
+                clearInterval(hintInterval);
+                toonHintBevestiging();
+                return;
+            }
+
+            const minuten = Math.floor(resterend / 60);
             let seconden = resterend % 60;
             if (seconden < 10) seconden = "0" + seconden;
 
             let vorigeHintsHTML = "";
-
-            // show previously used hints while waiting
             if (gebruikteHints.length > 0) {
                 vorigeHintsHTML = "<br><br><strong>Vorige hints:</strong><ul>";
                 gebruikteHints.forEach((hint) => {
@@ -1691,32 +1652,34 @@ function geefHint() {
                 vorigeHintsHTML += "</ul>";
             }
 
-            // stop the countdown when the cooldown has expired
-            if (resterend <= 0) {
-                modalText.innerHTML = "Je kunt nu weer een hint gebruiken." + vorigeHintsHTML;
-                clearInterval(hintInterval);
-                return;
-            }
-
-            // how long to wait for a new hint
             modalText.innerHTML =
                 `Wacht nog <strong>${minuten}:${seconden}</strong> voor een nieuwe hint.` +
                 vorigeHintsHTML;
+        };
 
-        }, 1000);
-
+        hintInterval = setInterval(tick, 1000);
+        tick();   // run once right away so the popup isn't empty for a second
         return;
     }
+
+    toonHintBevestiging();
 }
 
-    // prevent using more than the maximum number of hint
+// shows the "are you sure?" step, or the "all hints used" message
+function toonHintBevestiging() {
+
+    const overlay = document.getElementById("hintOverlay");
+    const modalText = document.getElementById("hintModalText");
+    const actions = document.getElementById("hintActions");
+
+    // prevent using more than the maximum number of hints
     if (hintGebruiktPerVraag >= maxHints) {
+        actions.style.display = "none";
         modalText.textContent = "Je hebt alle hints gebruikt.";
         overlay.style.display = "flex";
         return;
     }
 
-    // confirm hint usage
     modalText.textContent = "Weet je zeker dat je een hint wilt gebruiken?";
     actions.style.display = "flex";
     overlay.style.display = "flex";

@@ -1,0 +1,26 @@
+{
+    "aandrijving": [
+        { "vraag": "Een deurklink is een voorbeeld van een hefboom die je elke dag gebruikt.", "antwoord": true },
+        { "vraag": "Een klein tandwiel dat door een groot tandwiel wordt aangedreven, draait sneller rond.", "antwoord": true },
+        { "vraag": "Om op een wipwap in balans te zijn, moet de lichtste persoon het dichtst bij het draaipunt zitten.", "antwoord": false },
+        { "vraag": "onbekend", "antwoord": true },
+        { "vraag": "onbekend", "antwoord": false },
+        { "vraag": "onbekend", "antwoord": true }
+    ],
+    "programma": [
+        { "vraag": "De enige plek waar je code tegenkomt, is in je computer.", "antwoord": false },
+        { "vraag": "Een boek in een orgel werkt op dezelfde manier als een papieren rol in een pianola", "antwoord": false },
+        { "vraag": "Een MIDI stuurt geluid vanaf een computer naar een instrument.", "antwoord": false },
+        { "vraag": "Op één cilinder kun je meerdere/verschillende melodieën zetten.", "antwoord": true },
+        { "vraag": "Als je arrangeert, bewerk je een muziekstuk dat al bestaat.", "antwoord": true },
+        { "vraag": "Arrangeren is een ander woord voor componeren.", "antwoord": false }
+    ],
+    "klankbron": [
+        { "vraag": "Carillons zijn de oudste instrumenten die je in de buitenlucht kunt horen", "antwoord": true },
+        { "vraag": "Een snaar kan alleen geluid maken als je hem aanraakt wanneer hij onder spanning staat.", "antwoord": true },
+        { "vraag": "Een ritme bestaat uit een maatsoort, tempo en een melodie.", "antwoord": false },
+        { "vraag": "Als je een melodie wil krijgen uit orgelpijpen, moet je ze één voor één aanblazen.", "antwoord": false },
+        { "vraag": "Hoe korter de tand op een speelkam, hoe lager de toon.", "antwoord": false },
+        { "vraag": "Bellen kunnen van metaal, glas en keramiek zijn.", "antwoord": true }
+    ]
+}

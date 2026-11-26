@@ -32,7 +32,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Om de klankbron van de muziekmachine terug te vinden hebben jullie eerst wat muzikale kennis nodig.\n\nWe beginnen bij de basis...\n\nZoek in de ruimte naar een ladder en zoek in de koffer naar een xylofoon met\n'Opdracht 1'\n\nKun jij dit omzetten in cijfers?\n\nTIFALASOL",
+            "uitleg": "Zoek in de ruimte naar een ladder en zoek in de koffer naar een xylofoon met\n'Opdracht 1'\n\nKun jij dit omzetten in cijfers?\n\nTIFALASOL",
 
             "invoerType": "blokken",
 
@@ -42,11 +42,11 @@
 
             "hints": [
                 "De letters op de xylofoon en de ladder betekenen niet hetzelfde… maar horen wel bij elkaar.",
-                "Zoek de volgorde van laag naar hoog en probeer de systemen te koppelen."
+                "Begin bij de laagste Do"
             ],
 
             "tussenPagina": {
-                "tekst": "Zoek de toonladder",
+                "tekst": "Om de klankbron van de muziekmachine terug te vinden hebben jullie eerst wat muzikale kennis nodig.\n\nWe beginnen bij de basis...",
 
                 "bonus": [
                     {
@@ -76,7 +76,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 2++++++++++",
+                "tekst": "Nu je snapt hoe de westerse toonladder werkt kun je hem gaan zingen!\n\nRaak de juiste tonen met je stem zodat je door kan naar de volgende opdracht.",
 
                 "bonus": [
                     {
@@ -95,7 +95,7 @@
 
             "type": "game",
 
-            "uitleg": "Naast echte instrumenten zitten er ook klanken verstopt in objecten waarvan je het niet verwacht.\n\nLuister naar de fragmenten en kies steeds de afbeelding van de juiste klankbron.",
+            "uitleg": "Geen uitleg",
 
             "antwoord": "KLA333",
 
@@ -105,7 +105,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "Loop naar de fruitmachine",
+                "tekst": "Naast echte instrumenten zitten er ook klanken verstopt in objecten waarvan je het niet verwacht.\n\nLuister naar de fragmenten en kies steeds de afbeelding van de juiste klankbron.",
 
                 "bonus": [
                     {
