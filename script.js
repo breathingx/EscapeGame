@@ -32,7 +32,7 @@ let hintGebruiktPerVraag = 0;
 let laatsteHintTijd = 0;
 let gebruikteHints = [];
 const maxHints = 3;
-const hintCooldown = 180;
+const hintCooldown = 5;
 let hintInterval = null;
 
 // bonus questions
@@ -1608,6 +1608,8 @@ function updateProgressBar() {
 
 // opens the hint popup and handles hint availability, cooldowns 
 // and confirmation before using a hint
+// opens the hint popup and handles hint availability, cooldowns
+// and confirmation before using a hint
 function geefHint() {
 
     const overlay = document.getElementById("hintOverlay");
@@ -1620,11 +1622,8 @@ function geefHint() {
 
     const huidigeTijd = Math.floor(Date.now() / 1000);
 
-    // check whether the player is still in the cooldown period
-    if (laatsteHintTijd !== 0) {
-    let verschil = huidigeTijd - laatsteHintTijd;
-
-    if (verschil < hintCooldown) {
+    // still in the cooldown period: show the countdown
+    if (laatsteHintTijd !== 0 && huidigeTijd - laatsteHintTijd < hintCooldown) {
 
         overlay.style.display = "flex";
         actions.style.display = "none";
@@ -1633,19 +1632,29 @@ function geefHint() {
         // prevent multiple countdown timers from running
         if (hintInterval) clearInterval(hintInterval);
 
-        // update the remaining cooldown time every second
-        hintInterval = setInterval(() => {
+        const tick = () => {
 
-            let nu = Math.floor(Date.now() / 1000);
-            let resterend = hintCooldown - (nu - laatsteHintTijd);
+            // popup was closed during the countdown: stop, don't reopen it
+            if (overlay.style.display === "none") {
+                clearInterval(hintInterval);
+                return;
+            }
 
-            let minuten = Math.floor(resterend / 60);
+            const nu = Math.floor(Date.now() / 1000);
+            const resterend = hintCooldown - (nu - laatsteHintTijd);
+
+            // cooldown over: go straight to the confirmation
+            if (resterend <= 0) {
+                clearInterval(hintInterval);
+                toonHintBevestiging();
+                return;
+            }
+
+            const minuten = Math.floor(resterend / 60);
             let seconden = resterend % 60;
             if (seconden < 10) seconden = "0" + seconden;
 
             let vorigeHintsHTML = "";
-
-            // show previously used hints while waiting
             if (gebruikteHints.length > 0) {
                 vorigeHintsHTML = "<br><br><strong>Vorige hints:</strong><ul>";
                 gebruikteHints.forEach((hint) => {
@@ -1654,32 +1663,34 @@ function geefHint() {
                 vorigeHintsHTML += "</ul>";
             }
 
-            // stop the countdown when the cooldown has expired
-            if (resterend <= 0) {
-                modalText.innerHTML = "Je kunt nu weer een hint gebruiken." + vorigeHintsHTML;
-                clearInterval(hintInterval);
-                return;
-            }
-
-            // how long to wait for a new hint
             modalText.innerHTML =
                 `Wacht nog <strong>${minuten}:${seconden}</strong> voor een nieuwe hint.` +
                 vorigeHintsHTML;
+        };
 
-        }, 1000);
-
+        hintInterval = setInterval(tick, 1000);
+        tick();   // run once right away so the popup isn't empty for a second
         return;
     }
+
+    toonHintBevestiging();
 }
 
-    // prevent using more than the maximum number of hint
+// shows the "are you sure?" step, or the "all hints used" message
+function toonHintBevestiging() {
+
+    const overlay = document.getElementById("hintOverlay");
+    const modalText = document.getElementById("hintModalText");
+    const actions = document.getElementById("hintActions");
+
+    // prevent using more than the maximum number of hints
     if (hintGebruiktPerVraag >= maxHints) {
+        actions.style.display = "none";
         modalText.textContent = "Je hebt alle hints gebruikt.";
         overlay.style.display = "flex";
         return;
     }
 
-    // confirm hint usage
     modalText.textContent = "Weet je zeker dat je een hint wilt gebruiken?";
     actions.style.display = "flex";
     overlay.style.display = "flex";
