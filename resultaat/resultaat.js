@@ -109,8 +109,8 @@ function toonResultaten() {
 
     document.getElementById("eindtijd").textContent = eindTijd;
     document.getElementById("eindscore").textContent = eindScore;
-    document.getElementById("tijdSubtitle").textContent = "Tijd: " + eindTijd;
-    document.getElementById("scoreSubtitle").textContent = "Score: " + eindScore;
+    document.getElementById("tijdSubtitle").textContent = "Jullie tijd is: " + eindTijd + ". Dat is ongeveer even lang als de volgende liedjes!";
+    document.getElementById("scoreSubtitle").textContent = "Jullie team score is: " + eindScore + ". Dat getal komt in de buurt van de volgende instrumenten!";
 
     // finding the right song to compare
     const eigenSeconden = secondenVanTijd(eindTijd);
@@ -125,11 +125,11 @@ function toonResultaten() {
     document.getElementById("eindtijd").innerHTML =
         `
             <div class="slot-value-main">
-                ${eindTijd}
+                ${huidigeTijd.tijd}
             </div>
 
             <div class="slot-value-sub">
-                ${huidigeTijd.tijd}
+                Jullie tijd: ${eindTijd}
             </div>
         `;
 
@@ -183,11 +183,11 @@ function toonResultaten() {
     document.getElementById("eindscore").innerHTML =
         `
             <div class="slot-value-main">
-                ${eindScore}
+                ${huidigeScore.aantal}
             </div>
 
             <div class="slot-value-sub">
-                ${huidigeScore.aantal}
+                ${eindScore}
             </div>
         `; 
 
