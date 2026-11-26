@@ -202,6 +202,7 @@ function startGame(gekozenTeam) {
     localStorage.setItem("totalSeconds", 60 * 60);
 
     localStorage.removeItem("bonusVragen");
+    localStorage.removeItem("tussenGezien");
     localStorage.removeItem("simon_done"); 
     localStorage.removeItem("blockly_done");
     document.body.classList.add("fade-out");
@@ -242,7 +243,7 @@ if (window.location.pathname.includes("template.html") &&
             window.location.href = "codes.html";
         }
         else if (correcteAntwoorden > huidigeOpdracht) {
-            toonTussenPagina();
+            volgendeOpdracht();  
         }
         else {
             laadOpdracht();
@@ -546,7 +547,7 @@ function verwerkMeerkeuzeAntwoord(knop, opdracht) {
     });
 
     setTimeout(() => {
-        toonTussenPagina();
+        volgendeOpdracht();
     }, 1500);
 }
 
@@ -580,6 +581,13 @@ function laadMinigameUitleg() {
 // loads the current exercise and resets all temporary game state
 // also initializes any team-specific minigames linked to the exercise
 function laadOpdracht() {
+
+    // show the tussenpagina before the exercise (once per exercise)
+    const tussenData = gameData[team].opdrachten[huidigeOpdracht].tussenPagina;
+    if (tussenData && localStorage.getItem("tussenGezien") !== String(huidigeOpdracht)) {
+        toonTussenPagina();
+        return;
+    }
 
     const extraContent = document.getElementById("extraContent");
 
@@ -708,25 +716,20 @@ function toonOpdrachtTitel() {
 function verwerkActie() {
 
     // check if in a page between exercises
+    // on the tussenpagina: mark it as seen and start the exercise
     if (zitOpTussenPagina) {
-
         zitOpTussenPagina = false;
-        volgendeOpdracht();
-
+        localStorage.setItem("tussenGezien", huidigeOpdracht);
+        laadOpdracht();
         return;
     }
 
     // if the exercise is already completed move to the next stage of the game
+    // exercise already completed: go straight to the next one
     if (antwoordIsCorrect) {
-
-        if (huidigeOpdracht < totaal_opdrachten - 1) {
-            toonTussenPagina();
-        } else {
-            volgendeOpdracht();
-        }
-
+        volgendeOpdracht();
         return;
-    }   
+    }
 
     // compare input with the correct answer
     const huidigeOpdrachtData = gameData[team].opdrachten[huidigeOpdracht];
@@ -881,24 +884,24 @@ function toonTussenPagina() {
     document.getElementById("openMinigameOverlay").style.display = "none";
     document.getElementById("minigameOpdrachtTitel").style.display = "none";
     document.getElementById("opdrachtTitel").style.display = "block";
-    const data = gameData[team].opdrachten[huidigeOpdracht].tussenPagina;
-    document.getElementById("opdrachtTitel").textContent = "Voor de volgende opdracht";
     document.getElementById("MeerkeuzeKleurenCarillon").hidden = true;
 
-    // skip transition page if none exists
-    if (!data) {
-        volgendeOpdracht();
-        return;
-    }
+    const data = gameData[team].opdrachten[huidigeOpdracht].tussenPagina;
+    if (!data) return;                  // laadOpdracht already checks this
 
-    // store transition state and pending bonus questions
+    initHeader();                       // update "Opdracht X van Y" and score
+    updateProgressBar();
+
+    document.getElementById("opdrachtTitel").textContent = "Voor je begint";  // was "Voor de volgende opdracht"
+
     zitOpTussenPagina = true;
 
+    document.getElementById("uitlegBlok").style.display = "block";
     document.getElementById("uitlegTekst").textContent = data.tekst;
     document.getElementById("extraContent").innerHTML = `
     <div class="tussenBonusBlok">
         <h3 class="bonusTitel">Wist je dat...</h3>
-        ${data.bonus.map(vraag => `
+        ${(data.bonus || []).map(vraag => `
             <div class="bonusPreview">
                 <p>${vraag.hint}</p>
             </div>
@@ -906,21 +909,17 @@ function toonTussenPagina() {
     </div>
 `;
 
-    // adjust interface for transition screen
     const actieBtn = document.getElementById("actieBtn");
-    actieBtn.classList.remove(
-        "aandrijving",
-        "programma",
-        "klankbron"
-    );
+    actieBtn.classList.remove("aandrijving", "programma", "klankbron");
     actieBtn.classList.add("correct-state");
+    actieBtn.disabled = false;
 
     document.getElementById("codeInputContainer1").style.display = "none";
     document.getElementById("codeInputContainer2").style.display = "none";
     document.getElementById("codeInputContainer3").style.display = "none";
     document.getElementById("feedback").textContent = "";
-    document.getElementById("actieBtn").style.display = "block";
-    document.getElementById("actieBtn").textContent = "Volgende opdracht";
+    actieBtn.style.display = "block";
+    actieBtn.textContent = "Start opdracht";   // was "Volgende opdracht"
     document.getElementById("hintContainer").style.display = "none";
 }
 
