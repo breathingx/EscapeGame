@@ -25,14 +25,14 @@ const ENABLE_SIMON_SAYS = false;
 let blockly_punten = 0;
 
 let truthLieProgress = 0;
-const truthLieMaxVragen = 6;
+let truthLieMaxVragen = 6;
 
 // tracking hints usage
 let hintGebruiktPerVraag = 0;
 let laatsteHintTijd = 0;
 let gebruikteHints = [];
 const maxHints = 3;
-const hintCooldown = 5;
+const hintCooldown = 180;
 let hintInterval = null;
 
 // bonus questions
@@ -91,6 +91,13 @@ if (
 // =================================================
 
 
+function getTruthLieChips() {
+    return Array.from({ length: truthLieMaxVragen }, (_, i) =>
+        document.getElementById(`truth-lie-Q${i + 1}`)
+    );
+}
+
+
 // loading in data form the specific team data files
 async function laadGameData(team) {
     const response = await fetch(`data/${team}.json`);
@@ -113,6 +120,8 @@ async function laadTruthLieVragen() {
     const response = await fetch("data/truthlie.json");
     truthLieVragen = await response.json();
 }
+
+
 
 
 var truthLieCorrect = [false, false, false, false, false, false];
@@ -1354,6 +1363,8 @@ function laadopdrachtKlankbron() {
 // Loads the elements necessary for the Truth Lie minigame. Elements from the standard template will be hidden.
 function inladenTruthLieElementen() {
 
+    truthLieMaxVragen = truthLieVragen[team].length;
+    truthLieCorrect = Array(truthLieMaxVragen).fill(false);
     truthLieProgress = parseInt(localStorage.getItem("truthLieProgress")) || 0;
     foutPogingen = parseInt(localStorage.getItem("truthLieFouten")) || 0;
 
@@ -1370,11 +1381,7 @@ function inladenTruthLieElementen() {
     document.getElementById("truth-lie-nee").hidden = false;
     document.getElementById("truth-lie-answer-container").style.display = "flex";
 
-    const truthLieChips = [
-        document.getElementById("truth-lie-Q1"), document.getElementById("truth-lie-Q2"),
-        document.getElementById("truth-lie-Q3"), document.getElementById("truth-lie-Q4"),
-        document.getElementById("truth-lie-Q5"), document.getElementById("truth-lie-Q6")
-    ];
+    const truthLieChips = getTruthLieChips();
 
     for (let i = 0; i < truthLieProgress; i++) {
         
@@ -1395,6 +1402,11 @@ function inladenTruthLieElementen() {
         showTruthLieScore();
     } else {
         document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress].vraag;
+    }
+
+    for (let i = 1; i <= 8; i++) {
+        const chip = document.getElementById(`truth-lie-Q${i}`);
+        if (chip) chip.style.display = i <= truthLieMaxVragen ? "" : "none";
     }
 }
 
@@ -1429,14 +1441,7 @@ function verwerkTruthLie(isCorrect) {
 }
 
 function updateTruthLieChip(isCorrect) {
-    const truthLieChips = [
-        document.getElementById("truth-lie-Q1"),
-        document.getElementById("truth-lie-Q2"),
-        document.getElementById("truth-lie-Q3"),
-        document.getElementById("truth-lie-Q4"),
-        document.getElementById("truth-lie-Q5"),
-        document.getElementById("truth-lie-Q6")
-    ];
+    const truthLieChips = getTruthLieChips();
 
     truthLieChips[truthLieProgress].textContent = isCorrect ? "1" : "0";
     truthLieChips[truthLieProgress].classList.add("filling");
@@ -1474,18 +1479,11 @@ function updateTruthLie() {
 }
 
 function showTruthLieScore() {
-    const truthLieChips = [
-        document.getElementById("truth-lie-Q1"),
-        document.getElementById("truth-lie-Q2"),
-        document.getElementById("truth-lie-Q3"),
-        document.getElementById("truth-lie-Q4"),
-        document.getElementById("truth-lie-Q5"),
-        document.getElementById("truth-lie-Q6")
-    ];
+    const truthLieChips = getTruthLieChips();
     var correct = 0
     for (let i = 0; i < truthLieMaxVragen; i++) {
         setTimeout(() => {
-            
+
             if (truthLieCorrect[i]) {
                 correct++;
                 correctAnswer(truthLieChips[i]);
@@ -1498,7 +1496,7 @@ function showTruthLieScore() {
     setTimeout(() => {
         document.getElementById("truth-lie-next").style.opacity = 1;
         document.getElementById("truth-lie-next").disabled = false;
-    }, 7500);
+    }, 1500 + 1000 * truthLieMaxVragen);
 }
 
 function correctAnswer(chipElement) {
