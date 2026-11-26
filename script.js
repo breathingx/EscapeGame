@@ -933,7 +933,7 @@ function hefboomGame() {
         document.getElementById("uitlegTekst").textContent = gameData[team].opdrachten[huidigeOpdracht].uitleg;
     }
 
-    document.getElementById("codeInputContainer").style.display = "none";
+    document.getElementById("codeInputContainer1").style.display = "none";
     document.getElementById("actieBtn").style.display = "none";
     document.getElementById("hintContainer").style.display = "none";
 
