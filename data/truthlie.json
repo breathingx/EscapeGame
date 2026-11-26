@@ -1,19 +1,21 @@
 {
     "aandrijving": [
-        { "vraag": "Een deurklink is een voorbeeld van een hefboom die je elke dag gebruikt.", "antwoord": true },
-        { "vraag": "Een klein tandwiel dat door een groot tandwiel wordt aangedreven, draait sneller rond.", "antwoord": true },
-        { "vraag": "Om op een wipwap in balans te zijn, moet de lichtste persoon het dichtst bij het draaipunt zitten.", "antwoord": false },
-        { "vraag": "onbekend", "antwoord": true },
-        { "vraag": "onbekend", "antwoord": false },
-        { "vraag": "onbekend", "antwoord": true }
+        { "vraag": "Een krukas wordt gebruikt om energie in op te slaan.", "antwoord": false },
+        { "vraag": "In een muziekdoosje zit dezelfde soort veer als in een balpen.", "antwoord": false },
+        { "vraag": "De gewichten in een klok werken door opgeslagen spierkracht.", "antwoord": true },
+        { "vraag": "Met een hefboom ben je sterker dan jezelf.", "antwoord": true },
+        { "vraag": "Alle orgels in Museum Speelklok werken door spierkracht.", "antwoord": false },
+        { "vraag": "Een balg moet in beweging blijven om te werken.", "antwoord": true }
     ],
     "programma": [
         { "vraag": "De enige plek waar je code tegenkomt, is in je computer.", "antwoord": false },
-        { "vraag": "Een boek in een orgel werkt op dezelfde manier als een papieren rol in een pianola", "antwoord": false },
-        { "vraag": "Een MIDI stuurt geluid vanaf een computer naar een instrument.", "antwoord": false },
         { "vraag": "Op één cilinder kun je meerdere/verschillende melodieën zetten.", "antwoord": true },
+        { "vraag": "Op een papieren rol passen lange muziekstukken.", "antwoord": true },
+        { "vraag": "De speeltrommel is de oudste programmadrager.", "antwoord": true },
         { "vraag": "Als je arrangeert, bewerk je een muziekstuk dat al bestaat.", "antwoord": true },
-        { "vraag": "Arrangeren is een ander woord voor componeren.", "antwoord": false }
+        { "vraag": "Arrangeren is een ander woord voor componeren.", "antwoord": false },
+        { "vraag": "Met versteken verander je de melodie van een speeltrommel.", "antwoord": true },
+        { "vraag": "Als er lucht door een gaatje van een orgelboek gaat, klinkt er geluid.", "antwoord": true }
     ],
     "klankbron": [
         { "vraag": "Carillons zijn de oudste instrumenten die je in de buitenlucht kunt horen", "antwoord": true },

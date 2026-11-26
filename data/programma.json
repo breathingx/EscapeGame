@@ -32,7 +32,7 @@
 
             "type": "scan",
 
-            "uitleg": "Elke muziekmachine heeft een programmadrager nodig. Op een programmadrager staat de muziek opgeslagen als een code.\n\nDankzij deze code weet de muziekmachine welke muziek hij moet spelen.\n\nIn de tentoonstelling kom je vijf verschillende soorten programmadragers tegen. Kun jij ze allemaal vinden?\n\nGebruik de blokken uit de koffer.\n\nMaak er ée'n grote kubus van en zorg ervoor dat alle plaatje van de programmadragers uit de tnetoonstelling aan de buitenkannt zichtbaar zijn.\n\nHeb je de juiste QR-code gevonden?\n\nScan dan de code.",
+            "uitleg": "Gebruik de blokken uit de koffer.\n\nMaak er ée'n grote kubus van en zorg ervoor dat alle plaatje van de programmadragers uit de tnetoonstelling aan de buitenkannt zichtbaar zijn.\n\nHeb je de juiste QR-code gevonden?\n\nScan dan de code.",
 
             "antwoord": "teamtim",
 
@@ -42,7 +42,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "Een orgelboek is een programmadrager. De gaatjes bepalen welke orgelpijpen gespeeld worden",
+                "tekst": "Elke muziekmachine heeft een programmadrager nodig. Op een programmadrager staat de muziek opgeslagen als een code.\n\nDankzij deze code weet de muziekmachine welke muziek hij moet spelen.\n\nIn de tentoonstelling kom je vijf verschillende soorten programmadragers tegen. Kun jij ze allemaal vinden?",
 
                 "bonus": [
                     {
@@ -75,7 +75,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "Een muziekmachine volgt een programma als een soort stappenplan.\n\nKun jij een stappenplan maken waarmee je onderweg muzieknoten verzamelt?",
+                "tekst": "Een orgelboek is een programmadrager. De gaatjes bepalen welke orgelpijpen gespeeld worden.",
 
                 "bonus": [
                     {
@@ -94,18 +94,17 @@
 
             "type": "game:blockly",
 
-            "uitleg": "Bouw de juiste route met de beschikbare blokken.\n\nElk blok heeft een eigen functie. Sleep de blokken in de juiste volgorde om een stappenplan te maken. Klik daarna op 'Start' en controleer of het stappenplan werkt!",
+            "uitleg": "Bouw de juiste route met de beschikbare blokken.\n\nElk blok heeft een eigen functie. Sleep de blokken in de juiste volgorde om een stappenplan te maken. Klik daarna op 'Start' en controleer of het stappenplan werkt! ",
 
-            "antwoord": "PRO333",
+            "antwoord": "Met 1 muzieknoot kan je het spel winnen.   ",
 
             "hints": [
-                "Welke muzieknoten zijn makkelijk te pakken met een simpel herhalend stappenplan?",
-                "Probeer eerst de buitenste rand te pakken.",
-                "Vind als tweede een herhalend patroon om diagonaal de noten te pakken."
+                "Kijk goed naar het doel van de route.",
+                "Soms moet je een stap herhalen."
             ],
 
             "tussenPagina": {
-                "tekst": "Nu ga je zelf een muziekmachine programeren.\n\nLoop naar de Musicon, de programmeerbare muziekmachine in de tentoonstelling. Zet de pinnetjes precies zoals op de codekaart die je in de koffer vindt. Lukt het jou om de code te kraken?",
+                "tekst": "Een muziekmachine volgt een programma als een soort stappenplan. Kun jij een stappenplan maken waarmee je onderweg muzieknoten verzamelt?",
 
                 "bonus": [
                     {
@@ -138,7 +137,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "Tijd voor een quiz!\n\nKies steeds WAAR (1) of NIET WAAR (0).\n\nSamen vormen de antwoorden een code.",
+                "tekst": "Nu ga je zelf een muziekmachine programmeren.\n\nLoop naar de Musicon, de programmeerbare muziekmachine in de tentoonstelling. Zet de pinnetjes precies zoals op de codekaart die je in de koffer vindt.\n\nLukt het jou om de code te kraken?",
 
                 "bonus": [
                     {
@@ -161,12 +160,12 @@
             "antwoord": "PRO555",
 
             "hints": [
-                "++++++++++HINT 1\nPLACEHOLDER++++++++++",
-                "++++++++++HINT 2\nPLACEHOLDER++++++++++"
+                "Dit spel heeft geen hints.",
+                "Dit spel heeft geen hints."
             ],
 
             "tussenPagina": {
-                "tekst": "Je hebt al verschillende programmadragers ontdekt: een boek, een rol, een cilinder...\n\nMaar er is er nóg één!",
+                "tekst": "Tijd voor een quiz!\n\nKies steeds WAAR (1) of NIET WAAR (0).\n\nSamen vormen de antwoorden een code.",
 
                 "bonus": [
                     {
@@ -189,9 +188,9 @@
 
             "invoerType": "blokken",
 
-            "aantalBlokken": 4,
+            "aantalBlokken": 3,
     
-            "antwoord": "9205",
+            "antwoord": "920",
 
             "hints": [
                 "Lees de museumteksten in PROGRAM goed. Welke muziekmachine gebruikt een metalen plaat als programmadrager?",
@@ -199,7 +198,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "Loop naar het componeerstation",
+                "tekst": "Je hebt al verschillende programmadragers ontdekt: een boek, een rol, een cilinder... Maar er is er nóg één!",
 
                 "bonus": [
                     {
@@ -220,15 +219,15 @@
 
             "uitleg": "Uitleg\n\nSimon Says",
 
-            "antwoord": "PRO888",
+            "antwoord": "Dit spel heeft geen antwoord",
 
             "hints": [
-                "Kijk goed naar de instrumenten en programmadragers in de vitrines.",
-                "Houd de plaatjes tegen het licht om verborgen details te ontdekken."
+                "Dit spel heeft geen hints.",
+                "Dit spel heeft geen hints."    
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 8++++++++++",
+                "tekst": "Uitleg mist",
 
                 "bonus": [
                     {

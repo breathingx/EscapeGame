@@ -124,7 +124,11 @@
 
             "type": "game",
 
-            "uitleg": "De dief heeft de melodie uit de muziekmachine gehaald en ergens in het museum verstopt.\n\nEr gaat een gerucht dat de melodie is opgebroken en verscholen ligt in... stukken fruit!\n\nLuister naar het audiofragment en ontrafel de driecijferige code.",
+            "uitleg": "Luister naar het audiofragment en ontrafel de driecijferige code.",
+
+            "invoerType": "blokken",
+
+            "aantalBlokken": 3,
 
             "antwoord": "684",
 
@@ -134,7 +138,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 4++++++++++",
+                "tekst": "De dief heeft de melodie uit de muziekmachine gehaald en ergens in het museum verstopt.\n\nEr gaat een gerucht dat de melodie is opgebroken en verscholen ligt in... stukken fruit! Loop naar de fruitmachine.",
 
                 "bonus": [
                     {
@@ -153,7 +157,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Geluid kun je niet alleen horen, maar ook zien als golfvorm.\n\nDe dief heeft een geheime aanwijzing verstopt in een muziekstuk.\n\nKijk in de koffer\n\nKun jij ontrafelen wat er staat?",
+            "uitleg": "Kijk in de koffer\n\nKun jij ontrafelen wat er staat?",
 
             "invoerType": "blokken",
 
@@ -167,7 +171,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "Ga naar de plek waar boem en pats elkaar afwisselen…",
+                "tekst": "Geluid kun je niet alleen horen, maar ook zien als golfvorm.\n\nDe dief heeft een geheime aanwijzing verstopt in een muziekstuk.",
 
                 "bonus": [
                     {
@@ -186,9 +190,9 @@
 
             "type": "fysiek",
 
-            "uitleg": "Een muziekmachine heeft meer dan alleen een melodie…\n\nZonder ritme valt alles stil.\n\nOp de console staan 3 blauwe knoppen\n\n(links → rechts).\n\nElke knop hoort bij een voorbeeld fragment.\n\nLuister goed en tel:",
+            "uitleg": "Op de console staan 3 blauwe knoppen\n\n(links → rechts).\n\nElke knop hoort bij een voorbeeld fragment.\n\nLuister goed en tel:",
 
-            "antwoord": "3-6-5",
+            "antwoord": "5-6-3",
 
             "hints": [
                 "Tel per knop steeds maar één soort geluid.",
@@ -196,7 +200,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 6++++++++++",
+                "tekst": "Een muziekmachine heeft meer dan alleen een melodie…\n\nZonder ritme valt alles stil.\n\nGa naar de plek waar boem en pats elkaar afwisselen…\n\nDe Ritme interactive.",
 
                 "bonus": [
                     {
@@ -225,7 +229,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 7 ++++++++++",
+                "tekst": "Tekst mist",
 
                 "bonus": [
                     {
