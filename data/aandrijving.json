@@ -66,12 +66,12 @@
             "antwoord": "AAN222",
 
             "hints": [
-                "++++++++++HINT 1\nPLACEHOLDER++++++++++",
-                "++++++++++HINT 2\nPLACEHOLDER++++++++++"
+                "Geen hints in deze game.",
+                "Geen hints in deze game"
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 2++++++++++",
+                "tekst": "Zonder het te weten gebruik je dagelijks best veel techniek! Maar... weet je ook hoe het werkt?\n\nZijn deze stellingen ‘true or false’?",
 
                 "bonus": [
                     {
@@ -89,7 +89,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Je hebt al gezien dat tandwielen beweging kunnen overbrengen, maar wist je ook dat de grootte van een tandwiel invloed heeft op hoe snel die beweging wordt doorgegeven?\n\nKijk in de koffer.\n\nKun jij voorspellen hoe de tandwielen zullen draaien?",
+            "uitleg": "Kijk in de koffer.\n\nKun jij voorspellen hoe de tandwielen zullen draaien?",
 
             "invoerType": "blokken",
 
@@ -103,7 +103,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 3++++++++++",
+                "tekst": "Je hebt al gezien dat tandwielen beweging kunnen overbrengen, maar wist je ook dat de grootte van een tandwiel invloed heeft op hoe snel die beweging wordt doorgegeven?",
 
                 "bonus": [
                     {
@@ -121,7 +121,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Machines bestaan uit verschillende onderdelen. Het ene onderdeel geeft de beweging door aan het volgende onderdeel.\n\nKunnen jullie zien in welke volgorde dit gebeurt? En welke onderdelen worden gebruikt om de beweging door te geven?\n\nZoek naar de juiste onderdelen voor...",
+            "uitleg": "Zoek naar de juiste onderdelen voor... Overbrengingen",
 
             "invoerType": "blokken",
 
@@ -130,12 +130,12 @@
             "antwoord": "AAN444",
 
             "hints": [
-                "Volg de beweging vanaf het punt waar de energie begint. ",
+                "Volg de beweging vanaf het punt waar de energie begint.",
                 "Vraag jezelf af welk onderdeel direct door het vorige wordt aangedreven."
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 4++++++++++",
+                "tekst": "Machines bestaan uit verschillende onderdelen. Het ene onderdeel geeft de beweging door aan het volgende onderdeel.\n\nKunnen jullie zien in welke volgorde dit gebeurt? En welke onderdelen worden gebruikt om de beweging door te geven?",
 
                 "bonus": [
                     {
@@ -153,7 +153,7 @@
 
             "type": "game",
 
-            "uitleg": "Zonder mechanische techniek geen beweging!\n\nExperimenteer en ontdek wat techniek voor jou kan doen en wat jij met techniek kan doen ",
+            "uitleg": "Geen uitleg beschikbaar",
 
             "antwoord": "AAN555",
 
@@ -163,7 +163,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 5++++++++++",
+                "tekst": "Zonder mechanische techniek geen beweging!\n\nExperimenteer en ontdek wat techniek voor jou kan doen en wat jij met techniek kan doen.",
 
                 "bonus": [
                     {
@@ -181,7 +181,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "In dit museum zie je vooral de mooie buitenkant van een muziekmachine. De dief dacht ook dat die het belangrijkst was. Maar het binnenwerk zit verstopt en is misschien wel belangrijker, want zonder dat werkt de muziekmachine niet.\n\nKijk in de koffer\n\nDe code om verder te gaan zit verstopt in de collectiestukken.\n\nKun jij de code vinden?",
+            "uitleg": "De code om verder te gaan zit verstopt in de collectiestukken.\n\nKun jij de code vinden?",
 
             "invoerType": "blokken",
 
@@ -195,7 +195,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 6++++++++++",
+                "tekst": "In dit museum zie je vooral de mooie buitenkant van een muziekmachine. De dief dacht ook dat die het belangrijkst was. Maar het binnenwerk zit verstopt en is misschien wel belangrijker, want zonder dat werkt de muziekmachine niet.\n\nKijk in de koffer.",
 
                 "bonus": [
                     {
@@ -213,7 +213,7 @@
 
             "type": "fysiek",
 
-            "uitleg": "Een muziekmachine kan worden gezien als een gemechaniseerde muzikant: de machine bootst eigenlijk de bewegingen na die een muzikant normaal gesproken maakt.\n\nHerken jij de bewegingen die nodig zijn om een instrument te bespelen?\n\nWanneer gebruiken we deze bewegingen nog meer?\n\nKijk in de koffer en los de puzzel op.",
+            "uitleg": "Herken jij de bewegingen die nodig zijn om een instrument te bespelen?\n\nWanneer gebruiken we deze bewegingen nog meer?\n\nKijk in de koffer en los de puzzel op.",
 
             "antwoord": "AAN777",
 
@@ -223,7 +223,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 7++++++++++",
+                "tekst": "Een muziekmachine kan worden gezien als een gemechaniseerde muzikant: de machine bootst eigenlijk de bewegingen na die een muzikant normaal gesproken maakt.",
 
                 "bonus": [
                     {

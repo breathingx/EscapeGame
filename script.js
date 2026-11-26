@@ -106,61 +106,14 @@ const teamCodes = {
     klankbron: "KL00"
 };
 
-// the truth or lie questions
-const truthLieVragen = {
-    aandrijving: [
-        "Een krukas wordt gebruikt om energie in op te slaan.",
-        "In een muziekdoosje zit dezelfde soort veer als in een balpen.",
-        "De gewichten in een klok werken door opgeslagen spierkracht.",
-        "Met een hefboom ben je sterker dan jezelf.",
-        "Alle orgels in Museum Speelklok werken door spierkracht.",
-        "Een balg moet in beweging blijven om te werken."
-    ],
-    programma: [
-        "De enige plek waar je code tegenkomt, is in je computer.",
-        "Een boek in een orgel werkt op dezelfde manier als een papieren rol in een pianola",
-        "Een MIDI stuurt geluid vanaf een computer naar een instrument.",
-        "Op één cilinder kun je meerdere/verschillende melodieën zetten.",
-        "Als je arrangeert, bewerk je een muziekstuk dat al bestaat.",
-        "Arrangeren is een ander woord voor componeren."
-    ],
-    klankbron: [
-        "Carillons zijn de oudste instrumenten die je in de buitenlucht kunt horen",
-        "Een snaar kan alleen geluid maken als je hem aanraakt wanneer hij onder spanning staat.",
-        "Een ritme bestaat uit een maatsoort, tempo en een melodie.",
-        "Als je een melodie wil krijgen uit orgelpijpen, moet je ze één voor één aanblazen.",
-        "Hoe korter de tand op een speelkam, hoe lager de toon.",
-        "Bellen kunnen van metaal, glas en keramiek zijn."
-    ]
-};
+// the truth or lie questions, loaded from data/truthlie.json
+let truthLieVragen = {};
 
-// the truth or lie answers
-const truthLieAntwoordData = {
-    aandrijving: [
-        false,
-        false,
-        true,
-        true,
-        false,
-        true
-    ],
-    programma: [
-        false,
-        false,
-        false,
-        true,
-        true,
-        false
-    ],
-    klankbron: [
-        true,
-        true,
-        false,
-        false,
-        false,
-        true
-    ]
-};
+async function laadTruthLieVragen() {
+    const response = await fetch("data/truthlie.json");
+    truthLieVragen = await response.json();
+}
+
 
 var truthLieCorrect = [false, false, false, false, false, false];
 
@@ -223,6 +176,7 @@ if (window.location.pathname.includes("template.html") &&
         team = localStorage.getItem("team");
 
         await laadGameData(team);
+        await laadTruthLieVragen();
         totaal_opdrachten = gameData[team].opdrachten.length;
 
         huidigeOpdracht = parseInt(localStorage.getItem("opdracht")) || 0;
@@ -1408,8 +1362,6 @@ function inladenTruthLieElementen() {
         truthLieCorrect = JSON.parse(savedCorrect);
     }
 
-
-    document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
     document.getElementById("codeInputContainer1").style.display = "none";
     document.getElementById("actieBtn").style.display = "none";
     document.getElementById("hintContainer").style.display = "none";
@@ -1425,8 +1377,9 @@ function inladenTruthLieElementen() {
     ];
 
     for (let i = 0; i < truthLieProgress; i++) {
+        
         truthLieChips[i].classList.add("filling");
-        let juistAntwoord = truthLieAntwoordData[team][i];
+        let juistAntwoord = truthLieVragen[team][i].antwoord;
         let gekozenAntwoord = truthLieCorrect[i] ? juistAntwoord : !juistAntwoord;
         truthLieChips[i].textContent = gekozenAntwoord ? "1" : "0";
     }
@@ -1441,7 +1394,7 @@ function inladenTruthLieElementen() {
         document.getElementById("truth-lie-nee").style.display = "none";
         showTruthLieScore();
     } else {
-        document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
+        document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress].vraag;
     }
 }
 
@@ -1456,7 +1409,7 @@ function verwerkTruthLie(isCorrect) {
     }, 300);
 
     updateTruthLieChip(isCorrect);
-    if (isCorrect == truthLieAntwoordData[team][truthLieProgress]) {
+    if (isCorrect == truthLieVragen[team][truthLieProgress].antwoord) {
         truthLieCorrect[truthLieProgress] = true;
     } 
     else {
@@ -1498,8 +1451,6 @@ function updateTruthLie() {
     truthLieProgress++;
     localStorage.setItem("truthLieProgress", truthLieProgress);
 
-    document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress];
-
     if (truthLieProgress == truthLieMaxVragen) {
         document.getElementById("uitlegTekst").textContent = "Je hebt alle vragen beantwoord! Je hebt 0 goed...";
         document.getElementById("truth-lie-next").disabled = true;
@@ -1512,6 +1463,7 @@ function updateTruthLie() {
 
     }
     else {
+        document.getElementById("uitlegTekst").textContent = truthLieVragen[team][truthLieProgress].vraag;
         setTimeout(() => {
         document.getElementById("truth-lie-ja").disabled = false;
         document.getElementById("truth-lie-ja").style.opacity = 1;
