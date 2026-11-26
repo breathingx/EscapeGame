@@ -182,9 +182,9 @@
 
             "invoerType": "blokken",
 
-            "aantalBlokken": 4,
+            "aantalBlokken": 3,
     
-            "antwoord": "9205",
+            "antwoord": "920",
 
             "hints": [
                 "Lees de museumteksten in PROGRAM goed. Welke muziekmachine gebruikt een metalen plaat als programmadrager?",
@@ -192,7 +192,7 @@
             ],
 
             "tussenPagina": {
-                "tekst": "Loop naar het componeerstation",
+                "tekst": "Je hebt al verschillende programmadragers ontdekt: een boek, een rol, een cilinder... Maar er is er nóg één!",
 
                 "bonus": [
                     {
@@ -212,15 +212,15 @@
 
             "uitleg": "Uitleg\n\nSimon Says",
 
-            "antwoord": "PRO888",
+            "antwoord": "Dit spel heeft geen antwoord",
 
             "hints": [
-                "Kijk goed naar de instrumenten en programmadragers in de vitrines.",
-                "Houd de plaatjes tegen het licht om verborgen details te ontdekken."
+                "Dit spel heeft geen hints.",
+                "Dit spel heeft geen hints."    
             ],
 
             "tussenPagina": {
-                "tekst": "++++++++++Ga naar...\nPLACEHOLDER 8++++++++++",
+                "tekst": "Uitleg mist",
 
                 "bonus": [
                     {
