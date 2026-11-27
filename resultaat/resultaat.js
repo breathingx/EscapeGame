@@ -102,6 +102,12 @@ function vindDichtstbijzijndeIndex(
 
 // getting the right data to show up at the right place
 function toonResultaten() {
+    const team = localStorage.getItem("team") || "Onbekend";
+    
+    const eigenTeamTitel = document.getElementById("eigenTeamTitelResultaat");
+    if (eigenTeamTitel) {
+        eigenTeamTitel.textContent = "Eigen team: " + team.charAt(0).toUpperCase() + team.slice(1);
+    }
 
     // getting the end result from localstorage
     const eindTijd = localStorage.getItem("eindTijd");
@@ -239,7 +245,49 @@ document.addEventListener(
         toonResultaten();
     }
 );
+// =================================================
+// TEAM OVERVIEW
+// =================================================
 
+function formatTijdOverzicht(totalSeconds) {
+    if (isNaN(totalSeconds) || totalSeconds < 0) return "00:00";
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return String(minutes).padStart(2, '0') + ":" + String(seconds).padStart(2, '0');
+}
+
+function toonTeamOverzicht() {
+    const teams = ["programma", "klankbron", "aandrijving"];
+    const grid = document.getElementById("teamOverviewGrid");
+    
+    if (!grid) return;
+
+    let totalScore = 0;
+    let gridHTML = "";
+
+    teams.forEach(teamName => {
+        const teamScore = parseInt(localStorage.getItem(`team_${teamName}_score`)) || 0;
+        const teamTime = parseInt(localStorage.getItem(`team_${teamName}_time`)) || 0;
+
+        totalScore += teamScore;
+
+        // Hier voegen we ${teamName} toe als class aan de kaart
+        gridHTML += `
+            <div class="team-card ${teamName}">
+                <div class="team-card-name">${teamName}</div>
+                <div class="team-card-stat">Score: ${teamScore}</div>
+                <div class="team-card-stat">Tijd over: ${formatTijdOverzicht(teamTime)}</div>
+            </div>
+        `;
+    });
+
+    grid.innerHTML = gridHTML;
+    
+    const gezamenlijkeScoreEl = document.getElementById("gezamenlijkeScore");
+    if (gezamenlijkeScoreEl) {
+        gezamenlijkeScoreEl.textContent = totalScore;
+    }
+}
 
 
 // =================================================
@@ -255,3 +303,13 @@ function restartGame() {
 
     window.location.href = "../index.html";
 }
+
+
+document.addEventListener(
+    "DOMContentLoaded",
+    async () => {
+        toonTeamOverzicht();
+        await laadResultaatData();
+        toonResultaten();
+    }
+);

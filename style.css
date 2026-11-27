@@ -57,10 +57,14 @@
     flex: 1 1 auto;
     padding-bottom: var(--hud-height);
     width: 100%;
-    max-width: var(--max-ui-width);
+    max-width: 100vw;
     margin: auto;
     box-sizing: border-box;
+    justify-content: center;
     overflow-y: auto;
+}
+.main-content::-webkit-scrollbar {
+    display: none;
 }
 
 .content-wrapper {
@@ -253,6 +257,7 @@ body.team-klankbron {
     min-height: 100%;
     width: 100%;
     max-width: var(--max-ui-width);
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     align-items: center;
