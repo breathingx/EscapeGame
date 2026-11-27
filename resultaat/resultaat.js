@@ -115,8 +115,8 @@ function toonResultaten() {
 
     document.getElementById("eindtijd").textContent = eindTijd;
     document.getElementById("eindscore").textContent = eindScore;
-    document.getElementById("tijdSubtitle").textContent = "Jullie tijd is: " + eindTijd + ". Dat is ongeveer even lang als de volgende liedjes!";
-    document.getElementById("scoreSubtitle").textContent = "Jullie team score is: " + eindScore + ". Dat getal komt in de buurt van de volgende instrumenten!";
+    document.getElementById("tijdSubtitle").textContent = "Jullie tijd is " + eindTijd + ". Dat is ongeveer even lang als de volgende liedjes!";
+    document.getElementById("scoreSubtitle").textContent = "Jullie team score is " + eindScore + ". Dat getal komt in de buurt van de volgende instrumenten!";
 
     // finding the right song to compare
     const eigenSeconden = secondenVanTijd(eindTijd);
