@@ -148,6 +148,64 @@ if (document.getElementById("buttons")) {
 
 }
 
+// Opens vimeo videos in full scree
+function initVimeoPlayers() {
+    const wrappers = document.querySelectorAll(".vimeo-wrapper");
+    if (wrappers.length === 0) return;
+
+    const setupPlayers = () => {
+        wrappers.forEach((wrapper) => {
+            if (wrapper.dataset.vimeoInitialized) return;
+
+            const iframe = wrapper.querySelector("iframe");
+            const playBtn = wrapper.querySelector(".vimeo-play-btn");
+            if (!iframe || !playBtn || !iframe.getAttribute("src")) return;
+
+            wrapper.dataset.vimeoInitialized = "true";
+            const player = new Vimeo.Player(iframe);
+
+            playBtn.addEventListener("click", () => {
+                playBtn.classList.add("is-hidden");
+
+                // Call synchronously inside the click event so browsers allow fullscreen
+                player.requestFullscreen().catch(() => {
+                    // Fallback: plays inline on devices that block iframe fullscreen (e.g. iPhone Safari)
+                });
+
+                player.play().catch(() => {
+                    playBtn.classList.remove("is-hidden");
+                });
+            });
+
+            player.on("ended", () => {
+                player.exitFullscreen().catch(() => {});
+                player.setCurrentTime(0);
+                playBtn.classList.remove("is-hidden");
+            });
+        });
+    };
+
+    if (typeof Vimeo !== "undefined" && Vimeo.Player) {
+        setupPlayers();
+    } else {
+        const existingScript = document.querySelector('script[src*="player.vimeo.com/api/player.js"]');
+        if (existingScript) {
+            existingScript.addEventListener("load", setupPlayers);
+        } else {
+            const vimeoScript = document.createElement("script");
+            vimeoScript.src = "https://player.vimeo.com/api/player.js";
+            vimeoScript.onload = setupPlayers;
+            document.head.appendChild(vimeoScript);
+        }
+    }
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initVimeoPlayers);
+} else {
+    initVimeoPlayers();
+}
+
 // =================================================
 // GAME INITIALISATION 
 // =================================================

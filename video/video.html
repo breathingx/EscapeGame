@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover, interactive-widget=overlays-content">
     <title>Video</title>
     <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="video.css">
@@ -11,24 +11,33 @@
 <body>
     <div class="main-content">
         <div class="content-wrapper">
-        
-        <!-- team title -->
-        <h1 id="teamTitle" class="index-title"></h1>
 
-        <!-- video container -->
-        <div class="video-wrapper">
-            <iframe id="videoFrame" allowfullscreen></iframe>
-        </div>
+            <!-- team title -->
+            <h1 id="teamTitle" class="index-title"></h1>
 
-        <!-- continue button -->
-        <div class="start-button-wrapper" id="continueBtnWrap">
-            <button id="continueBtn">Verder</button>
-        </div>
+            <!-- video container -->
+            <div class="vimeo-wrapper">
+                <div class="vimeo-video">
+                    <iframe
+                        id="videoFrame"
+                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin"
+                        allowfullscreen>
+                    </iframe>
+                </div>
+                <button type="button" class="vimeo-play-btn">Klik hier om de video af te spelen</button>
+            </div>
+
+            <!-- continue button -->
+            <div class="start-button-wrapper" id="continueBtnWrap">
+                <button id="videoContinueBtn">Verder</button>
+            </div>
 
         </div>
     </div>
 
     <img src="../M3L.png" alt="Logo" class="logo">
+    <script src="../script.js"></script>
     <script src="video.js"></script>
 </body>
 </html>

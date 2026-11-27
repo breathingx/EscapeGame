@@ -1109,7 +1109,7 @@ button.feedback-incorrect {
 
 .hud-mask {
     position: absolute;
-    bottom: 0;
+    bottom: -70px;
     left: 0;
     width: 100%;
     height: calc(clamp(36px, 8.5vh, 160px) + (var(--page-margin) / 2) + 20px);
@@ -1313,4 +1313,42 @@ body.team-klankbron .hud-mask { background-color: #ff6800; }
 
 .Mk-btn.mc-goed {
     background-color: #00c853 !important;
+}
+
+/*================================================== */
+/* VIDEO  */
+/*================================================== */
+
+.vimeo-wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.vimeo-video {
+    position: relative;
+    width: 100%;
+    border: 6px solid black;
+    box-sizing: border-box;
+    background-color: black;
+}
+
+.vimeo-video iframe {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border: 0;
+    pointer-events: none;
+}
+
+.vimeo-play-btn {
+    width: var(--content-width);
+    max-width: var(--max-ui-width);
+    font-size: clamp(18px, 3vw, 24px);
+    padding: 24px 24px;
+}
+
+.vimeo-play-btn.is-hidden {
+    display: none;
 }
