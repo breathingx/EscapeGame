@@ -193,7 +193,7 @@ function toonResultaten() {
             </div>
 
             <div class="slot-value-sub">
-                ${eindScore}
+                Jullie score: ${eindScore}
             </div>
         `; 
 
